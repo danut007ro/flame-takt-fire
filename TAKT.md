@@ -84,6 +84,17 @@ After `rnd` in WAVE there are three new waves: `r-4`, `r-8` and `r16`.
 
 This is a stock bug. Entering velocity recording (NOTE + MOD-CV, either order) from another menu left the HOLD / MUTE / VARIATION LEDs lit, including forever on muted tracks. They now turn off, as they do for REC NOTE and REC MOD-CV, and then only flash on triggers.
 
+### 5. Per-track SHUFFLE
+
+SHUFFLE now works like QUANTIZE: press SHUFFLE, select a track with the track buttons (its LED lights), and turn DATA to set the shuffle of that track. Range: oFF, 1-127, the same scale as the stock global shuffle (127 is a delay of 3 ticks, half a 16th).
+
+- Every second 16th of an 8th (ticks 6-11 of 12) on that track is played late by the set amount. Notes on the first 16th stay on time.
+- Each track has its own value. Tracks set to oFF are not affected.
+- Press SHUFFLE again to get the stock global shuffle of the scene (all tracks, the same way as before). A third press goes back to the per-track page. The global value and the per-track values add up.
+- The values are saved with the scene and in the SysEx dump. Old scenes start with every track at oFF.
+- If the next note of a track arrives before a delayed one has played, the delayed one plays at once, so notes never swap order.
+- The delay follows the tempo (it is a fraction of a beat, like the stock shuffle). Very low values can round to no delay at fast tempos.
+
 ## Install
 
 1. Back up your scenes first (SysEx dump).
@@ -97,7 +108,8 @@ Send the original `FlameTaktV1_7_2.syx` the same way. The original file and the 
 ## Caveats
 
 - Scenes saved here load on stock. Seeded tracks play there with VARIATION off. An LFO set to `r-4`, `r-8` or `r16` shows a garbage name on stock and sits at about 0 V.
-- COPY and SWAP track do not copy the seed. Stock does not copy the VARIATION state either.
+- Per-track shuffle is stored in 8 unused bytes of the scene. Stock ignores it, so scenes saved here play without it on stock.
+- COPY and SWAP track do not copy the seed or the track's shuffle. Stock does not copy the VARIATION state either.
 - On a fast-blink track, repeated SHOTS hits at the same position (for example with the sequencer stopped) still vary, but they follow the same sequence every time.
 - "Stopped" is no clock for 200 ms, so below about 30 BPM staged changes apply when you release the button.
 - While a function menu is showing you are not recording, same as stock. Recording continues when you are back in REC.
