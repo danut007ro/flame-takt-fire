@@ -26,7 +26,7 @@ Both builds are tested on hardware. Feedback and bug reports are welcome (open a
 
 **FIRE:** velocity and CV active at the same time, a CV matrix, randomize, four extra hihat samples, new MODAL and STRING algorithms, and main plus direct outs together. See [FIRE.md](FIRE.md).
 
-**TAKT:** seeded VARIATION, performance mode on the function buttons, random sample & hold LFO waves, per-track SHUFFLE, recording on muted tracks, and a fix for the REC velocity LED bug. See [TAKT.md](TAKT.md).
+**TAKT:** seeded VARIATION, performance mode on the function buttons, random sample & hold LFO waves, per-track SHUFFLE, recording on muted tracks, and fixes for the REC velocity LED bug and auto BAR copy dropping the modulation. See [TAKT.md](TAKT.md).
 
 ## Installing and going back to stock
 

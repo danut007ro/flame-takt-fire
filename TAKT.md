@@ -98,6 +98,10 @@ Like QUANTIZE: press SHUFFLE, pick a track with the track buttons, and set its s
 
 A muted track can now be recorded, with SHOTS or single notes. Its pattern stays silent, so you can prepare a fill, then unmute it (a staged unmute lands on the next bar). The SHOTS hits you play while recording on a muted track are silent too, but the track LED still flashes for each one. HOLD still blocks recording, as stock.
 
+### 7. Auto BAR copy keeps the modulation
+
+This is a stock bug. With `bCo` on, extending the pattern with BAR copied the notes, velocities and gate times but not the MOD-CV values. They are copied now. Which bars are copied and when is unchanged, and tracks on HOLD are still skipped.
+
 ## Install
 
 1. Back up your scenes first (SysEx dump).
