@@ -86,14 +86,13 @@ This is a stock bug. Entering velocity recording (NOTE + MOD-CV, either order) f
 
 ### 5. Per-track SHUFFLE
 
-SHUFFLE now works like QUANTIZE: press SHUFFLE, select a track with the track buttons (its LED lights), and turn DATA to set the shuffle of that track. Range: oFF, 1-127, the same scale as the stock global shuffle (127 is a delay of 3 ticks, half a 16th).
+Like QUANTIZE: press SHUFFLE, pick a track with the track buttons, and set its shuffle with DATA: `GLb`, then `000` to `127` (same scale as the stock shuffle).
 
-- Every second 16th of an 8th (ticks 6-11 of 12) on that track is played late by the set amount. Notes on the first 16th stay on time.
-- Each track has its own value. Tracks set to oFF are not affected.
-- Press SHUFFLE again to get the stock global shuffle of the scene (all tracks, the same way as before). A third press goes back to the per-track page. The global value and the per-track values add up.
-- The values are saved with the scene and in the SysEx dump. Old scenes start with every track at oFF.
-- If the next note of a track arrives before a delayed one has played, the delayed one plays at once, so notes never swap order.
-- The delay follows the tempo (it is a fraction of a beat, like the stock shuffle). Very low values can round to no delay at fast tempos.
+- `GLb` (default) follows the global shuffle. A number replaces it for that track, it is not added. With the global at 65, `000` turns shuffle off for a track.
+- Press SHUFFLE again for the global page, and a third time to go back.
+- It also applies to the notes you hear while recording with SHOTS, but not to the note you play in single-note recording.
+- Saved with the scene. Old scenes start on `GLb` and play as before.
+- The global shuffle is now applied per note instead of delaying the whole tick, so the clock stays straight. Notes on ticks 7-11 get the full delay, where stock fades it out.
 
 ## Install
 
@@ -108,7 +107,7 @@ Send the original `FlameTaktV1_7_2.syx` the same way. The original file and the 
 ## Caveats
 
 - Scenes saved here load on stock. Seeded tracks play there with VARIATION off. An LFO set to `r-4`, `r-8` or `r16` shows a garbage name on stock and sits at about 0 V.
-- Per-track shuffle is stored in 8 unused bytes of the scene. Stock ignores it, so scenes saved here play without it on stock.
+- Stock ignores the per-track shuffle, so scenes saved here play with the global shuffle only on stock.
 - COPY and SWAP track do not copy the seed or the track's shuffle. Stock does not copy the VARIATION state either.
 - On a fast-blink track, repeated SHOTS hits at the same position (for example with the sequencer stopped) still vary, but they follow the same sequence every time.
 - "Stopped" is no clock for 200 ms, so below about 30 BPM staged changes apply when you release the button.
