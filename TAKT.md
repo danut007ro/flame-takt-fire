@@ -94,6 +94,10 @@ Like QUANTIZE: press SHUFFLE, pick a track with the track buttons, and set its s
 - Saved with the scene. Old scenes start on `GLb` and play as before.
 - The global shuffle is now applied per note instead of delaying the whole tick, so the clock stays straight. Notes on ticks 7-11 get the full delay, where stock fades it out.
 
+### 6. Record on a muted track
+
+A muted track can now be recorded, with SHOTS or single notes. Its pattern stays silent, so you can prepare a fill, then unmute it (a staged unmute lands on the next bar). The SHOTS hits you play while recording on a muted track are silent too, but the track LED still flashes for each one. HOLD still blocks recording, as stock.
+
 ## Install
 
 1. Back up your scenes first (SysEx dump).
