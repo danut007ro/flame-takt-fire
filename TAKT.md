@@ -59,10 +59,20 @@ In EDIT USER and EDIT EUCLID the function buttons are still step buttons.
 **Staged HOLD, MUTE and VARIATION:**
 
 - While you hold the button, track taps do not change anything yet. The track LED flickers.
-- On release, all of those changes land together on the first step of the next bar. With the sequencer stopped they apply right away.
+- On release, all of those changes land together on the first step of the next bar (or later, see Delay). With the sequencer stopped they apply right away.
 - Tap a track twice to un-stage it. In VARIATION each tap steps off → on → slow blink → fast blink, so four taps bring it back.
 - Pressing another function button while still holding drops what you staged.
 - In a latched menu (short press), taps apply immediately, as on stock. Seed editing is always immediate.
+
+**Delay:**
+
+- While you hold the button, the display shows how many bars to wait. Turn DATA to set it from `0` to `16`. It starts at `1` each time.
+- `1` is the first bar line after you release, `2` the one after that, and so on. `0` applies the changes right when you release, in the middle of a bar.
+- After the release the number counts down at every bar line, and the changes land when it reaches 0.
+- Hold the button again to see how many bars are left. Turn DATA to move it, up or down. `0` applies on release.
+- Tracks you stage while changes are already waiting join them and keep the count that is left, unless you turn DATA.
+- Each menu has its own count. HOLD, MUTE and VARIATION can wait different numbers of bars.
+- In VARIATION, DATA sets the delay only while no track is held. With a track held it edits the seed, as before.
 
 **Cancel before the bar:**
 

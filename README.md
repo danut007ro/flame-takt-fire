@@ -36,7 +36,7 @@ Both builds are tested on hardware. Feedback and bug reports are welcome (open a
 **TAKT** (details in [TAKT.md](TAKT.md)):
 
 - **Seeded VARIATION:** a variation that is random but repeats the same way every loop, so one you like stays. Each track has its own seed, and you can also seed random velocity and gate time for SHOTS.
-- **Performance mode on the function buttons:** hold a function button (or tap a track while holding it) and let go to return to where you were. HOLD, MUTE and VARIATION changes are staged and land together on the next bar.
+- **Performance mode on the function buttons:** hold a function button (or tap a track while holding it) and let go to return to where you were. HOLD, MUTE and VARIATION changes are staged and land together on the next bar, or up to 16 bars later (set with DATA while you hold the button).
 - **Random sample & hold LFO waves:** three new waves, `r-4`, `r-8` and `r16`, with a saved random pattern per LFO that you can reroll with DATA.
 - **Per-track SHUFFLE:** each track can follow the global shuffle or have its own value from 000 to 127. It also applies to the notes you hear while recording with SHOTS.
 - **Recording on muted tracks:** record into a muted track while it stays silent, then unmute it on the next bar. HOLD still blocks recording, as on stock.
