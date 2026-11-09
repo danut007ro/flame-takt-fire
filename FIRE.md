@@ -10,11 +10,11 @@ The 12 stock algorithms sound the same as stock when the new amounts are left ce
 
 | File | Purpose |
 | --- | --- |
-| `FlameFireV1_07_custom.syx` | FIRE custom firmware |
-| `smp5_42k_sample5.syx` | Hihat sample 5 |
-| `smp6_37k_sample6.syx` | Hihat sample 6 |
-| `smp7_32k_sample7.syx` | Hihat sample 7 |
-| `smp8_25k_sample8.syx` | Hihat sample 8 |
+| [`FlameFireV1_07_custom.syx`](FlameFireV1_07_custom.syx) | FIRE custom firmware |
+| [`smp5_42k_sample5.syx`](smp5_42k_sample5.syx) | Hihat sample 5 |
+| [`smp6_37k_sample6.syx`](smp6_37k_sample6.syx) | Hihat sample 6 |
+| [`smp7_32k_sample7.syx`](smp7_32k_sample7.syx) | Hihat sample 7 |
+| [`smp8_25k_sample8.syx`](smp8_25k_sample8.syx) | Hihat sample 8 |
 
 ## Features
 
@@ -107,7 +107,7 @@ On VOLUME page 2 the pot goes 1–6, M, M1–M6.
 
 1. Back up your kits (MIDI dump).
 2. Power on holding SETUP + MASTER (firmware update mode, as in the [official manual](https://www.flame-instruments.de/flame2/downloads.html#fire)).
-3. Send `FlameFireV1_07_custom.syx`.
+3. Send [`FlameFireV1_07_custom.syx`](FlameFireV1_07_custom.syx).
    - In your SysEx tool, set a **gap of 150 ms between messages**. Each file is 503 messages, and a shorter gap drops data.
 4. Upload the four samples (below).
 
@@ -115,9 +115,9 @@ On VOLUME page 2 the pot goes 1–6, M, M1–M6.
 
 Upload with the new firmware running normally (**not** in update mode).
 
-1. Send `smp5_42k_sample5.syx` with a 150 ms gap between messages (503 messages).
+1. Send [`smp5_42k_sample5.syx`](smp5_42k_sample5.syx) with a 150 ms gap between messages (503 messages).
 2. Pause for a few seconds after it finishes. The FIRE writes the sample to flash after the last message and ignores a new upload while that write is still running. Nothing on the display tells you when the write is done, so wait before sending the next file.
-3. Send sample 6, sample 7 and sample 8 the same way: 150 ms between messages, then a pause after each file.
+3. Send [`smp6_37k_sample6.syx`](smp6_37k_sample6.syx), [`smp7_32k_sample7.syx`](smp7_32k_sample7.syx) and [`smp8_25k_sample8.syx`](smp8_25k_sample8.syx) the same way: 150 ms between messages, then a pause after each file.
 
 **To check:** select a HIHAT, turn `mtSel` to smp5–smp8 and play, with `nsMix` fully on metal and the filter open. There is no confirmation on the display.
 

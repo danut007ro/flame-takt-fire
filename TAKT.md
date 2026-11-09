@@ -10,7 +10,7 @@ Existing scenes load and sound the same.
 
 | File | Purpose |
 | --- | --- |
-| `FlameTaktV1_7_2_custom.syx` | TAKT custom firmware |
+| [`FlameTaktV1_7_2_custom.syx`](FlameTaktV1_7_2_custom.syx) | TAKT custom firmware |
 
 ## Features
 
@@ -88,7 +88,7 @@ This is a stock bug. Entering velocity recording (NOTE + MOD-CV, either order) f
 
 1. Back up your scenes first (SysEx dump).
 2. Power on holding MOD-CV + TRACK 8. The display shows `UPd`.
-3. Send `FlameTaktV1_7_2_custom.syx`.
+3. Send [`FlameTaktV1_7_2_custom.syx`](FlameTaktV1_7_2_custom.syx).
 
 ### Going back to stock
 
