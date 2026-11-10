@@ -29,7 +29,8 @@ While holding:
 
 - Turn DATA to change the character with the dot.
 - Push DATA to move to the next character.
-- Press VARIATION for a random seed.
+- Press VARIATION for a random seed (applied at once).
+- A track held for about half a second or more only shows its seed. When you let go the state does not step (a short tap does step it).
 - Touching the seed during a hold does not change the on/off state. The state changes when you release the track button.
 
 Details:
@@ -56,13 +57,16 @@ Example: while recording, hold MUTE, tap kick and hats, let go. You are back in 
 
 In EDIT USER and EDIT EUCLID the function buttons are still step buttons.
 
-**Staged HOLD, MUTE and VARIATION:**
+**Staged MUTE and VARIATION:**
+
+HOLD is not staged: taps in the HOLD menu act at once, as on stock. HOLD is still a momentary menu.
 
 - While you hold the button, track taps do not change anything yet. The track LED flickers.
 - On release, all of those changes land together on the first step of the next bar (or later, see Delay). With the sequencer stopped they apply right away.
 - Tap a track twice to un-stage it. In VARIATION each tap steps off → on → slow blink → fast blink, so four taps bring it back.
 - Pressing another function button while still holding drops what you staged.
-- In a latched menu (short press), taps apply immediately, as on stock. Seed editing is always immediate.
+- In a latched menu (short press), taps apply immediately, as on stock.
+- Seed edits are staged too if you hold VARIATION first and then a track (see Staged seeds).
 
 **Delay:**
 
@@ -71,8 +75,26 @@ In EDIT USER and EDIT EUCLID the function buttons are still step buttons.
 - After the release the number counts down at every bar line, and the changes land when it reaches 0.
 - Hold the button again to see how many bars are left. Turn DATA to move it, up or down. `0` applies on release.
 - Tracks you stage while changes are already waiting join them and keep the count that is left, unless you turn DATA.
-- Each menu has its own count. HOLD, MUTE and VARIATION can wait different numbers of bars.
-- In VARIATION, DATA sets the delay only while no track is held. With a track held it edits the seed, as before.
+- Each menu has its own count. MUTE and VARIATION can wait different numbers of bars.
+- In VARIATION, DATA sets the delay only while no track is held. With a track held it edits the seed.
+
+**Global apply point:**
+
+- Push DATA while a number from `1` to `16` is shown. That many bars from now is the global apply point, and this menu's waiting changes follow it. The display then alternates `stg` and the bars left, with a dot (for example `4.`).
+- In another menu, scroll DATA below `0` to `stg` to follow the same point. That entry only exists while a global point is waiting. Stage as usual, then release.
+- When the point arrives, everything that follows it lands together on the same bar. The point is then gone and `stg` can no longer be selected.
+- Turning DATA on a menu that follows the point only changes that menu: scrolling up from `stg` leaves it with its own count. Pushing DATA again sets a new point for every menu that follows it.
+- Menus that do not follow the point keep their own count.
+- Pushing at `0` does nothing, and a stopped sequencer still applies everything on release.
+
+**Staged seeds:**
+
+- Hold VARIATION first, then hold a track and turn DATA. The seed you edit is staged, while the seed that plays does not change. The display shows the staged seed.
+- A short push of DATA moves the cursor (when you let go of it). Hold the push for about half a second to stage a random seed.
+- The track flickers, and the staged seed lands with the other staged changes at the bar, after the same delay. A seed and a state change on the same track land together.
+- Setting it back to the playing seed drops it. Tapping the flickering track in the VARIATION menu, or a short tap of VARIATION, cancels it.
+- Hold a track first, then turn DATA or press VARIATION for a random seed: that is applied at once, as before, and DATA push moves the cursor at once. Order is the only difference.
+- If you release VARIATION while still holding the track, edits after that are immediate.
 
 **Cancel before the bar:**
 
