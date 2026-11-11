@@ -114,9 +114,10 @@ Record knob movements as steps on the A and B pages of the selected instrument. 
 **With MIDI clock** (Clock, Start and Stop on the FIRE's MIDI input):
 
 - TAKT setup: connect its MIDI OUT to the FIRE's MIDI IN. Press MIDI until `SCL` (send clock) shows and set it to `On` with DATA.
-- Record while the sequencer runs. A knob writes the 16th that is playing as soon as you turn it, and every 16th after that.
-- A new recorded knob's loop is as long as you recorded it, rounded up to a quarter bar, half a bar, or 1, 2, 3 or 4 bars. Up to an eighth over still rounds down (a bar recorded slightly long stays one bar); the extra steps wrap onto the start. Steps you didn't record keep the knob's previous value.
-- Ended with a FIRE tap, the loop is exactly the 16ths from your first turn to the tap (up to 64), not rounded. A 3- or 5-step loop against the 16-step bar gives a polyrhythm.
+- Record while the sequencer runs. Pressing A (or B) marks the start of the recording. A knob writes the 16th that is playing as soon as you turn it, and every 16th after that until you let go.
+- So you can press A at the start of a bar, wait, turn a knob near the end of the bar and let go at the bar line: the knob's loop is a whole bar that plays its old value until the point where you turned it, then the new value, and every bar after that sounds the same.
+- A new recorded knob's loop is as long as the time from your A (or B) press to the end of the recording, rounded up to a quarter bar, half a bar, or 1, 2, 3 or 4 bars. Up to an eighth over still rounds down (a bar recorded slightly long stays one bar); the extra steps wrap onto the start. Steps before your first turn, and any you didn't record, keep the knob's previous value.
+- Ended with a FIRE tap, the loop is exactly the 16ths from your A (or B) press to the tap (up to 64), not rounded. A 3- or 5-step loop against the 16-step bar gives a polyrhythm.
 - Loops stay on the bar grid, so a half-bar and a 2-bar knob stay in line. Bars are counted as 4/4, whatever the TAKT pattern length.
 - Recording again overwrites a recorded knob where you turn it; its length stays.
 - Stop holds the values, and the next Start plays from bar 1. Recording while stopped makes nothing.
@@ -149,7 +150,7 @@ Record knob movements as steps on the A and B pages of the selected instrument. 
 1. Back up your kits (MIDI dump).
 2. Power on holding SETUP + MASTER (firmware update mode, as in the [official manual](https://www.flame-instruments.de/flame2/downloads.html#fire)).
 3. Send [`FlameFireV1_07_custom.syx`](FlameFireV1_07_custom.syx).
-   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 7,533 messages.
+   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 7,534 messages.
 4. Upload the four samples (below).
 
 ### Uploading the samples
@@ -175,7 +176,7 @@ Flash the original `FlameFireV1_07.syx` the same way. Stock ignores samples 5–
 - If you use CV on Level together with a negative velocity Level amount, soft hits play at the absolute value. Velocity-only Level behaves like stock.
 - BASSDRUM and T-BRIDGE, page 2 pot 3: amounts above about +0.5 respond a bit differently from stock.
 - Knob recording: saving a single instrument stores the step that is playing, not the knob value.
-- Knob recording with MIDI clock and the FIRE tap ending are new and not yet tried on the device.
+- Knob recording with MIDI clock (loops counted from the A / B press) and the FIRE tap ending are new and not yet tried on the device.
 - Ring on hihat samples is the least tested part. Please say if its level jumps against your samples.
 - CPU: with every matrix amount set, all CV inputs moving, and the heaviest stock algorithm on every channel, audio uses about half the CPU time (stock's heaviest kit is about 46%). Please say if you hear glitches with a big matrix anyway.
 
