@@ -30,7 +30,10 @@ Both builds are tested on hardware. Feedback and bug reports are welcome (open a
 - **CV matrix:** CV1–CV4 can modulate instruments 1–4 together (CV5–CV8 for instruments 5–8). One CV can drive several instruments, and one instrument can take four CVs plus velocity.
 - **Randomize:** hold A or B and press SETUP to nudge every parameter of that part by up to ±15%. Hold CV and press SETUP to do the same for the CV amounts of one input.
 - **Four extra hihat samples:** upload your own samples to slots smp5–smp8 and pick them with `mtSel`. The factory samples are untouched.
-- **New MODAL and STRING algorithms:** Plaits' modal voice (bars, bells, plates) and string voice (plucks), added after the last stock algorithm.
+- **New MODAL, STRING and SHAKERS algorithms:** Plaits' modal voice (bars, bells, plates), string voice (plucks) and Lyle Mills' shakers (16 shaken, scraped and dripping instruments from Perry Cook's models), added after the last stock algorithm.
+- **Drive types:** a `dType` knob next to `drive` (snare, kick, T-BRIDGE, rimshot, tom, xCLAP): stock, hard clip, wavefolder, asymmetric and two-stage, blended in between and modulatable by velocity and CV.
+- **FM-DRUM drive:** FM-DRUM gets `drive` and `dType`.
+- **Momentary edit:** hold MORPH on page A or B, twist knobs, let go and the whole kit glides back. MASTER latches it (A, B and other instruments), SETUP keeps the tweak, randomize works inside.
 - **Main plus direct outs together:** the M1–M6 settings play an instrument on the main mix and on a direct out at the same time. Several instruments can share one direct out.
 - **Knob recording:** hold A (or B) and turn knobs. With MIDI clock (for example from the TAKT) the movement is recorded in 16ths counted from your A / B press (press at the start of a bar, turn late in the bar, and the loop keeps the old value until then), looping on the bar grid, a quarter bar up to 4 bars, following Start and Stop. Tap FIRE while holding to end a loop at any length, for polyrhythms. Without clock, each trigger records one step, up to 64, and the movement loops on the following triggers. Each knob has its own loop length, and the inverted knob name fills up with the loop position. A recorded knob's value bar shows where to pick it up. Overdub by holding again, and clear by holding PAGE and twisting a knob (or pressing A or B for the whole part). Recordings stay in RAM only.
 
@@ -58,7 +61,7 @@ To go back, flash the original Flame firmware file the same way. The originals a
 
 ## Credits
 
-Plaits and Rings by Emilie Gillet (MIT). Plaits changes by Lyle Mills (MIT).
+Plaits and Rings by Emilie Gillet (MIT). Plaits changes and the shakers engine by Lyle Mills (MIT). The shaker models by Perry Cook and Gary Scavone (STK, MIT).
 
 ## License
 

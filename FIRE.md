@@ -56,22 +56,35 @@ See [Uploading the samples](#uploading-the-samples).
 
 At 0 the hihat is the stock sound. Old kits load with both at 0. Both follow velocity, CV, morph and randomize.
 
-### 6. Two new algorithms, after the last stock one
+### 6. Three new algorithms, after the last stock one
 
 - **MODAL**: Plaits' modal voice. A mallet into a 24-mode resonator (from Rings). Bars, bells, plates, glassy and wooden hits.
 - **STRING**: Plaits' string voice. A noise burst into a plucked string, with dispersion for harder, inharmonic tones.
+- **SHAKERS**: Perry Cook's shaker models (PhISEM, from STK) as in Lyle Mills' Plaits firmware. Many small objects colliding inside a container: 16 instruments.
 
 | Page | Parameters |
 | --- | --- |
-| Page 1 (both) | level, tune, struc, brght, attck, decay, dust (keeps exciting while the gate is held), cutof |
-| Page 2 MODAL | type, reso, posit, malet, drive, bits |
-| Page 2 STRING | type, reso, burst, drive, bits |
+| Page 1 MODAL, STRING | level, tune, struc, brght, attck, decay, dust (keeps exciting while the gate is held), cutof |
+| Page 2 MODAL | type, reso, posit, malet, bits |
+| Page 2 STRING | type, reso, burst, bits |
+| Page 1 SHAKERS | level, tune, inst, objs, shake, decay, vary, cutof |
+| Page 2 SHAKERS | type, reso |
 
-- Both have an attack (0 = off) and a filter (LP/BP/HP/notch, shown like the hihat).
-- Everything except `type` can be modulated.
+- All three have a filter (LP/BP/HP/notch, shown like the hihat). MODAL and STRING also have an attack (0 = off).
+- Everything except `type` (and the SHAKERS `inst`) can be modulated.
 - MIDI note transposes. `tune` at the default plays C4.
-- Randomize leaves level and type alone.
-- Selecting one loads a default sound.
+- Randomize leaves level and type alone (and the SHAKERS `inst`).
+- Selecting one loads a default sound (SHAKERS: maraca).
+
+**SHAKERS:**
+
+- `inst` picks the instrument and the display shows its name: maraca (`marac`), cabasa, sekere, tambourine, sleigh bells, bamboo chimes, angklung, coke can, sticks (`stix`), crunch, big rocks, little rocks, coins in a mug (`mug`), water drops, guiro and wrench.
+- A trigger is one shake. While the gate is held, `shake` keeps shaking: 0 gives single shakes only, higher keeps it rattling. On guiro and wrench it sets the speed of the scrape.
+- `objs`: how many beans, stones or coins. `decay`: how long a shake lasts. Both play the measured instrument in the middle.
+- `tune` transposes all the resonances: a pitch on the tuned ones (angklung is a real scale), a size on the others.
+- `vary`: how much the resonances jump on each collision. In the middle each instrument is as measured, at 0 nothing jumps, above the middle they jump more, also on the instruments that don't jump by themselves.
+- Velocity sets how hard it is shaken.
+- Water drops only come at random while shaking, so a single short trigger is often silent. Hold the gate with some `shake`.
 
 ### 7. CV matrix
 
@@ -145,12 +158,65 @@ Record knob movements as steps on the A and B pages of the selected instrument. 
 - MORPH, velocity, CV, the matrix and randomize all work on top of a recording.
 - Recordings are not saved. Loading a kit, powering off, loading an instrument or changing the algorithm clears them (the last two for that instrument only). Saving a kit stores each recorded knob at its knob value.
 
+### 10. Drive types (dType)
+
+Every instrument with a `drive` knob gets a `dType` knob that picks how the drive distorts:
+
+| Instrument | dType |
+| --- | --- |
+| SNAREDRUM, BASSDRUM | page 2, pot 8 |
+| T-BRIDGE | page 2, pot 5 |
+| RIMSHOT, xCLAP | page 2, pot 3 |
+| TOM | page 2, pot 4 |
+| FM-DRUM | page 2, pot 5 (after its new `drive`, see section 12) |
+
+The display shows the type:
+
+- `stock`: the original soft saturation. At this setting the instrument sounds exactly as before.
+- `hard`: a hard clip. Push `drive` up and a kick turns into the square, buzzing gabber kick, tail included.
+- `fold`: the wave folds back on itself instead of flattening. Metallic, and the harmonics move as the sound decays.
+- `asym`: the negative half saturates at a quarter of the level. A buzzy, fat sound with strong even harmonics.
+- `2stg`: the soft saturation pushed into a hard clip. Thick and loud.
+
+`drive` sets how hard the sound hits the curve. The four new types also push harder the higher `drive` is (`hard` and `asym` up to 8× more than stock, `fold` 5×, `2stg` 4×), so they keep distorting through the tail, where stock has already cleaned up. At `drive` 0 they are as clean as stock.
+
+- **dType blends.** The five types sit at the start, ¼, ½, ¾ and the end of the knob, and every position in between is a mix of the two neighbouring types. So as soon as you turn it away from `stock`, a little of `hard` comes in, and halfway between two types you hear half of each. The display shows the nearest type, so it can say `stock` while you already hear some `hard`. To hear one type alone, set the knob right on it.
+- dType can be modulated by velocity and CV like any other knob (and by the CV matrix). A CV sweeps smoothly from one type to the next.
+- Randomize moves it too. Old kits and instruments load on `stock`.
+- On xCLAP, `drive` (stock) only works through its velocity or CV amount, so dType needs that amount set to be heard.
+- The new types sound denser and louder than `stock` at the same `drive` (a hard-clipped kick at full drive is about 3 times the average level), but never go past full level. Turn the instrument's level down if it stands out too much.
+
+### 11. Momentary edit (hold MORPH)
+
+On page A or B, hold MORPH and turn knobs: the sound changes while you hold it, and when you let go every knob of the kit glides back (in about 30 ms) to where it was when you pressed MORPH. The screen stays on A or B.
+
+- A short tap of MORPH, without turning anything, still opens the MORPH screen.
+- While holding MORPH you can tap A or B to switch pages and tweak both parts; letting go of MORPH brings back both. Just tap them: holding A (or B) on its own page while turning a knob is the knob recording gesture, and it records here too (the recording stays after the edit).
+- **Latch:** while holding MORPH, press MASTER. The MORPH LED stays lit and the edit stays on after you let go of MORPH. Now you can switch between A and B, pick other instruments and turn their knobs.
+  - MASTER while latched brings everything back and stays latched, ready for the next tweak.
+  - Press and release MORPH to bring everything back and leave the latch.
+- **Keep:** press SETUP while holding MORPH (also while latched) to keep the tweaks instead.
+- Randomize (hold A or B, press SETUP) works inside the edit, and is brought back with the rest.
+- Recorded knobs follow the tweak like a turned knob (the whole movement shifts) and come back to their knob value.
+- The whole kit is restored: all 8 instruments, parts A and B. Volume, panning, CV amounts and the output settings are not part of it.
+- Saving a kit while latched saves the sound from before the edit.
+- An instrument whose algorithm you change during the edit is left as it is.
+- In SELECT mode and fire mode, MORPH and MASTER work as before.
+
+### 12. Drive on FM-DRUM
+
+FM-DRUM had no `drive`. It now has `drive` (page 2, pot 4) and `dType` (page 2, pot 5) inside its voice, like the other drums: the distortion follows its envelope and velocity (softer hits distort less), and the level comes after it.
+
+- At `drive` 0 FM-DRUM sounds exactly as before. Old kits load like that.
+- The distortion comes in gradually over the first few percent of `drive`.
+- Both can be modulated by velocity and CV; randomize moves them too.
+
 ## Install
 
 1. Back up your kits (MIDI dump).
 2. Power on holding SETUP + MASTER (firmware update mode, as in the [official manual](https://www.flame-instruments.de/flame2/downloads.html#fire)).
 3. Send [`FlameFireV1_07_custom.syx`](FlameFireV1_07_custom.syx).
-   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 7,534 messages.
+   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 7,750 messages.
 4. Upload the four samples (below).
 
 ### Uploading the samples
@@ -170,7 +236,8 @@ Flash the original `FlameFireV1_07.syx` the same way. Stock ignores samples 5–
 ## Caveats
 
 - Kits saved with this firmware will not load correctly on stock.
-- A kit that uses MODAL or STRING will not load correctly on stock or on the earlier builds. Ring and swing are ignored there.
+- MODAL and STRING no longer have `drive`; `bits` moved into its place. A kit saved with MODAL or STRING on an earlier build reads its old `drive` value as `bits` here: set `bits` again.
+- A kit that uses MODAL or STRING will not load correctly on stock or on the earlier builds. Ring and swing are ignored there. A kit that uses SHAKERS also needs this build. Stock and older builds ignore dType and FM-DRUM's drive and play stock.
 - On stock and older builds, an instrument set to M1–M6 plays on its direct out only, and a shared direct out plays only one of its instruments.
 - Older builds and stock ignore the CV matrix amounts. Saving a kit on an older build drops them.
 - If you use CV on Level together with a negative velocity Level amount, soft hits play at the absolute value. Velocity-only Level behaves like stock.
@@ -178,8 +245,9 @@ Flash the original `FlameFireV1_07.syx` the same way. Stock ignores samples 5–
 - Knob recording: saving a single instrument stores the step that is playing, not the knob value.
 - Knob recording with MIDI clock (loops counted from the A / B press) and the FIRE tap ending are new and not yet tried on the device.
 - Ring on hihat samples is the least tested part. Please say if its level jumps against your samples.
+- SHAKERS, dType, the momentary edit and FM-DRUM's drive (section 12) are new and not yet tried on the device.
 - CPU: with every matrix amount set, all CV inputs moving, and the heaviest stock algorithm on every channel, audio uses about half the CPU time (stock's heaviest kit is about 46%). Please say if you hear glitches with a big matrix anyway.
 
 ## Credits
 
-Plaits and Rings by Emilie Gillet (MIT). Plaits changes by Lyle Mills (MIT).
+Plaits and Rings by Emilie Gillet (MIT). Plaits changes and the shakers engine by Lyle Mills (MIT). The shaker models by Perry Cook and Gary Scavone (STK, MIT).
