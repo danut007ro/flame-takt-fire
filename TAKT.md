@@ -70,7 +70,7 @@ HOLD is not staged: taps in the HOLD menu act at once, as on stock. HOLD is stil
 
 **Delay:**
 
-- While you hold the button, the display shows how many bars to wait. Turn DATA to set it from `0` to `16`. It starts at `1` each time.
+- While you hold the button, the display shows how many bars to wait. Turn DATA to set it from `0` to `16`, or below `0` to wait for a pattern (see below). It starts at `1` each time.
 - `1` is the first bar line after you release, `2` the one after that, and so on. `0` applies the changes right when you release, in the middle of a bar.
 - After the release the number counts down at every bar line, and the changes land when it reaches 0.
 - Hold the button again to see how many bars are left. Turn DATA to move it, up or down. `0` applies on release.
@@ -78,14 +78,23 @@ HOLD is not staged: taps in the HOLD menu act at once, as on stock. HOLD is stil
 - Each menu has its own count. MUTE and VARIATION can wait different numbers of bars.
 - In VARIATION, DATA sets the delay only while no track is held. With a track held it edits the seed.
 
+**Wait for the next pattern (`Ptn`, `Ptn.`):**
+
+Below `0` there are two more values:
+
+- `Ptn`: the changes land when the next pattern starts, even if it is the same one: when the pattern loops, at a chain step, or when a pattern you picked comes in.
+- `Ptn.` (with the dot): the changes land only when a different pattern starts, from a pattern key, a chain step, or loading a scene. While the same pattern keeps looping they wait.
+
+This works with or without a chain. A pattern picked with `PtC` = `FrE` switches mid-bar, and the changes land with it. Holding the button again shows `Ptn` or `Ptn.` while they wait, and DATA can change it.
+
 **Global apply point:**
 
 - Push DATA while a number from `1` to `16` is shown. That many bars from now is the global apply point, and this menu's waiting changes follow it. The display then alternates `stg` and the bars left, with a dot (for example `4.`).
-- In another menu, scroll DATA below `0` to `stg` to follow the same point. That entry only exists while a global point is waiting. Stage as usual, then release.
+- In another menu, scroll DATA down past `0`, `Ptn` and `Ptn.` to `stg` to follow the same point. That entry only exists while a global point is waiting. Stage as usual, then release.
 - When the point arrives, everything that follows it lands together on the same bar. The point is then gone and `stg` can no longer be selected.
 - Turning DATA on a menu that follows the point only changes that menu: scrolling up from `stg` leaves it with its own count. Pushing DATA again sets a new point for every menu that follows it.
 - Menus that do not follow the point keep their own count.
-- Pushing at `0` does nothing, and a stopped sequencer still applies everything on release.
+- Pushing at `0`, `Ptn` or `Ptn.` does nothing, and a stopped sequencer still applies everything on release.
 
 **Staged seeds:**
 
@@ -155,11 +164,41 @@ So you can re-record the timing of a part without losing the dynamics you've sha
 
 The old notes are remembered from the moment you press the track, so the notes the held track erases as it plays still count. If the pattern changes while you hold the track, new hits use the VELOCITY setting.
 
+### 10. Pattern chain
+
+Play the patterns in an order you choose, for example A A B A C, as a song.
+
+**Making a chain:** hold PLAY and press pattern keys in the order they should play. Press a key again to repeat it. The display counts the steps, up to 64 (`FuL` after that). Let go of PLAY to start the chain:
+
+- While playing, the first step comes in the way a pattern key would: at the next bar with `PtC` = `bAr`, at once with `PtC` = `FrE` or while FILL is held. It plays to the end of the pattern (only the rest of it, if it came in mid-pattern). After that, each step plays a full pattern, and the next one starts when the pattern loops. After the last step the chain starts over.
+- While stopped, the first pattern is selected and the chain starts with PLAY.
+
+The chain is saved with the scene (save the scene to keep it).
+
+**PLAY:**
+
+- A short tap starts and stops, as before, but now when you let go of the button, not when you press it.
+- Hold PLAY for about half a second or more without pressing anything else, and letting go does nothing.
+- While a chain is on, holding PLAY shows where you are: the step that is playing, a short pause, the number of steps, a pause, and again (for example `002`, `005`, `002`...). It starts after a moment, so a quick tap doesn't change the display. Pressing a pattern key switches to counting the new chain.
+
+**Leaving and resuming:**
+
+- Press a pattern key while playing to leave the chain. That pattern comes in as usual (at the next bar, or at once with `PtC` = `FrE`), and stays.
+- Hold PLAY and push DATA to start the stored chain again from step 1. While playing, step 1 comes in like a pattern key: at the next bar with `bAr`, at once with `FrE` or while FILL is held.
+- Pattern keys while stopped (to edit a pattern), and CLEAR / COPY / SWAP with the pattern keys, keep the chain.
+- To replace the chain, make a new one. A chain of one step just plays that pattern.
+
+**Where it starts:**
+
+- Start, and a reset at the RESET input, go back to step 1.
+- Loading a scene that has a chain starts at its step 1. Loading one without a chain plays as before.
+- FILL doesn't pause the chain: it keeps counting while you hold FILL, and after you let go you are in whatever step is playing.
+
 ## Install
 
 1. Back up your scenes first (SysEx dump).
 2. Power on holding MOD-CV + TRACK 8. The display shows `UPd`.
-3. Send [`FlameTaktV1_7_2_custom.syx`](FlameTaktV1_7_2_custom.syx).
+3. Send [`FlameTaktV1_7_2_custom.syx`](FlameTaktV1_7_2_custom.syx) with a gap of 20 ms between messages. The file is 2,658 messages.
 
 ### Going back to stock
 
@@ -175,3 +214,5 @@ Send the original `FlameTaktV1_7_2.syx` the same way. The original file and the 
 - While a function menu is showing you are not recording, same as stock. Recording continues when you are back in REC.
 - Going back to VELO/MOD, QUANTIZE, SHUFFLE, TRACKSHIFT or LASTSTEP after a momentary hold may reset which track is selected there.
 - A short tap of a function button cancels that menu's waiting changes. Hold the button to look at them.
+- PLAY starts and stops when you let go of it, so a start by hand is a moment later than on stock. Starting from a clock, MIDI or the RESET input is not affected.
+- Stock ignores the chain: a scene saved here plays its current pattern on stock.
