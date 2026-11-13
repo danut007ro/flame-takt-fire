@@ -234,17 +234,32 @@ With `offs`, a knob never has to find its value. Whenever a page opens (A, B, CV
 
 **Clutch: hold PANNING.** While PANNING is held, turning knobs changes nothing (the PANNING LED stays lit). Let go and the knobs work from their new positions. Use it when a knob runs out of travel: hold PANNING, turn the knob back, let go and keep turning.
 
+While PANNING is held you can also line knobs up with their values:
+
+- Each value bar shows where the knob physically is, as a 2-pixel gap in the line. The dot is the value. Move the knob until the gap reaches the dot.
+- When a knob reaches its value, its bar turns 2 pixels high for 400 ms (the pick marker, section 14). Knobs that are already lined up when you press PANNING don't flash.
+- Let go of PANNING: a knob that is lined up takes exactly its position as the value. From then on it works like a normal knob, and its ends reach 0 and the maximum. The value moves by the small difference (at most about 1.5%) at that moment. Knobs that aren't lined up keep working relative to their value.
+
 - A short tap of PANNING, without turning a knob, still opens the PANNING screen (when you let go).
 - In `pick` and `jump` mode, PANNING works as before.
 - Knob recording records the values that come out; knob moves while PANNING is held aren't recorded.
 - The SETUP screen itself uses its knobs as before.
+
+### 14. Pick marker
+
+In `pick` mode each value bar also shows where the knob physically is, as a 2-pixel gap in the line. The dot is the value: turn the knob towards the dot. When the knob reaches its value and takes over, its value bar turns 2 pixels high (as high as the dot) for 400 ms, and from then on the knob is on the value, so the gap disappears into the dot.
+
+- Only knobs you actually move onto their value show it. Knobs that already sit on their value when a page opens don't, so a page flip doesn't flash every bar at once.
+- It works on every page with value bars: A, B (both pages), CV, MORPH, VOLUME and PANNING. MASTER shows numbers, not bars, so there's nothing to mark there.
+- Keep turning: the bar stays 2 pixels high until the 400 ms are up.
+- In `jump` mode there's no pickup, so no marker. In `offs` mode the marker shows while PANNING is held (section 13).
 
 ## Install
 
 1. Back up your kits (MIDI dump).
 2. Power on holding SETUP + MASTER (firmware update mode, as in the [official manual](https://www.flame-instruments.de/flame2/downloads.html#fire)).
 3. Send [`FlameFireV1_07_custom.syx`](FlameFireV1_07_custom.syx).
-   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 7,776 messages.
+   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 7,810 messages.
 4. Upload the four samples (below).
 
 ### Uploading the samples
