@@ -221,12 +221,30 @@ FM-DRUM had no `drive`. It now has `drive` (page 2, pot 4) and `dType` (page 2, 
 - The distortion comes in gradually over the first few percent of `drive`.
 - Both can be modulated by velocity and CV; randomize moves them too.
 
+### 13. Offset knob mode
+
+A third knob mode next to `pick` and `jump`: on the SETUP screen (page 1, pot 5) the knob mode now goes `pick`, `jump`, `offs`.
+
+With `offs`, a knob never has to find its value. Whenever a page opens (A, B, CV, MORPH, VOLUME, PANNING, MASTER), you pick another instrument, load a kit, or the momentary edit, randomize or a knob recording take ends, every knob starts from where it is and works relative to the value:
+
+- Turning right raises the value from where it was, turning left lowers it, by as much as you turn. Nothing jumps, and there's no dead travel.
+- The screen shows the real value, as always.
+- At 0 or the maximum the value stops, and the knob's starting point follows it. Turning back changes the value at once.
+- Small knob jitter is ignored, so a value doesn't creep while you don't touch the knob.
+
+**Clutch: hold PANNING.** While PANNING is held, turning knobs changes nothing (the PANNING LED stays lit). Let go and the knobs work from their new positions. Use it when a knob runs out of travel: hold PANNING, turn the knob back, let go and keep turning.
+
+- A short tap of PANNING, without turning a knob, still opens the PANNING screen (when you let go).
+- In `pick` and `jump` mode, PANNING works as before.
+- Knob recording records the values that come out; knob moves while PANNING is held aren't recorded.
+- The SETUP screen itself uses its knobs as before.
+
 ## Install
 
 1. Back up your kits (MIDI dump).
 2. Power on holding SETUP + MASTER (firmware update mode, as in the [official manual](https://www.flame-instruments.de/flame2/downloads.html#fire)).
 3. Send [`FlameFireV1_07_custom.syx`](FlameFireV1_07_custom.syx).
-   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 7,754 messages.
+   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 7,776 messages.
 4. Upload the four samples (below).
 
 ### Uploading the samples
@@ -246,6 +264,7 @@ Flash the original `FlameFireV1_07.syx` the same way. Stock ignores samples 5–
 ## Caveats
 
 - Kits saved with this firmware will not load correctly on stock.
+- On stock or older builds, the knob mode `offs` loads as `pick`.
 - MODAL and STRING no longer have `drive`; `bits` moved into its place. A kit saved with MODAL or STRING on an earlier build reads its old `drive` value as `bits` here: set `bits` again.
 - A kit that uses MODAL or STRING will not load correctly on stock or on the earlier builds. Ring and swing are ignored there. A kit that uses SHAKERS also needs this build. Stock and older builds ignore dType and FM-DRUM's drive and play stock.
 - On stock and older builds, an instrument set to M1–M6 plays on its direct out only, and a shared direct out plays only one of its instruments.
