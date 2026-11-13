@@ -143,6 +143,18 @@ On stock, a track on HOLD can't be recorded but you can still play over it live.
 
 GATETIME isn't affected: it only acts in SHOTS note recording, which already lets you hear it on HOLD.
 
+### 9. VELO/MOD `uEL.` and `rEC.`: keep the velocity of recorded notes
+
+VELO/MOD has two more values, shown with a dot: the order with DATA is `uEL`, `uEL.`, `rEC`, `rEC.`, `001`... The CV output works exactly as `uEL` / `rEC`. The difference is in REC NOTE recording (single notes and SHOTS, with the track buttons or the sensors):
+
+- A hit that lands on or near a note that's already recorded keeps that note's velocity instead of taking the VELOCITY setting. "Near" means within half a step of the grid you record with (QUANTIZE, or the BEAT control). You hear that velocity while you record, and it's what gets written.
+- A hit on an empty spot uses the VELOCITY setting, as on stock.
+- MIDI notes keep the velocity they arrive with, as on stock.
+
+So you can re-record the timing of a part without losing the dynamics you've shaped. `rEC.` is the useful one with MOD-CV recording: the VELOCITY control drives the modulation, and re-recorded notes keep their velocities. REC velocity and REC MOD-CV work as before on dot tracks.
+
+The old notes are remembered from the moment you press the track, so the notes the held track erases as it plays still count. If the pattern changes while you hold the track, new hits use the VELOCITY setting.
+
 ## Install
 
 1. Back up your scenes first (SysEx dump).
@@ -156,8 +168,8 @@ Send the original `FlameTaktV1_7_2.syx` the same way. The original file and the 
 ## Caveats
 
 - Scenes saved here load on stock. Seeded tracks play there with VARIATION off. An LFO set to `r-4`, `r-8` or `r16` shows a garbage name on stock and sits at about 0 V.
-- Stock ignores the per-track shuffle, so scenes saved here play with the global shuffle only on stock.
-- COPY and SWAP track do not copy the seed or the track's shuffle. Stock does not copy the VARIATION state either.
+- Stock ignores the per-track shuffle, so scenes saved here play with the global shuffle only on stock. It also shows `uEL.` / `rEC.` as `uEL` / `rEC`.
+- COPY and SWAP track do not copy the seed, the track's shuffle or the VELO/MOD dot. Stock does not copy the VARIATION state either.
 - On a fast-blink track, repeated SHOTS hits at the same position (for example with the sequencer stopped) still vary, but they follow the same sequence every time.
 - "Stopped" is no clock for 200 ms, so below about 30 BPM staged changes apply when you release the button.
 - While a function menu is showing you are not recording, same as stock. Recording continues when you are back in REC.

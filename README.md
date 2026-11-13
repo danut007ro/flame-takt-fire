@@ -48,6 +48,7 @@ Both builds are tested on hardware. Feedback and bug reports are welcome (open a
 - **Recording on muted tracks:** record into a muted track while it stays silent, then unmute it on the next bar. HOLD still blocks recording, as on stock.
 - **REC velocity LED fix:** entering velocity recording no longer leaves the HOLD, MUTE or VARIATION LEDs lit on muted tracks.
 - **Auto BAR copy keeps the modulation:** extending the pattern with BAR now copies the MOD-CV values along with the notes.
+- **VELO/MOD `uEL.` / `rEC.`:** re-record a part's timing while notes landing on old ones keep their velocity; only new notes take the VELOCITY setting.
 - **HOLD lets you hear velocity and MOD-CV recording:** on a track on HOLD, REC velocity and REC MOD-CV now play what you set without recording it, as REC NOTE already did.
 
 ## Installing and going back to stock
