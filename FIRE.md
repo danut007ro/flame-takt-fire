@@ -190,18 +190,28 @@ The display shows the type:
 
 On page A or B, hold MORPH and turn knobs: the sound changes while you hold it, and when you let go every knob of the kit glides back (in about 30 ms) to where it was when you pressed MORPH. The screen stays on A or B.
 
-- A short tap of MORPH, without turning anything, still opens the MORPH screen.
+| Gesture | Not latched | Latched |
+| --- | --- | --- |
+| Hold MORPH, turn knobs, let go | Temporary tweak, glides back | — |
+| Press MORPH | A short tap opens the MORPH screen (on release) | Leave the latch at once: everything goes back to where it was before you latched |
+| MORPH held, then MASTER | Latch | — |
+| MORPH held, then VOLUME | Keep the tweaks | — |
+| VOLUME held, then MORPH | — | Keep the tweaks, still latched: the current sound becomes the new starting point |
+| MASTER held, then MORPH | — | Open the MORPH screen, still latched |
+| VOLUME, MASTER on their own | As usual | As usual, but the screen opens when you let go |
+| SETUP, A, B on their own | As usual | As usual |
+
+- The MORPH LED is lit while you hold MORPH, and while the edit is latched.
+- Latched, you can switch between A and B, pick other instruments, open other screens and turn knobs. Leaving with MORPH works from any screen.
+- When you latch, the tweaks you made before pressing MASTER stay; the latch remembers the sound from before you pressed MORPH. To keep the tweaks and leave, do VOLUME + MORPH, then MORPH.
+- While latched the order matters: hold VOLUME or MASTER first. A MORPH press on its own always leaves the latch, so a stray press drops the tweaks.
 - While holding MORPH you can tap A or B to switch pages and tweak both parts; letting go of MORPH brings back both. Just tap them: holding A (or B) on its own page while turning a knob is the knob recording gesture, and it records here too (the recording stays after the edit).
-- **Latch:** while holding MORPH, press MASTER. The MORPH LED stays lit and the edit stays on after you let go of MORPH. Now you can switch between A and B, pick other instruments and turn their knobs.
-  - MASTER while latched brings everything back and stays latched, ready for the next tweak.
-  - Press and release MORPH to bring everything back and leave the latch.
-- **Keep:** press SETUP while holding MORPH (also while latched) to keep the tweaks instead.
-- Randomize (hold A or B, press SETUP) works inside the edit, and is brought back with the rest.
+- Randomize (hold A or B, press SETUP) works inside the edit, while holding MORPH or latched, and is brought back with the rest.
 - Recorded knobs follow the tweak like a turned knob (the whole movement shifts) and come back to their knob value.
 - The whole kit is restored: all 8 instruments, parts A and B. Volume, panning, CV amounts and the output settings are not part of it.
-- Saving a kit while latched saves the sound from before the edit.
+- Saving a kit while latched saves the sound from before the edit (or from the last MORPH + VOLUME).
 - An instrument whose algorithm you change during the edit is left as it is.
-- In SELECT mode and fire mode, MORPH and MASTER work as before.
+- In SELECT mode and fire mode, MORPH works as before.
 
 ### 12. Drive on FM-DRUM
 
@@ -216,7 +226,7 @@ FM-DRUM had no `drive`. It now has `drive` (page 2, pot 4) and `dType` (page 2, 
 1. Back up your kits (MIDI dump).
 2. Power on holding SETUP + MASTER (firmware update mode, as in the [official manual](https://www.flame-instruments.de/flame2/downloads.html#fire)).
 3. Send [`FlameFireV1_07_custom.syx`](FlameFireV1_07_custom.syx).
-   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 7,750 messages.
+   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 7,754 messages.
 4. Upload the four samples (below).
 
 ### Uploading the samples
