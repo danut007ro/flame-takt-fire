@@ -253,10 +253,7 @@ Flash the original `FlameFireV1_07.syx` the same way. Stock ignores samples 5–
 - If you use CV on Level together with a negative velocity Level amount, soft hits play at the absolute value. Velocity-only Level behaves like stock.
 - BASSDRUM and T-BRIDGE, page 2 pot 3: amounts above about +0.5 respond a bit differently from stock.
 - Knob recording: saving a single instrument stores the step that is playing, not the knob value.
-- Knob recording with MIDI clock (loops counted from the A / B press) and the FIRE tap ending are new and not yet tried on the device.
-- Ring on hihat samples is the least tested part. Please say if its level jumps against your samples.
-- SHAKERS, dType, the momentary edit and FM-DRUM's drive (section 12) are new and not yet tried on the device.
-- CPU: with every matrix amount set, all CV inputs moving, and the heaviest stock algorithm on every channel, audio uses about half the CPU time (stock's heaviest kit is about 46%). Please say if you hear glitches with a big matrix anyway.
+- CPU: with every matrix amount set, all CV inputs moving, and the heaviest stock algorithm on every channel, audio uses about half the CPU time (stock's heaviest kit is about 46%).
 
 ## Credits
 
