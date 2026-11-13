@@ -134,6 +134,15 @@ A muted track can now be recorded, with SHOTS or single notes. Its pattern stays
 
 This is a stock bug. With `bCo` on, extending the pattern with BAR copied the notes, velocities and gate times but not the MOD-CV values. They are copied now. Which bars are copied and when is unchanged, and tracks on HOLD are still skipped.
 
+### 8. HOLD lets you hear velocity and MOD-CV recording
+
+On stock, a track on HOLD can't be recorded but you can still play over it live. That worked in REC NOTE but not in the other two recording modes. Now it works in all three:
+
+- **REC velocity** (NOTE + MOD-CV): hold a HOLD track and its notes play at the VELOCITY setting, so you can try a new dynamic before you take HOLD off. Its recorded velocities don't change. Before, you heard the old velocities.
+- **REC MOD-CV**: hold a HOLD track (VELO/MOD set to REC) and its CV output follows the VELOCITY control the same way it would while recording. Nothing is recorded, and the recorded modulation plays again when you let go. Before, the recorded modulation kept playing.
+
+GATETIME isn't affected: it only acts in SHOTS note recording, which already lets you hear it on HOLD.
+
 ## Install
 
 1. Back up your scenes first (SysEx dump).
