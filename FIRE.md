@@ -153,7 +153,7 @@ Record knob movements as steps on the A and B pages of the selected instrument. 
 - Turning a `lock` / `s&h` knob later moves its value bar but not the sound: the next hit plays with everything shifted by your turn (its recorded values and, in `lock`, the knob value on empty steps). Nothing changes between hits. While you hold A to record, you hear the knob as you turn it.
 - A recording keeps the mode it was made with. Recording on hits over a `(rec)` knob writes only the hit steps and it stays smooth; recording `(rec)` over a `lock` knob fills its steps and it still plays only at hits.
 - The mode of a new recording is the one shown when you let go; push DATA before you turn knobs.
-- The name of a `lock` / `s&h` knob flashes fully inverted for a moment on each recorded hit.
+- The name of a recorded knob always shows the playback position, also on `lock` / `s&h` hits.
 - Copy, clearing (PAGE held), randomize and the momentary edit work as for `(rec)`.
 
 **Recording MORPH, PAN and VOLUME.** On the MORPH, PANNING and VOLUME (page 1) screens, hold A and turn knobs: each knob is one instrument, so you record the morph (the A↔B mix of the whole sound), the pan or the volume of any of the 8 instruments at once. The header shows `MORPH (rec)` and so on.
@@ -161,7 +161,7 @@ Record knob movements as steps on the A and B pages of the selected instrument. 
 - Everything above works the same: DATA cycles `(rec)`, `(rec lock)` and `(rec s&h)` (each screen remembers its last mode), with clock the 16ths, without clock the hits; each knob steps with its own instrument's hits. FIRE ends a loop.
 - Letting go of A keeps you on the screen. A short tap of A without turning anything still goes to page A, and A + B (copy) or A + SETUP (randomize) still work as long as no knob was turned.
 - Ideas: morph `(rec lock)` for a different A↔B blend on chosen hits, pan `(rec s&h)` for hats that jump around the stereo field, volume `(rec)` for swells and fades.
-- A recorded knob's value bar and pickup are at its knob; its name fills with the position (and flashes on `lock` / `s&h` hits). Turning it later shifts the movement (`(rec)`: heard at once; `lock` / `s&h`: at the next hit).
+- A recorded knob's value bar and pickup are at its knob; its name fills with the position. Turning it later shifts the movement (`(rec)`: heard at once; `lock` / `s&h`: at the next hit).
 - **Clearing:** hold PAGE and turn a recorded knob (on PANNING an unrecorded knob still goes to the centre, section 19); PAGE + A clears every recording of that screen. On VOLUME, a PAGE tap now flips the page when you let go.
 - Volume and pan recordings move the main mix only (as the knobs do). The momentary edit doesn't include them. A kit save stores the knob values.
 
@@ -394,7 +394,7 @@ On the CV menu (all its pages: the velocity and CV amounts, the matrix views and
 1. Back up your kits (MIDI dump).
 2. Power on holding SETUP + MASTER (firmware update mode, as in the [official manual](https://www.flame-instruments.de/flame2/downloads.html#fire)).
 3. Send [`FlameFireV1_07_custom.syx`](FlameFireV1_07_custom.syx).
-   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 6,678 messages.
+   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 6,682 messages.
 4. Upload the four samples (below).
 
 ### Uploading the samples
