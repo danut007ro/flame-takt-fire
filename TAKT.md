@@ -121,9 +121,11 @@ After `rnd` in WAVE there are three new waves: `r-4`, `r-8` and `r16`.
 - Patterns are saved with the scene.
 - Old scenes have no seed stored, so all four LFOs start on the same pattern until you press DATA on each one.
 
-### 4. REC velocity LED fix
+### 4. REC fixes: velocity LEDs, NOTE / MOD-CV hold
 
-This is a stock bug. Entering velocity recording (NOTE + MOD-CV, either order) from another menu left the HOLD / MUTE / VARIATION LEDs lit, including forever on muted tracks. They now turn off, as they do for REC NOTE and REC MOD-CV, and then only flash on triggers.
+A stock bug: entering velocity recording (NOTE + MOD-CV, either order) from another menu left the HOLD / MUTE / VARIATION LEDs lit, including forever on muted tracks. They now turn off, as they do for REC NOTE and REC MOD-CV, and then only flash on triggers.
+
+Also a stock bug: holding NOTE or MOD-CV and pressing a track to clear it while in another menu (MUTE, for example) left that menu's LED lit but its tracks dead, so you had to press MUTE again before you could mute or unmute. When you let go of NOTE or MOD-CV now, the menu works right away.
 
 ### 5. Per-track SHUFFLE
 
@@ -168,7 +170,7 @@ The old notes are remembered from the moment you press the track, so the notes t
 
 Play the patterns in an order you choose, for example A A B A C, as a song.
 
-**Making a chain:** hold PLAY and press pattern keys in the order they should play. Press a key again to repeat it. The display counts the steps, up to 64 (`FuL` after that). Let go of PLAY to start the chain:
+**Making a chain:** hold PLAY and press pattern keys in the order they should play. Press a key again to repeat it. Press FILL to add a FILL step (see [Four FILL patterns](#11-four-fill-patterns)). The display counts the steps, up to 64 (`FuL` after that). Let go of PLAY to start the chain:
 
 - While playing, the first step comes in the way a pattern key would: at the next bar with `PtC` = `bAr`, at once with `PtC` = `FrE` or while FILL is held. It plays to the end of the pattern (only the rest of it, if it came in mid-pattern). After that, each step plays a full pattern, and the next one starts when the pattern loops. After the last step the chain starts over.
 - While stopped, the first pattern is selected and the chain starts with PLAY.
@@ -194,11 +196,63 @@ The chain is saved with the scene (save the scene to keep it).
 - Loading a scene that has a chain starts at its step 1. Loading one without a chain plays as before.
 - FILL doesn't pause the chain: it keeps counting while you hold FILL, and after you let go you are in whatever step is playing.
 
+### 11. Four FILL patterns
+
+Each scene has four fills instead of one.
+
+**Choosing a fill:**
+
+- Hold FILL and turn DATA. The display shows `F-1` to `F-4`, blinking while the fill you chose isn't the one playing. What you hear doesn't change while you hold FILL; when you let go, the fill you chose is ready for the next press. To switch in the middle of a fill, let go and press FILL again right away: fills play at the running position, so the new one comes in at the same step.
+- Hold PLAY and turn DATA to choose without hearing anything. The display shows `F-1` to `F-4` for a second. Letting go of PLAY then doesn't start or stop.
+- While PLAY or FILL is held, DATA chooses the fill and doesn't change the value of the menu you are in.
+
+**Playing:** FILL plays the chosen fill as before: hold it, the pattern keeps going underneath, and pattern keys switch at once while it's held. Recording, CLEAR and COPY into FILL work on the chosen fill.
+
+**In a chain:** while holding PLAY to make a chain, press FILL to add a FILL step. It uses the fill you chose last (turn DATA first, still holding PLAY, to pick another one), and the display counts it like a pattern step. In the chain, a FILL step plays its fill for one full pattern with the FILL LED lit, then the chain goes on. A staged change set to `Ptn.` lands on it, and a pattern key leaves the chain as usual.
+
+The chosen fill and all four fills are saved with the scene and sent in the SysEx dump. Scenes and dumps from before have fills 2–4 empty.
+
+### 12. Scales on the CV outputs
+
+A track's CV output can play notes in a key (1 V/octave) instead of a smooth voltage: the recorded modulation, a preset sequence or the velocity, whatever VELO/MOD sends. Patch the CV output into a VCO's pitch input. Each pattern has its own key, so a pattern chain becomes a chord progression.
+
+**The scale page:** press VELO/MOD, then press it again (a third press goes back to the normal VELO/MOD page). On it, the track buttons show a track's settings and the pattern keys show a pattern's settings. Turn DATA to change the value on the display; push DATA for the next setting of the same track or pattern:
+
+| Setting | Belongs to | Display | Values |
+| --- | --- | --- | --- |
+| Transpose | the pattern | `t 0` ... | moves every note of the pattern by -24 to +24 semitones: `t 5` is +5, `t12` is +12, `t-5` is -5, `-12` is -12 |
+| Scale | the pattern | `CHr` ... | `CHr` chromatic, `ion` major, `AEo` natural minor, `Pn5` major pentatonic, `Pn5.` minor pentatonic, `dor` dorian, `PHr` phrygian, `Lyd` lydian, `nni` mixolydian, `HAr` harmonic minor, `uHt` whole tone. B, C and D also have `=A` (below the scales) |
+| Root | the pattern | `r C` ... `r b` | the key's root, C to B, a dot means sharp (`r F.` = F#) |
+| Range | the selected track | `oFF`, `1-1` ... | `oFF` (the track's CV output is as stock), or which octaves it plays in: `1-1`, `1-2`, `1-3`, `1-4`, `2-2`, `2-3`, `2-4`, `3-3`, `3-4`, `4-4` |
+| Mode | the selected track | `FrE` / `5-H` | `FrE` follows the value all the time; `5-H` (sample & hold) takes the value when the track plays a note and keeps that note until its next one |
+
+- **A track:** press a track button. The display shows its Range, and a push toggles Range / Mode. Only that track's LED is lit, as on the VELO/MOD page (it's the same selected track). Tracks on `oFF` (the default) are not touched, so drum tracks keep their velocity CV.
+- **A pattern:** press its pattern key. The display shows its Transpose, and pushes go on to its Scale, its Root and back. Its LED blinks fast and the track's LED stays lit. Nothing switches: the playing pattern goes on, so you can set B's key while A plays. Press the same pattern key again (and let go without turning DATA), or any track button, to go back to the track.
+- **Changes play at once, or on release:** after a tap on a pattern key, turning DATA changes that pattern's key right away. If you keep the pattern key held while you turn DATA (Transpose, Scale or Root), the display shows the new setting but the pattern keeps playing the old one until you let go. Use it to set up a key change or a transposition on the pattern that's playing and drop it in on a beat. Either way, a note that is already sounding is never retuned (see below).
+- **On this page the pattern keys don't switch patterns.** Leave the page (VELO/MOD again, or any menu) to switch. PLAY + pattern keys (chain entry) and CLEAR / COPY / SWAP work as usual.
+- **Remembered:** the page reopens on what you had selected last (the track, or a pattern), and on the setting you used last on that side (Range or Mode, Scale or Root).
+- **`=A`:** B, C and D start on `=A`: they play in A's key and A's Transpose, and changing A changes them too. Change a pattern's Transpose, Scale or Root to give it its own key (the other two start as A's); turn its Scale down to `=A` to follow A again. A always has its own key.
+- **Transpose:** every note of the pattern moves up or down by that many semitones after it's put in the key, like transposing on a keyboard: C major with `t 2` plays D major a tone higher. Root is different: it picks the key's notes but keeps the octaves where they are. A note moved past the top or the bottom of the 4 octaves comes back in an octave lower or higher.
+- **When a change is heard:** a note keeps the key and range it started with until the track's next note. That goes for a pattern change (at the bar, `PtC` = `FrE`, chain steps) and for turning Transpose, Scale, Root or Range (and switching a track between `oFF` and a range): the change comes in on the track's next note, so the first note of a new pattern is already in its key and a long note or a `5-H` note is never retuned while it sounds. A track with no note sounding at a bar line takes the change there, so tracks without notes (pure modulation) follow within a bar. Mode (`FrE` / `5-H`) applies at once.
+- **FILL** plays in the key of the pattern it interrupts.
+- **COPY pattern** copies the key and Transpose with the notes (as the target's own key, not `=A`); **SWAP pattern** swaps them. Copying into or from FILL leaves the keys alone.
+
+**How it plays:**
+
+- The output covers four octaves, 0.1 V to 4.1 V: octave 1 starts at 0.1 V, octave 2 at 1.1 V, and so on. The track's value (0–127) is spread over the octaves of its range and goes to the nearest note of the key. A narrower range gives the VELOCITY control more travel per note when you record.
+- The root picks the notes of the key and doesn't move the octaves: E major in `2-3` uses E F# G# A B C# D# between 1.1 V and 3.1 V, so its lowest note is the C# of octave 2. Tune each VCO so that 0.1 V is a C, and every pattern's root is right.
+- `5-H` makes moving modulation (recorded movement, LFO-like presets) step once per note. A track with no notes never changes its pitch in `5-H`, so leave pure modulation tracks on `FrE`.
+- MIDI isn't affected: tracks still send their own note number from the MIDI menu.
+- Keys and track settings are saved with the scene and in the SysEx dump. Old scenes start with every track on `oFF` and play as before (A is `CHr` root C, B–D `=A`).
+- Holding a function button on the scale page (performance mode) brings you back to the same page and setting.
+
+**Example:** open the scale page, press pattern A, push to Scale and set `AEo`, push, `r A` (A minor, for every pattern). Press the bass track and set `1-1`; press the lead and set `2-3`, push, `5-H`. Press pattern B and turn to `r d` (it's still on Root): B is D minor. Chain A A B A and the melody and bass move to D minor on every B. Or leave B on `=A`, push to Transpose and set `t 5`: B plays the same A-minor lines a fourth up.
+
 ## Install
 
 1. Back up your scenes first (SysEx dump).
 2. Power on holding MOD-CV + TRACK 8. The display shows `UPd`.
-3. Send [`FlameTaktV1_7_2_custom.syx`](FlameTaktV1_7_2_custom.syx) with a gap of 20 ms between messages. The file is 2,658 messages.
+3. Send [`FlameTaktV1_7_2_custom.syx`](FlameTaktV1_7_2_custom.syx) with a gap of 20 ms between messages. The file is 2,837 messages.
 
 ### Going back to stock
 
@@ -207,12 +261,17 @@ Send the original `FlameTaktV1_7_2.syx` the same way. The original file and the 
 ## Caveats
 
 - Scenes saved here load on stock. Seeded tracks play there with VARIATION off. An LFO set to `r-4`, `r-8` or `r16` shows a garbage name on stock and sits at about 0 V.
-- Stock ignores the per-track shuffle, so scenes saved here play with the global shuffle only on stock. It also shows `uEL.` / `rEC.` as `uEL` / `rEC`.
-- COPY and SWAP track do not copy the seed, the track's shuffle or the VELO/MOD dot. Stock does not copy the VARIATION state either.
+- Stock ignores the per-track shuffle, so scenes saved here play with the global shuffle only on stock. It also shows `uEL.` / `rEC.` as `uEL` / `rEC`, and ignores the scales (the CV outputs play the plain values).
+- COPY and SWAP track do not copy the seed, the track's shuffle, the VELO/MOD dot or the track's Range / Mode. Stock does not copy the VARIATION state either.
 - On a fast-blink track, repeated SHOTS hits at the same position (for example with the sequencer stopped) still vary, but they follow the same sequence every time.
 - "Stopped" is no clock for 200 ms, so below about 30 BPM staged changes apply when you release the button.
 - While a function menu is showing you are not recording, same as stock. Recording continues when you are back in REC.
 - Going back to VELO/MOD, QUANTIZE, SHUFFLE, TRACKSHIFT or LASTSTEP after a momentary hold may reset which track is selected there.
+- The scales are tuned to the CV outputs as measured on one TAKT (all eight jacks within about 5 cents). The top notes of a range can drift by a few cents on another unit; check the octaves with a tuner if you play long melodies across 4 octaves.
 - A short tap of a function button cancels that menu's waiting changes. Hold the button to look at them.
 - PLAY starts and stops when you let go of it, so a start by hand is a moment later than on stock. Starting from a clock, MIDI or the RESET input is not affected.
 - Stock ignores the chain: a scene saved here plays its current pattern on stock.
+- Saving a scene takes about 3 seconds longer, because fills 2–4 are written after the scene. Wait about 5 seconds after saving before you switch off; if you switch off sooner, that scene's other fills can come back empty (the scene itself is saved). Scene loads, saves and settings changes during those seconds are ignored.
+- Stock loads a scene saved here with the chosen fill as its FILL; the other three are not used there. A SysEx dump made here also loads on stock that way.
+- The SysEx scene dump takes about 70 seconds instead of 40.
+- During a FILL step of a chain, CLEAR and recording go to the fill, as they do while FILL is held.

@@ -56,23 +56,24 @@ See [Uploading the samples](#uploading-the-samples).
 
 At 0 the hihat is the stock sound. Old kits load with both at 0. Both follow velocity, CV, morph and randomize.
 
-### 6. Three new algorithms, after the last stock one
+**Mute groups:** the HIHAT's mute knob (page 2, `mute`) is now a group: `noMtG` or `MtG1`–`MtG8`, shown on the display. A hit on any HIHAT or CYMBAL in a group cuts every other HIHAT and CYMBAL in that group (on stock it meant "muted by channel N": kits from before need it set again).
+
+### 6. Two new algorithms, after the last stock one
 
 - **MODAL**: Plaits' modal voice. A mallet into a 24-mode resonator (from Rings). Bars, bells, plates, glassy and wooden hits.
-- **STRING**: Plaits' string voice. A noise burst into a plucked string, with dispersion for harder, inharmonic tones.
 - **SHAKERS**: Perry Cook's shaker models (PhISEM, from STK) as in Lyle Mills' Plaits firmware. Many small objects colliding inside a container: 16 instruments.
 
 | Page | Parameters |
 | --- | --- |
-| Page 1 MODAL, STRING | level, tune, struc, brght, attck, decay, dust (keeps exciting while the gate is held), cutof |
-| Page 2 MODAL | type, reso, posit, malet, bits |
-| Page 2 STRING | type, reso, burst, bits |
+| Page 1 MODAL | level, tune, struc, brght, attck, decay, dust (keeps exciting while the gate is held), cutof |
+| Page 2 MODAL | type, reso, posit, malet, bits, scale |
 | Page 1 SHAKERS | level, tune, inst, objs, shake, decay, vary, cutof |
 | Page 2 SHAKERS | type, reso |
 
-- All three have a filter (LP/BP/HP/notch, shown like the hihat). MODAL and STRING also have an attack (0 = off).
+- Both have a filter (LP/BP/HP/notch, shown like the hihat). MODAL also has an attack (0 = off).
 - Everything except `type` (and the SHAKERS `inst`) can be modulated.
 - MIDI note transposes. `tune` at the default plays C4.
+- MODAL `scale`: snaps `tune` (with its modulation) to a scale, with the MIDI note as the key, the same as on ACID (section 15). Random CV on `tune` then plays mallet lines in key.
 - Randomize leaves level and type alone (and the SHAKERS `inst`).
 - Selecting one loads a default sound (SHAKERS: maraca).
 
@@ -136,6 +137,34 @@ Record knob movements as steps on the A and B pages of the selected instrument. 
 - Stop holds the values, and the next Start plays from bar 1. Recording while stopped makes nothing.
 - Triggers don't move the steps. Without clock for one second, the FIRE goes back to one step per trigger.
 
+**Recording on hits: `(rec lock)` and `(rec s&h)`.** While holding A (or B), push DATA to change how this recording works. Each push goes to the next mode, and the header shows which one. Each instrument remembers its last mode per part: the next time you hold A (or B) on it, the recording starts in that mode (forgotten when you load a kit or an instrument, change the algorithm or power off):
+
+| Header | Records | On a hit without a recorded value |
+| --- | --- | --- |
+| `(rec)` | every 16th (with clock) or every hit (without), as above | — |
+| `(rec lock)` | only at the instrument's hits | plays the knob |
+| `(rec s&h)` | only at the instrument's hits | keeps the last recorded value |
+
+- Hits are the instrument's gate jack or its MIDI note (as INP allows, section 18). FIRE hits don't count.
+- Turning a knob only arms it. Each hit while you hold A writes the armed knob's value at that hit's 16th; 16ths without a hit stay empty. Only hits while A is held are recorded.
+- The loop length is counted the same way: with clock, from your A press to the last hit, rounded; ended with FIRE, exactly to the tap. Without clock, steps are hits, and the hits before you turned the knob are empty.
+- **Playback:** the knob changes only at the instrument's hits, just before the hit plays, never in the middle of one. A recorded step plays its value. An empty step plays the knob in `lock` mode (only the recorded hits differ, like parameter locks) or keeps the last recorded value in `s&h` mode (the value steps on and holds until the next recorded hit).
+- **Example:** clock running, hold A, push DATA (`(rec lock)`), turn decay up, let the next hit play, let go. Only that hit has the long decay, every loop.
+- Turning a `lock` / `s&h` knob later moves its value bar but not the sound: the next hit plays with everything shifted by your turn (its recorded values and, in `lock`, the knob value on empty steps). Nothing changes between hits. While you hold A to record, you hear the knob as you turn it.
+- A recording keeps the mode it was made with. Recording on hits over a `(rec)` knob writes only the hit steps and it stays smooth; recording `(rec)` over a `lock` knob fills its steps and it still plays only at hits.
+- The mode of a new recording is the one shown when you let go; push DATA before you turn knobs.
+- The name of a `lock` / `s&h` knob flashes fully inverted for a moment on each recorded hit.
+- Copy, clearing (PAGE held), randomize and the momentary edit work as for `(rec)`.
+
+**Recording MORPH, PAN and VOLUME.** On the MORPH, PANNING and VOLUME (page 1) screens, hold A and turn knobs: each knob is one instrument, so you record the morph (the A↔B mix of the whole sound), the pan or the volume of any of the 8 instruments at once. The header shows `MORPH (rec)` and so on.
+
+- Everything above works the same: DATA cycles `(rec)`, `(rec lock)` and `(rec s&h)` (each screen remembers its last mode), with clock the 16ths, without clock the hits; each knob steps with its own instrument's hits. FIRE ends a loop.
+- Letting go of A keeps you on the screen. A short tap of A without turning anything still goes to page A, and A + B (copy) or A + SETUP (randomize) still work as long as no knob was turned.
+- Ideas: morph `(rec lock)` for a different A↔B blend on chosen hits, pan `(rec s&h)` for hats that jump around the stereo field, volume `(rec)` for swells and fades.
+- A recorded knob's value bar and pickup are at its knob; its name fills with the position (and flashes on `lock` / `s&h` hits). Turning it later shifts the movement (`(rec)`: heard at once; `lock` / `s&h`: at the next hit).
+- **Clearing:** hold PAGE and turn a recorded knob (on PANNING an unrecorded knob still goes to the centre, section 19); PAGE + A clears every recording of that screen. On VOLUME, a PAGE tap now flips the page when you let go.
+- Volume and pan recordings move the main mix only (as the knobs do). The momentary edit doesn't include them. A kit save stores the knob values.
+
 **Without clock** (one step per trigger):
 
 - Each trigger from the instrument's gate jack or a MIDI note is one step (FIRE hits are not). Each trigger sets the next step of every recorded knob before the sound starts.
@@ -156,6 +185,7 @@ Record knob movements as steps on the A and B pages of the selected instrument. 
 - Recorded knobs show their name inverted. The inverted part grows with the loop position.
 - A and B have their own recordings, and A+B copy copies them.
 - MORPH, velocity, CV, the matrix and randomize all work on top of a recording.
+- Only the knobs of parameters the instrument has can be recorded; the others are ignored.
 - Recordings are not saved. Loading a kit, powering off, loading an instrument or changing the algorithm clears them (the last two for that instrument only). Saving a kit stores each recorded knob at its knob value.
 
 ### 10. Drive types (dType)
@@ -188,7 +218,7 @@ The display shows the type:
 
 ### 11. Momentary edit (hold MORPH)
 
-On page A or B, hold MORPH and turn knobs: the sound changes while you hold it, and when you let go every knob of the kit glides back (in about 30 ms) to where it was when you pressed MORPH. The screen stays on A or B.
+On page A, page B or the CV menu, hold MORPH and turn knobs: the sound changes while you hold it, and when you let go every knob of the kit glides back (in about 30 ms) to where it was when you pressed MORPH. The screen stays where it was.
 
 | Gesture | Not latched | Latched |
 | --- | --- | --- |
@@ -208,8 +238,9 @@ On page A or B, hold MORPH and turn knobs: the sound changes while you hold it, 
 - While holding MORPH you can tap A or B to switch pages and tweak both parts; letting go of MORPH brings back both. Just tap them: holding A (or B) on its own page while turning a knob is the knob recording gesture, and it records here too (the recording stays after the edit).
 - Randomize (hold A or B, press SETUP) works inside the edit, while holding MORPH or latched, and is brought back with the rest.
 - Recorded knobs follow the tweak like a turned knob (the whole movement shifts) and come back to their knob value.
-- The whole kit is restored: all 8 instruments, parts A and B. Volume, panning, CV amounts and the output settings are not part of it.
-- Saving a kit while latched saves the sound from before the edit (or from the last MORPH + VOLUME).
+- The whole kit is restored: all 8 instruments, parts A and B, and everything the CV menu sets: the velocity and CV amounts, the matrix amounts (CV1–CV8) and the morph amounts. One edit covers all of it, wherever you start: hold MORPH on page A, turn knobs, press CV, turn amounts, let go, and both come back. The latch (MORPH + MASTER) and keep (VOLUME) work the same on the CV menu.
+- Volume, panning, the output and input settings are not part of it.
+- Saving a kit while latched saves the sound from before the edit (or from the last MORPH + VOLUME), amounts and matrix included.
 - An instrument whose algorithm you change during the edit is left as it is.
 - In SELECT mode and fire mode, MORPH works as before.
 
@@ -254,12 +285,116 @@ In `pick` mode each value bar also shows where the knob physically is, as a 2-pi
 - Keep turning: the bar stays 2 pixels high until the 400 ms are up.
 - In `jump` mode there's no pickup, so no marker. In `offs` mode the marker shows while PANNING is held (section 13).
 
+### 15. ACID: a 303-style bass
+
+A new algorithm after SHAKERS for basslines from the TAKT (or any MIDI sequencer): a saw / square oscillator with a sub, a resonant 4-pole filter with an envelope, accent and slide.
+
+| Page | Parameters |
+| --- | --- |
+| Page 1 | level, tune, wave, envMd, accnt, decay, reso, cutof |
+| Page 2 | type, slide, aDec, sub, track, drive, dType, scale |
+
+- `wave`: saw at 0, square at 1, blended in between. `sub`: a square an octave down.
+- `cutof`, `reso` (up to self-oscillation), `envMd` (how far the filter envelope opens the filter), `decay` (filter envelope decay), `track` (how much the cutoff follows the note).
+- `type`: the filter's response, shown on the display: `LP24` (round), `LP18` (closest to a 303, the default), `LP12` (brighter), `BP` (thin, nasal), `HP` (only the fizz and the resonance). The types are level-matched, so switching doesn't jump in volume.
+- `accnt`: velocity above half accents the note: louder, brighter and a shorter filter decay. Accents in a row build up, like the 303. At 0 velocity does nothing.
+- `slide`: a new MIDI note that arrives while the previous one is still held glides to the new pitch instead of retriggering. `slide` sets the glide time (0 = no glide). On an ACID channel only the note-off of the note that is playing closes the gate, so overlapping notes from a sequencer slide as they should.
+- `aDec`: the note sounds while the gate (the MIDI note) is held, then fades out over `aDec` (0 = cut at once, like a 303).
+- `drive` and `dType`: the same drive curves as the drums (section 10), after the filter.
+- `scale`: snaps `tune`, including its CV, velocity and matrix modulation, to the notes of a scale. The MIDI note is added afterwards, so it sets the key: with `major` and a held MIDI G, random CV on `tune` plays G major. Without MIDI the key is C. A pitch resting between two notes stays on one instead of flickering, and between two notes equally near it takes the lower one. Combined with `slide`, a stepped CV glides from note to note.
+  The scales are the TAKT's (its scale page, in the same order), so a FIRE voice and a TAKT CV track can play in the same key:
+
+  | FIRE | TAKT | Scale |
+  | --- | --- | --- |
+  | `off` | | no quantizing |
+  | `chrom` | `CHr` | chromatic |
+  | `major` | `ion` | major (ionian) |
+  | `minor` | `AEo` | natural minor (aeolian) |
+  | `pnMaj` | `Pn5` | major pentatonic |
+  | `pnMin` | `Pn5.` | minor pentatonic |
+  | `dorn` | `dor` | dorian |
+  | `phryg` | `PHr` | phrygian |
+  | `lydn` | `Lyd` | lydian |
+  | `mixo` | `nni` | mixolydian |
+  | `hMin` | `HAr` | harmonic minor |
+  | `whole` | `uHt` | whole tone |
+
+  The TAKT's Root is the MIDI note here: send the root note from the TAKT track that plays the FIRE channel.
+- MIDI notes play as sent with `tune` at 0 (the default); `tune` transposes. A trigger on the gate jack plays the `tune` pitch (C1 at 0) and holds the note only as long as the gate.
+- Everything except `type` can be modulated, `scale` too. Randomize leaves level, type and scale alone. Selecting it loads a default acid sound (scale off).
+
+### 16. CYMBAL: ride, crash and 808 cymbal
+
+A new algorithm after ACID, for the long, shimmering cymbals the hihat doesn't do.
+
+| Page | Parameters |
+| --- | --- |
+| Page 1 | level, tune, metal, sprd, attck, decay, wash, cutof |
+| Page 2 | type, reso, body, bDec, bell, dust, mute, swing |
+
+- `metal`: the 808's six square oscillators at 0, Plaits' ring-modulated metal at 1, blended in between. `sprd` spreads the 808 oscillators further apart (wider = more crash-like). `wash` mixes in white noise.
+- The sound has two parts with their own decay: the body (`body` sets its pitch, `bDec` its decay) and the sizzle on top (`decay`, the main length, up to several seconds).
+- `bell`: the ping of a ride's bell. `dust`: rivets rattling in the sizzle.
+- `attck`: a slower start, for crash swells. `cutof`, `type`, `reso`: the filter, as on MODAL and SHAKERS.
+- `mute` (`noMtG`, `MtG1`–`MtG8`): the mute group, shared with the HIHAT (section 5). A hit on any HIHAT or CYMBAL in a group cuts all the other HIHATs and CYMBALs in that group: open and closed hats, a ride cut by a closed hat, two crashes cutting each other. Other instruments don't take part. To "grab" a crash, put a HIHAT or CYMBAL at level 0 in its group and trigger that.
+- `swing`: the HIHAT's swing VCA (section 5) on the cymbal, a lopsided, punchier decay. 0 = off.
+- Velocity sets how hard it's hit. `tune` at the default plays the measured frequencies; the MIDI note transposes.
+- Everything except `type` and `mute` can be modulated. Randomize leaves level, type and mute alone. Selecting it loads a ride (`noMtG`, swing 0).
+
+### 17. xDRUM: an additive drum
+
+The last algorithm: a tuned drum built from six sine partials. One voice goes from a deep kick through toms, congas and wood blocks to marimba, bells, gongs and noisy hits, and every step in between can be modulated.
+
+| Page | Parameters |
+| --- | --- |
+| Page 1 | level, tune, harmo, sprd, attck, decay, morph, fold |
+| Page 2 | mode, sweep, swDec, tilt, drive, dType, scale, bits |
+
+- `harmo`: where the partials sit. At 0 they are all on the fundamental (a pure sine, for 808-style kicks), at the middle they form the harmonic series, at 1 they take the ratios of `mode`.
+- `mode` (`skin`, `liqd`, `metal`, shown on the display): `skin` is a drum head (toms, congas), `liqd` is half-harmonic (hollow and woody, watery with a sweep), `metal` is a bar or bell (marimba, bells, gongs, clangs).
+- `sprd`: how loud the upper partials are (0 = the fundamental only). `tilt`: how much sooner the upper partials die (0 = all ring together, like a bell; 1 = only the fundamental is left after the hit, like a tom or a marimba).
+- `decay`: 10 ms to about 4 s. `attck`: a slower start, up to 200 ms (0 = none).
+- `sweep` and `swDec`: the pitch drop after the hit, up to 4 octaves, lasting 2 to 300 ms: a kick's punch, a tom's bend, a laser zap.
+- `morph`: each partial modulates the next one (the first one modulates itself). Clean up to about the middle, then brighter and metallic, and noise-like near the top, for snare-like and crashy hits.
+- `fold`: a wavefolder on the whole sound.
+- `drive` and `dType`: the drive curves of section 10, as on ACID. `bits`: bit reduction.
+- `scale`: as on ACID (section 15), with `tune` at 0.375 being C4 as on MODAL; the MIDI note transposes and sets the key.
+- Velocity sets how hard it's hit.
+- Everything except `mode` can be modulated. Randomize leaves level, mode and scale alone. Selecting it loads a kick (G1, `skin`).
+
+### 18. Input assign: MIDI, CV, both or none (VOLUME page 3)
+
+PAGE on the VOLUME menu now goes through three pages: the levels, the outputs (section 8), and `INP ASSIGN`. On page 3 each knob sets what its instrument listens to. The cell shows the instrument and a letter:
+
+| Cell | Setting | The instrument plays from |
+| --- | --- | --- |
+| `TOM:B` | both (the default) | MIDI and its jacks, as before |
+| `TOM:M` | MIDI | MIDI notes only |
+| `TOM:C` | CV | its gate and CV jacks only |
+| `TOM:-` | none | neither: only the FIRE button plays it |
+
+- **MIDI** means the notes on the instrument's MIDI channel, or its note on channel 10: the trigger, the velocity and the note (the pitch of MODAL, ACID, xDRUM and the other tuned instruments). MIDI CCs for volume, pan and morph keep working whatever the setting.
+- **CV** means the instrument's gate jack (trigger and velocity) and the modulation from its own CV jack (its CV amounts and the morph CV).
+- **The jack stays useful:** with `M`, the instrument ignores its jacks, but its CV jack still modulates the other instruments of its group through the CV matrix (section 7). So you can play an instrument from the TAKT over MIDI and use its CV jack as a free modulation source. It also stops double hits when a sequencer sends both MIDI and gates.
+- Changing the setting ends a note the instrument is holding.
+- Knob recording (section 9) only counts the triggers the instrument takes.
+- Saved with the kit and in the kit dump (one message longer). Kits and dumps from before load with every instrument on `B`.
+
+### 19. PAGE + knob: back to the centre
+
+On the CV menu (all its pages: the velocity and CV amounts, the matrix views and the morph amounts) and on PANNING, hold PAGE and turn a knob: its value jumps to the centre, which means no modulation (or the pan centre).
+
+- Each knob resets once per hold. While PAGE is held, the knobs do nothing else, so you can reset several in a row without changing anything by accident.
+- When you let go of PAGE, the knobs are picked up again as after a page change: in `pick` mode a reset knob takes over when it passes the centre, in `jump` mode it jumps when you move it, in `offs` mode it goes on from the centre.
+- A short tap of PAGE on the CV menu still flips the page, now when you let go.
+- On the edit pages A and B, holding PAGE still opens the knob-recording clear (section 9). On VOLUME and MORPH, PAGE held + turning a recorded knob clears its recording (section 9), and on VOLUME a PAGE tap flips the page when you let go. MASTER is unchanged.
+
 ## Install
 
 1. Back up your kits (MIDI dump).
 2. Power on holding SETUP + MASTER (firmware update mode, as in the [official manual](https://www.flame-instruments.de/flame2/downloads.html#fire)).
 3. Send [`FlameFireV1_07_custom.syx`](FlameFireV1_07_custom.syx).
-   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 7,810 messages.
+   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 6,678 messages.
 4. Upload the four samples (below).
 
 ### Uploading the samples
@@ -280,8 +415,10 @@ Flash the original `FlameFireV1_07.syx` the same way. Stock ignores samples 5–
 
 - Kits saved with this firmware will not load correctly on stock.
 - On stock or older builds, the knob mode `offs` loads as `pick`.
-- MODAL and STRING no longer have `drive`; `bits` moved into its place. A kit saved with MODAL or STRING on an earlier build reads its old `drive` value as `bits` here: set `bits` again.
-- A kit that uses MODAL or STRING will not load correctly on stock or on the earlier builds. Ring and swing are ignored there. A kit that uses SHAKERS also needs this build. Stock and older builds ignore dType and FM-DRUM's drive and play stock.
+- The scales changed to the TAKT's (section 15): a kit saved on an earlier build with a `scale` set (ACID, MODAL, xDRUM) comes back on another scale. Set it again.
+- MODAL no longer has `drive`; `bits` moved into its place. A kit saved with MODAL on an earlier build reads its old `drive` value as `bits` here: set `bits` again.
+- STRING was removed to make room. The algorithms after it moved down by one (SHAKERS, ACID, then CYMBAL last), so kits from earlier builds that use STRING, SHAKERS or ACID load with the wrong instrument there.
+- A kit that uses MODAL will not load correctly on stock or on the earlier builds. Ring and swing are ignored there. A kit that uses SHAKERS, ACID, CYMBAL or xDRUM also needs this build. Stock and older builds ignore the input assign (every instrument plays from both). Stock and older builds ignore dType and FM-DRUM's drive and play stock.
 - On stock and older builds, an instrument set to M1–M6 plays on its direct out only, and a shared direct out plays only one of its instruments.
 - Older builds and stock ignore the CV matrix amounts. Saving a kit on an older build drops them.
 - If you use CV on Level together with a negative velocity Level amount, soft hits play at the absolute value. Velocity-only Level behaves like stock.
