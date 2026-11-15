@@ -154,15 +154,16 @@ On stock, a track on HOLD can't be recorded but you can still play over it live.
 
 GATETIME isn't affected: it only acts in SHOTS note recording, which already lets you hear it on HOLD.
 
-### 9. VELO/MOD `uEL.` and `rEC.`: keep the velocity of recorded notes
+### 9. VELO/MOD `uEL.` and `rEC.`: keep the velocity and gate time of recorded notes
 
 VELO/MOD has two more values, shown with a dot: the order with DATA is `uEL`, `uEL.`, `rEC`, `rEC.`, `001`... The CV output works exactly as `uEL` / `rEC`. The difference is in REC NOTE recording (single notes and SHOTS, with the track buttons or the sensors):
 
-- A hit that lands on or near a note that's already recorded keeps that note's velocity instead of taking the VELOCITY setting. "Near" means within half a step of the grid you record with (QUANTIZE, or the BEAT control). You hear that velocity while you record, and it's what gets written.
-- A hit on an empty spot uses the VELOCITY setting, as on stock.
-- MIDI notes keep the velocity they arrive with, as on stock.
+- A hit that lands on or near a note that's already recorded keeps that note's velocity and gate time instead of taking the VELOCITY setting and a new gate (the GATETIME control in SHOTS, how long you hold the button for single notes). "Near" means within half a step of the grid you record with (QUANTIZE, or the BEAT control).
+- You hear the old velocity while you record, and in SHOTS the old gate time too. A single note sounds as long as you hold the button, and the old gate time is what gets written when you let go.
+- A hit on an empty spot uses the VELOCITY setting and a new gate, as on stock. With GATETIME at `OFF`, SHOTS still records nothing, also on old notes.
+- MIDI notes keep the velocity they arrive with, as on stock, but take the old gate time like the buttons.
 
-So you can re-record the timing of a part without losing the dynamics you've shaped. `rEC.` is the useful one with MOD-CV recording: the VELOCITY control drives the modulation, and re-recorded notes keep their velocities. REC velocity and REC MOD-CV work as before on dot tracks.
+So you can re-record the timing of a part without losing the dynamics and note lengths you've shaped. `rEC.` is the useful one with MOD-CV recording: the VELOCITY control drives the modulation, and re-recorded notes keep their velocities. REC velocity and REC MOD-CV work as before on dot tracks.
 
 The old notes are remembered from the moment you press the track, so the notes the held track erases as it plays still count. If the pattern changes while you hold the track, new hits use the VELOCITY setting.
 
@@ -252,7 +253,7 @@ A track's CV output can play notes in a key (1 V/octave) instead of a smooth vol
 
 1. Back up your scenes first (SysEx dump).
 2. Power on holding MOD-CV + TRACK 8. The display shows `UPd`.
-3. Send [`FlameTaktV1_7_2_custom.syx`](FlameTaktV1_7_2_custom.syx) with a gap of 20 ms between messages. The file is 2,837 messages.
+3. Send [`FlameTaktV1_7_2_custom.syx`](FlameTaktV1_7_2_custom.syx) with a gap of 20 ms between messages. The file is 2,850 messages.
 
 ### Going back to stock
 

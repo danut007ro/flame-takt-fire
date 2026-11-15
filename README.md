@@ -53,7 +53,7 @@ Both builds are tested on hardware. Feedback and bug reports are welcome (open a
 - **Recording on muted tracks:** record into a muted track while it stays silent, then unmute it on the next bar. HOLD still blocks recording, as on stock.
 - **REC fixes:** entering velocity recording no longer leaves the HOLD, MUTE or VARIATION LEDs lit on muted tracks, and after holding NOTE or MOD-CV to clear a track the menu you were in (MUTE, for example) works again right away.
 - **Auto BAR copy keeps the modulation:** extending the pattern with BAR now copies the MOD-CV values along with the notes.
-- **VELO/MOD `uEL.` / `rEC.`:** re-record a part's timing while notes landing on old ones keep their velocity; only new notes take the VELOCITY setting.
+- **VELO/MOD `uEL.` / `rEC.`:** re-record a part's timing while notes landing on old ones keep their velocity and gate time; only new notes take the VELOCITY setting and a new gate.
 - **HOLD lets you hear velocity and MOD-CV recording:** on a track on HOLD, REC velocity and REC MOD-CV now play what you set without recording it, as REC NOTE already did.
 - **Pattern chain:** hold PLAY and press pattern keys to play them in order, up to 64 steps, each one for a full pattern. Saved with the scene. FILL steps can be part of it. A pattern key leaves the chain, PLAY + DATA starts it again.
 - **Four FILL patterns:** each scene has four fills. Hold FILL (or PLAY, silently) and turn DATA to choose one. Saved with the scene and in the SysEx dump.
