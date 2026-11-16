@@ -82,7 +82,7 @@ At 0 the hihat is the stock sound. Old kits load with both at 0. Both follow vel
 - `inst` picks the instrument and the display shows its name: maraca (`marac`), cabasa, sekere, tambourine, sleigh bells, bamboo chimes, angklung, coke can, sticks (`stix`), crunch, big rocks, little rocks, coins in a mug (`mug`), water drops, guiro and wrench.
 - A trigger is one shake. While the gate is held, `shake` keeps shaking: 0 gives single shakes only, higher keeps it rattling. On guiro and wrench it sets the speed of the scrape.
 - `objs`: how many beans, stones or coins. `decay`: how long a shake lasts. Both play the measured instrument in the middle.
-- `tune` transposes all the resonances: a pitch on the tuned ones (angklung is a real scale), a size on the others.
+- `tune` transposes all the resonances: a pitch on the tuned ones (angklung is a real scale), a size on the others. Resonances fade out between 12 and 17 kHz, so the bright instruments get thinner and go quiet toward the top of the `tune` range (little rocks and sticks from about tune 0.5 to 0.6), and turning `tune` up with `vary` high no longer cuts the sound for a few seconds.
 - `vary`: how much the resonances jump on each collision. In the middle each instrument is as measured, at 0 nothing jumps, above the middle they jump more, also on the instruments that don't jump by themselves.
 - Velocity sets how hard it is shaken.
 - Water drops only come at random while shaking, so a single short trigger is often silent. Hold the gate with some `shake`.
@@ -394,7 +394,7 @@ On the CV menu (all its pages: the velocity and CV amounts, the matrix views and
 1. Back up your kits (MIDI dump).
 2. Power on holding SETUP + MASTER (firmware update mode, as in the [official manual](https://www.flame-instruments.de/flame2/downloads.html#fire)).
 3. Send [`FlameFireV1_07_custom.syx`](FlameFireV1_07_custom.syx).
-   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 6,682 messages.
+   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 6,680 messages.
 4. Upload the four samples (below).
 
 ### Uploading the samples

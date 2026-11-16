@@ -55,6 +55,12 @@ Hold a function button for 400 ms or more, or tap a track while holding it, and 
 
 Example: while recording, hold MUTE, tap kick and hats, let go. You are back in REC, and the mutes land on the next bar.
 
+**Keep a held track recording:** in REC NOTE, REC MOD-CV or REC velocity, keep holding a track and press any function button, as a tap or a hold. The held track goes on recording exactly as in REC (a SHOTS roll keeps rolling) until you let go of it, while the function menu works on the other tracks. The held track's own button stays with REC until you let go of it, so you can't mute that track in the same move. A track on HOLD is still only heard, not recorded.
+
+Example for a build-up: in REC NOTE with SHOTS, hold the snare, hold MUTE, unmute kick and hats (they land on the next bar), let go of MUTE and then of the snare.
+
+On stock, pressing a function button while holding a track in REC stopped its SHOTS, and the note was never finished: it wasn't recorded, and in some settings the track went on erasing its notes as they played until you pressed it again in REC.
+
 In EDIT USER and EDIT EUCLID the function buttons are still step buttons.
 
 **Staged MUTE and VARIATION:**
@@ -253,7 +259,7 @@ A track's CV output can play notes in a key (1 V/octave) instead of a smooth vol
 
 1. Back up your scenes first (SysEx dump).
 2. Power on holding MOD-CV + TRACK 8. The display shows `UPd`.
-3. Send [`FlameTaktV1_7_2_custom.syx`](FlameTaktV1_7_2_custom.syx) with a gap of 20 ms between messages. The file is 2,850 messages.
+3. Send [`FlameTaktV1_7_2_custom.syx`](FlameTaktV1_7_2_custom.syx) with a gap of 20 ms between messages. The file is 2,857 messages.
 
 ### Going back to stock
 
@@ -266,7 +272,7 @@ Send the original `FlameTaktV1_7_2.syx` the same way. The original file and the 
 - COPY and SWAP track do not copy the seed, the track's shuffle, the VELO/MOD dot or the track's Range / Mode. Stock does not copy the VARIATION state either.
 - On a fast-blink track, repeated SHOTS hits at the same position (for example with the sequencer stopped) still vary, but they follow the same sequence every time.
 - "Stopped" is no clock for 200 ms, so below about 30 BPM staged changes apply when you release the button.
-- While a function menu is showing you are not recording, same as stock. Recording continues when you are back in REC.
+- While a function menu is showing, tracks you press there don't record, same as stock. A track you were already holding in REC keeps recording (see Performance mode). Recording continues when you are back in REC.
 - Going back to VELO/MOD, QUANTIZE, SHUFFLE, TRACKSHIFT or LASTSTEP after a momentary hold may reset which track is selected there.
 - The scales are tuned to the CV outputs as measured on one TAKT (all eight jacks within about 5 cents). The top notes of a range can drift by a few cents on another unit; check the octaves with a tuner if you play long melodies across 4 octaves.
 - A short tap of a function button cancels that menu's waiting changes. Hold the button to look at them.
