@@ -186,8 +186,10 @@ With the defaults, recording works as on stock until you turn GATETIME while hol
 - **With `Gon`,** gates are written from the moment you hold the track: set GATETIME first, then record.
 - The settings are saved with the scene. A track saved with the `uEL.` / `rEC.` dot of earlier versions opens as `uoF` / `GoF`.
 
+**REC gate:** in REC velocity, push DATA to switch to REC gate (the display shows `GAt`, and the NOTE and MOD-CV LEDs blink in turn); push again to go back (`uEL`). It works like REC velocity but writes only gate times: hold a track and each note the playhead passes gets the GATETIME position (`tiE` ties, `OFF` removes the note), whatever the track's record settings. Velocities and timing stay. Leaving REC velocity ends it.
+
 **Examples:**
-- **Add ties to a finished line:** `uoF` or `uAu`, gate on the default `GAu`. In REC velocity, hold the track and turn GATETIME to `tiE` over the notes that should slide, and away from it elsewhere. Timing and velocities stay.
+- **Add ties to a finished line:** REC gate: hold the track and turn GATETIME to `tiE` over the notes that should slide, and away from it elsewhere. Or with record settings: `uoF` or `uAu`, gate on the default `GAu`. In REC velocity, hold the track and turn GATETIME to `tiE` over the notes that should slide, and away from it elsewhere. Timing and velocities stay.
 - **Re-do the dynamics:** the defaults in REC velocity, leaving GATETIME alone.
 - **Re-record the groove:** `uoF` and `GoF` in REC NOTE. Notes move to where you play them and keep their velocity and gate time.
 - **Record modulation only:** the defaults in REC MOD-CV, leaving GATETIME alone (or `GoF`).
@@ -283,14 +285,14 @@ GATETIME has a new position after 100%: `tiE`. A SHOTS hit recorded there ties i
 - **Knob:** OFF, TRIG and 1–100% as stock up to about 51% of its travel, then 100% up to about 63%, then four equal zones: `tiE` 63–73%, descending 73–82%, ascending 82–91%, RND 91–100%. Turning into the 100% stretch or a zone shows `100`, `tiE`, `dEC`, `inC` or `rnd` for a second.
 - **Length:** a tied note lasts until the track's next note, in the same pattern or on the next loop, or until you mute the track, stop the sequencer, or 4 bars pass.
 - **MIDI and gate:** one note-off at the end of a tied run (a TAKT track sends the same note number, switched on again for each step). The gate output stays high through the tie, as on a 303.
-- **Ties in a finished line:** use REC velocity with the record settings of section 9.
+- **Ties in a finished line:** use REC gate (section 9): REC velocity, push DATA, hold the track and turn GATETIME to `tiE` over the notes to tie.
 - A single note's length is how long you hold the button; GATETIME is used by SHOTS and by the record settings of section 9.
 
 ## Install
 
 1. Back up your scenes first (SysEx dump).
 2. Power on holding MOD-CV + TRACK 8. The display shows `UPd`.
-3. Send [`FlameTaktV1_7_2_custom.syx`](FlameTaktV1_7_2_custom.syx) with a gap of 20 ms between messages. The file is 2,902 messages.
+3. Send [`FlameTaktV1_7_2_custom.syx`](FlameTaktV1_7_2_custom.syx) with a gap of 20 ms between messages. The file is 2,912 messages.
 
 ### Going back to stock
 
