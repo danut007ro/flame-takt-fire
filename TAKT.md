@@ -155,23 +155,42 @@ This is a stock bug. With `bCo` on, extending the pattern with BAR copied the no
 
 On stock, a track on HOLD can't be recorded but you can still play over it live. That worked in REC NOTE but not in the other two recording modes. Now it works in all three:
 
-- **REC velocity** (NOTE + MOD-CV): hold a HOLD track and its notes play at the VELOCITY setting, so you can try a new dynamic before you take HOLD off. Its recorded velocities don't change. Before, you heard the old velocities.
-- **REC MOD-CV**: hold a HOLD track (VELO/MOD set to REC) and its CV output follows the VELOCITY control the same way it would while recording. Nothing is recorded, and the recorded modulation plays again when you let go. Before, the recorded modulation kept playing.
+- **REC velocity** (NOTE + MOD-CV): hold a HOLD track and its notes play at the VELOCITY setting, so you can try a new dynamic before you take HOLD off. Its recorded velocities stay.
+- **REC MOD-CV**: hold a HOLD track (VELO/MOD set to REC) and its CV output follows the VELOCITY control the same way it would while recording. Nothing is recorded, and the recorded modulation plays again when you let go.
 
-GATETIME isn't affected: it only acts in SHOTS note recording, which already lets you hear it on HOLD.
+SHOTS hits on a HOLD track already let you hear GATETIME. In REC velocity and REC MOD-CV a HOLD track's gate times stay as they are (section 9).
 
-### 9. VELO/MOD `uEL.` and `rEC.`: keep the velocity and gate time of recorded notes
+### 9. Record settings: what the VELOCITY and GATETIME knobs record
 
-VELO/MOD has two more values, shown with a dot: the order with DATA is `uEL`, `uEL.`, `rEC`, `rEC.`, `001`... The CV output works exactly as `uEL` / `rEC`. The difference is in REC NOTE recording (single notes and SHOTS, with the track buttons or the sensors):
+Each track has two record settings, on the scale page (press VELO/MOD twice, select the track, push DATA past Range and Mode):
 
-- A hit that lands on or near a note that's already recorded keeps that note's velocity and gate time instead of taking the VELOCITY setting and a new gate (the GATETIME control in SHOTS, how long you hold the button for single notes). "Near" means within half a step of the grid you record with (QUANTIZE, or the BEAT control).
-- You hear the old velocity while you record, and in SHOTS the old gate time too. A single note sounds as long as you hold the button, and the old gate time is what gets written when you let go.
-- A hit on an empty spot uses the VELOCITY setting and a new gate, as on stock. With GATETIME at `OFF`, SHOTS still records nothing, also on old notes.
-- MIDI notes keep the velocity they arrive with, as on stock, but take the old gate time like the buttons.
+| Setting | Values |
+| --- | --- |
+| VELOCITY knob | `uon` (default) / `uoF` / `uAu` |
+| GATETIME knob | `Gon` / `GoF` / `GAu` (default) |
 
-So you can re-record the timing of a part without losing the dynamics and note lengths you've shaped. `rEC.` is the useful one with MOD-CV recording: the VELOCITY control drives the modulation, and re-recorded notes keep their velocities. REC velocity and REC MOD-CV work as before on dot tracks.
+- **on:** the knob records.
+- **off:** the knob doesn't record; notes keep their values.
+- **auto:** in REC velocity and REC MOD-CV, the knob records from the moment you turn it while holding the track, until you let go. In REC NOTE it works as on.
 
-The old notes are remembered from the moment you press the track, so the notes the held track erases as it plays still count. If the pattern changes while you hold the track, new hits use the VELOCITY setting.
+With the defaults, recording works as on stock until you turn GATETIME while holding a track in REC velocity or REC MOD-CV.
+
+| Mode | VELOCITY knob writes | GATETIME knob writes |
+| --- | --- | --- |
+| REC NOTE | the velocity of hits on old notes | the gate time of hits on old notes |
+| REC velocity (NOTE + MOD-CV) | the velocity of each note the playhead passes | the gate time of each note the playhead passes |
+| REC MOD-CV | the modulation | the gate time of each note the playhead passes |
+
+- **REC NOTE:** notes go where you play them. A hit on or near an old note (within half a step of the QUANTIZE / BEAT grid) keeps that note's velocity or gate time when that knob is off. New notes always take the knobs. A single note's gate is how long you hold the button. MIDI notes keep their own velocity, or the old note's with `uoF`.
+- **REC velocity and REC MOD-CV** change existing notes only. A gate time is written as a SHOTS hit writes it: GATETIME × the BEAT interval (the QUANTIZE interval, if the track has one). `tiE` ties the note (section 13). GATETIME on `OFF` removes the note, and so does VELOCITY at 0 in REC velocity. You hear each change at once. On a HOLD track you hear the velocity and nothing is written.
+- **With `Gon`,** gates are written from the moment you hold the track: set GATETIME first, then record.
+- The settings are saved with the scene. A track saved with the `uEL.` / `rEC.` dot of earlier versions opens as `uoF` / `GoF`.
+
+**Examples:**
+- **Add ties to a finished line:** `uoF` or `uAu`, gate on the default `GAu`. In REC velocity, hold the track and turn GATETIME to `tiE` over the notes that should slide, and away from it elsewhere. Timing and velocities stay.
+- **Re-do the dynamics:** the defaults in REC velocity, leaving GATETIME alone.
+- **Re-record the groove:** `uoF` and `GoF` in REC NOTE. Notes move to where you play them and keep their velocity and gate time.
+- **Record modulation only:** the defaults in REC MOD-CV, leaving GATETIME alone (or `GoF`).
 
 ### 10. Pattern chain
 
@@ -228,16 +247,18 @@ A track's CV output can play notes in a key (1 V/octave) instead of a smooth vol
 | Setting | Belongs to | Display | Values |
 | --- | --- | --- | --- |
 | Transpose | the pattern | `t 0` ... | moves every note of the pattern by -24 to +24 semitones: `t 5` is +5, `t12` is +12, `t-5` is -5, `-12` is -12 |
-| Scale | the pattern | `CHr` ... | `CHr` chromatic, `ion` major, `AEo` natural minor, `Pn5` major pentatonic, `Pn5.` minor pentatonic, `dor` dorian, `PHr` phrygian, `Lyd` lydian, `nni` mixolydian, `HAr` harmonic minor, `uHt` whole tone. B, C and D also have `=A` (below the scales) |
+| Scale | the pattern | `CHr` ... | `CHr` chromatic, `ion` major, `AEo` natural minor, `Pn5` major pentatonic, `Pn5.` minor pentatonic, `dor` dorian, `PHr` phrygian, `Lyd` lydian, `nni` mixolydian, `HAr` harmonic minor, `uHt` whole tone, `oCt` the root only (in every octave), `5th` root and fifth. B, C and D also have `=A` (below the scales) |
 | Root | the pattern | `r C` ... `r b` | the key's root, C to B, a dot means sharp (`r F.` = F#) |
 | Range | the selected track | `oFF`, `1-1` ... | `oFF` (the track's CV output is as stock), or which octaves it plays in: `1-1`, `1-2`, `1-3`, `1-4`, `2-2`, `2-3`, `2-4`, `3-3`, `3-4`, `4-4` |
 | Mode | the selected track | `FrE` / `5-H` | `FrE` follows the value all the time; `5-H` (sample & hold) takes the value when the track plays a note and keeps that note until its next one |
+| Velocity record | the selected track | `uon` / `uoF` / `uAu` | whether the VELOCITY knob records: on, off, auto (section 9) |
+| Gate record | the selected track | `Gon` / `GoF` / `GAu` | whether the GATETIME knob records: on, off, auto (section 9) |
 
-- **A track:** press a track button. The display shows its Range, and a push toggles Range / Mode. Only that track's LED is lit, as on the VELO/MOD page (it's the same selected track). Tracks on `oFF` (the default) are not touched, so drum tracks keep their velocity CV.
+- **A track:** press a track button. The display shows its Range, and a push steps through Range, Mode and the two record settings (section 9). Only that track's LED is lit, as on the VELO/MOD page (it's the same selected track). Tracks on `oFF` (the default) are not touched, so drum tracks keep their velocity CV.
 - **A pattern:** press its pattern key. The display shows its Transpose, and pushes go on to its Scale, its Root and back. Its LED blinks fast and the track's LED stays lit. Nothing switches: the playing pattern goes on, so you can set B's key while A plays. Press the same pattern key again (and let go without turning DATA), or any track button, to go back to the track.
 - **Changes play at once, or on release:** after a tap on a pattern key, turning DATA changes that pattern's key right away. If you keep the pattern key held while you turn DATA (Transpose, Scale or Root), the display shows the new setting but the pattern keeps playing the old one until you let go. Use it to set up a key change or a transposition on the pattern that's playing and drop it in on a beat. Either way, a note that is already sounding is never retuned (see below).
 - **On this page the pattern keys don't switch patterns.** Leave the page (VELO/MOD again, or any menu) to switch. PLAY + pattern keys (chain entry) and CLEAR / COPY / SWAP work as usual.
-- **Remembered:** the page reopens on what you had selected last (the track, or a pattern), and on the setting you used last on that side (Range or Mode, Scale or Root).
+- **Remembered:** the page reopens on what you had selected last (the track, or a pattern), and on the setting you used last on that side (Range, Mode or a record setting; Transpose, Scale or Root).
 - **`=A`:** B, C and D start on `=A`: they play in A's key and A's Transpose, and changing A changes them too. Change a pattern's Transpose, Scale or Root to give it its own key (the other two start as A's); turn its Scale down to `=A` to follow A again. A always has its own key.
 - **Transpose:** every note of the pattern moves up or down by that many semitones after it's put in the key, like transposing on a keyboard: C major with `t 2` plays D major a tone higher. Root is different: it picks the key's notes but keeps the octaves where they are. A note moved past the top or the bottom of the 4 octaves comes back in an octave lower or higher.
 - **When a change is heard:** a note keeps the key and range it started with until the track's next note. That goes for a pattern change (at the bar, `PtC` = `FrE`, chain steps) and for turning Transpose, Scale, Root or Range (and switching a track between `oFF` and a range): the change comes in on the track's next note, so the first note of a new pattern is already in its key and a long note or a `5-H` note is never retuned while it sounds. A track with no note sounding at a bar line takes the change there, so tracks without notes (pure modulation) follow within a bar. Mode (`FrE` / `5-H`) applies at once.
@@ -255,11 +276,21 @@ A track's CV output can play notes in a key (1 V/octave) instead of a smooth vol
 
 **Example:** open the scale page, press pattern A, push to Scale and set `AEo`, push, `r A` (A minor, for every pattern). Press the bass track and set `1-1`; press the lead and set `2-3`, push, `5-H`. Press pattern B and turn to `r d` (it's still on Root): B is D minor. Chain A A B A and the melody and bass move to D minor on every B. Or leave B on `=A`, push to Transpose and set `t 5`: B plays the same A-minor lines a fourth up.
 
+### 13. GATETIME `tiE`: tie a note into the next one
+
+GATETIME has a new position after 100%: `tiE`. A SHOTS hit recorded there ties its note into the track's next note, however far away: the next note-on goes out while the note is still on, so a synth with legato or slide, such as the FIRE's ACID, glides into it.
+
+- **Knob:** OFF, TRIG and 1–100% as stock up to about 51% of its travel, then 100% up to about 63%, then four equal zones: `tiE` 63–73%, descending 73–82%, ascending 82–91%, RND 91–100%. Turning into the 100% stretch or a zone shows `100`, `tiE`, `dEC`, `inC` or `rnd` for a second.
+- **Length:** a tied note lasts until the track's next note, in the same pattern or on the next loop, or until you mute the track, stop the sequencer, or 4 bars pass.
+- **MIDI and gate:** one note-off at the end of a tied run (a TAKT track sends the same note number, switched on again for each step). The gate output stays high through the tie, as on a 303.
+- **Ties in a finished line:** use REC velocity with the record settings of section 9.
+- A single note's length is how long you hold the button; GATETIME is used by SHOTS and by the record settings of section 9.
+
 ## Install
 
 1. Back up your scenes first (SysEx dump).
 2. Power on holding MOD-CV + TRACK 8. The display shows `UPd`.
-3. Send [`FlameTaktV1_7_2_custom.syx`](FlameTaktV1_7_2_custom.syx) with a gap of 20 ms between messages. The file is 2,857 messages.
+3. Send [`FlameTaktV1_7_2_custom.syx`](FlameTaktV1_7_2_custom.syx) with a gap of 20 ms between messages. The file is 2,902 messages.
 
 ### Going back to stock
 
@@ -268,8 +299,9 @@ Send the original `FlameTaktV1_7_2.syx` the same way. The original file and the 
 ## Caveats
 
 - Scenes saved here load on stock. Seeded tracks play there with VARIATION off. An LFO set to `r-4`, `r-8` or `r16` shows a garbage name on stock and sits at about 0 V.
-- Stock ignores the per-track shuffle, so scenes saved here play with the global shuffle only on stock. It also shows `uEL.` / `rEC.` as `uEL` / `rEC`, and ignores the scales (the CV outputs play the plain values).
-- COPY and SWAP track do not copy the seed, the track's shuffle, the VELO/MOD dot or the track's Range / Mode. Stock does not copy the VARIATION state either.
+- Stock ignores the per-track shuffle, so scenes saved here play with the global shuffle only on stock. It ignores the record settings (recording works as stock there), and the scales (the CV outputs play the plain values).
+- On stock, a step recorded at GATETIME `tiE` plays as a long note (about twice the BEAT interval it was recorded with) instead of tying into the next one.
+- COPY and SWAP track do not copy the seed, the track's shuffle, the track's record settings or the track's Range / Mode. Stock does not copy the VARIATION state either.
 - On a fast-blink track, repeated SHOTS hits at the same position (for example with the sequencer stopped) still vary, but they follow the same sequence every time.
 - "Stopped" is no clock for 200 ms, so below about 30 BPM staged changes apply when you release the button.
 - While a function menu is showing, tracks you press there don't record, same as stock. A track you were already holding in REC keeps recording (see Performance mode). Recording continues when you are back in REC.

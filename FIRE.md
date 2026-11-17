@@ -297,8 +297,14 @@ A new algorithm after SHAKERS for basslines from the TAKT (or any MIDI sequencer
 - `wave`: saw at 0, square at 1, blended in between. `sub`: a square an octave down.
 - `cutof`, `reso` (up to self-oscillation), `envMd` (how far the filter envelope opens the filter), `decay` (filter envelope decay), `track` (how much the cutoff follows the note).
 - `type`: the filter's response, shown on the display: `LP24` (round), `LP18` (closest to a 303, the default), `LP12` (brighter), `BP` (thin, nasal), `HP` (only the fizz and the resonance). The types are level-matched, so switching doesn't jump in volume.
-- `accnt`: velocity above half accents the note: louder, brighter and a shorter filter decay. Accents in a row build up, like the 303. At 0 velocity does nothing.
-- `slide`: a new MIDI note that arrives while the previous one is still held glides to the new pitch instead of retriggering. `slide` sets the glide time (0 = no glide). On an ACID channel only the note-off of the note that is playing closes the gate, so overlapping notes from a sequencer slide as they should.
+- `accnt`: how strong the accent is. Velocity decides which notes are accented: below 64 none, from 64 up more and more, full at 127. An accented note is louder and brighter and has a shorter filter decay; accents in a row build up, like the 303. At 0 velocity does nothing.
+- `slide`: the glide time (0 = the pitch jumps). A note glides into the next one when the notes overlap: the next note starts before the previous one ends, as a DAW or keyboard plays legato and as the TAKT sends a step recorded at GATETIME `tiE`. Notes that don't overlap start again.
+
+  `slide` at the bottom of the knob turns sliding off. A slid-into note doesn't restart the envelope or take a new accent, as on a 303, but its velocity still counts for the velocity amounts: with velocity → `tune`, each slid-into note's velocity moves the pitch and it glides there. This works on ACID's own MIDI channel (1–8) and on channel 10, where the drum map plays ACID from its note.
+- **Basslines from the TAKT:** on each step, velocity sets the accent (e.g. 127 accented, 40 not) and GATETIME sets the slide: a step recorded at GATETIME `tiE` (TAKT custom firmware) glides into the track's next note, every other step plays as a new note. A TAKT track always sends the same MIDI note, so the pitch comes from:
+  - **velocity:** a velocity amount on `tune` (and a `scale` to snap the pitch to notes): each step's velocity sets its pitch (`octv` gives octave jumps, `5th` roots and fifths). Accent then follows velocity too (loud steps are high and accented), so turn `accnt` down if you don't want that,
+  - **several tracks:** set several TAKT tracks to ACID's MIDI channel, each on its own note (one track per pitch), or
+  - **CV:** a TAKT CV output (on its scale page) into this channel's CV jack, with a CV amount on `tune` and the same `scale`.
 - `aDec`: the note sounds while the gate (the MIDI note) is held, then fades out over `aDec` (0 = cut at once, like a 303).
 - `drive` and `dType`: the same drive curves as the drums (section 10), after the filter.
 - `scale`: snaps `tune`, including its CV, velocity and matrix modulation, to the notes of a scale. The MIDI note is added afterwards, so it sets the key: with `major` and a held MIDI G, random CV on `tune` plays G major. Without MIDI the key is C. A pitch resting between two notes stays on one instead of flickering, and between two notes equally near it takes the lower one. Combined with `slide`, a stepped CV glides from note to note.
@@ -318,6 +324,8 @@ A new algorithm after SHAKERS for basslines from the TAKT (or any MIDI sequencer
   | `mixo` | `nni` | mixolydian |
   | `hMin` | `HAr` | harmonic minor |
   | `whole` | `uHt` | whole tone |
+  | `octv` | `oCt` | the root only, in every octave |
+  | `5th` | `5th` | root and fifth |
 
   The TAKT's Root is the MIDI note here: send the root note from the TAKT track that plays the FIRE channel.
 - MIDI notes play as sent with `tune` at 0 (the default); `tune` transposes. A trigger on the gate jack plays the `tune` pitch (C1 at 0) and holds the note only as long as the gate.
@@ -409,7 +417,7 @@ On page A, hold B. After about a third of a second the display shows page B: its
 1. Back up your kits (MIDI dump).
 2. Power on holding SETUP + MASTER (firmware update mode, as in the [official manual](https://www.flame-instruments.de/flame2/downloads.html#fire)).
 3. Send [`FlameFireV1_07_custom.syx`](FlameFireV1_07_custom.syx).
-   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 6,696 messages.
+   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 6,727 messages.
 4. Upload the four samples (below).
 
 ### Uploading the samples
@@ -430,7 +438,7 @@ Flash the original `FlameFireV1_07.syx` the same way. Stock ignores samples 5–
 
 - Kits saved with this firmware will not load correctly on stock.
 - On stock or older builds, the knob mode `offs` loads as `pick`.
-- The scales changed to the TAKT's (section 15): a kit saved on an earlier build with a `scale` set (ACID, MODAL, xDRUM) comes back on another scale. Set it again.
+- The `scale` list changed (the TAKT's scales, then `octv` and `5th` added): a kit saved on an earlier build with a `scale` set (ACID, MODAL, xDRUM) can come back on a neighbouring scale. Set it again.
 - MODAL no longer has `drive`; `bits` moved into its place. A kit saved with MODAL on an earlier build reads its old `drive` value as `bits` here: set `bits` again.
 - STRING was removed to make room. The algorithms after it moved down by one (SHAKERS, ACID, then CYMBAL last), so kits from earlier builds that use STRING, SHAKERS or ACID load with the wrong instrument there.
 - A kit that uses MODAL will not load correctly on stock or on the earlier builds. Ring and swing are ignored there. A kit that uses SHAKERS, ACID, CYMBAL or xDRUM also needs this build. Stock and older builds ignore the input assign (every instrument plays from both). Stock and older builds ignore dType and FM-DRUM's drive and play stock.
