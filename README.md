@@ -43,6 +43,7 @@ Both builds are tested on hardware. Feedback and bug reports are welcome (open a
 - **xDRUM:** an additive drum from six sine partials: kicks, toms, congas, wood blocks, marimba, bells and gongs from one voice, with skin / liquid / metal ratios, a pitch sweep, a morph from clean to noisy, a wavefolder, drive with the dType curves and the scale quantizer.
 - **Input assign:** a third VOLUME page sets per instrument whether it plays from MIDI, its jacks, both or neither. A MIDI-played instrument leaves its CV jack free for the matrix, and double hits from MIDI plus gates are gone.
 - **PAGE + knob to the centre:** on the CV and PANNING pages, hold PAGE and turn a knob to reset it to the centre (no modulation, pan centre).
+- **Edit the other part silently:** on page A, hold B to see and edit part B while you keep hearing A. Let go and you are back on A. On page B, hold A for the reverse.
 
 **TAKT** (details in [TAKT.md](TAKT.md)):
 

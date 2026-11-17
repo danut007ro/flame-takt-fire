@@ -389,12 +389,27 @@ On the CV menu (all its pages: the velocity and CV amounts, the matrix views and
 - A short tap of PAGE on the CV menu still flips the page, now when you let go.
 - On the edit pages A and B, holding PAGE still opens the knob-recording clear (section 9). On VOLUME and MORPH, PAGE held + turning a recorded knob clears its recording (section 9), and on VOLUME a PAGE tap flips the page when you let go. MASTER is unchanged.
 
+### 20. Edit the other part silently (hold B on page A)
+
+On page A, hold B. After about a third of a second the display shows page B: its values, both of its pages and its value bars, with `(B)` at the end of the header. The knobs now edit B, but you keep hearing A, so nothing changes in the sound while you set B up. Let go of B and you are back on page A. You stay on A even if you turned nothing.
+
+- It works both ways: on page B, hold A to edit A while you hear B (the header shows `(A)`).
+- A short tap of B still switches to page B, as before.
+- Turning a knob before page B shows still edits A, as before. Wait for the B page.
+- While B is shown:
+  - PAGE flips between B's two pages.
+  - SETUP randomizes B (section 3), silently. Pressing SETUP before page B shows randomizes B too, then page B shows.
+  - Pressing A copies B into A (the usual copy). You land on page A and hear the copy.
+  - FIRE plays as usual.
+  - Any other button first takes you back to page A, then does its usual job.
+- Holding B on page A never starts a knob recording (section 9). Lanes already recorded on A keep playing while you look at B.
+
 ## Install
 
 1. Back up your kits (MIDI dump).
 2. Power on holding SETUP + MASTER (firmware update mode, as in the [official manual](https://www.flame-instruments.de/flame2/downloads.html#fire)).
 3. Send [`FlameFireV1_07_custom.syx`](FlameFireV1_07_custom.syx).
-   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 6,680 messages.
+   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 6,696 messages.
 4. Upload the four samples (below).
 
 ### Uploading the samples
