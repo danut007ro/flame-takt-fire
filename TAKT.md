@@ -37,8 +37,10 @@ Details:
 
 - The result is tied to the note's position: same seed, same velocities and same dropped notes on every loop.
 - The VARIATION pot works as usual. Turning it right only adds dropped notes.
+- With the pot at 0 (its middle stretch) notes play exactly as stored, and VARIATION never raises a velocity above 127. (Stock raised velocities above 63 by one at 0 and turned 127 into 128, an invalid MIDI velocity that lost the note and could garble MIDI on other tracks.)
 - "On" is exactly stock random.
 - Seeds are saved with the scene and in the SysEx dump. Old scenes start at seed 000.
+- To write what VARIATION plays into the steps, see Capture VARIATION in section 9.
 
 ### 2. Performance mode on the function buttons
 
@@ -160,18 +162,19 @@ On stock, a track on HOLD can't be recorded but you can still play over it live.
 
 SHOTS hits on a HOLD track already let you hear GATETIME. In REC velocity and REC MOD-CV a HOLD track's gate times stay as they are (section 9).
 
-### 9. Record settings: what the VELOCITY and GATETIME knobs record
+### 9. Record settings
 
-Each track has two record settings, on the scale page (press VELO/MOD twice, select the track, push DATA past Range and Mode):
+Each track has three record settings, on the scale page (press VELO/MOD twice, select the track, push DATA past Range and Mode):
 
 | Setting | Values |
 | --- | --- |
 | VELOCITY knob | `uon` (default) / `uoF` / `uAu` |
 | GATETIME knob | `Gon` / `GoF` / `GAu` (default) |
+| Capture VARIATION | `coF` (default) / `con` |
 
 - **on:** the knob records.
 - **off:** the knob doesn't record; notes keep their values.
-- **auto:** in REC velocity and REC MOD-CV, the knob records from the moment you turn it while holding the track, until you let go. In REC NOTE it works as on.
+- **auto:** in REC velocity and REC MOD-CV, the knob records from the moment you turn it while holding the track, until you let go. In REC NOTE it works as on (except while capturing VARIATION, below).
 
 With the defaults, recording works as on stock until you turn GATETIME while holding a track in REC velocity or REC MOD-CV.
 
@@ -182,14 +185,33 @@ With the defaults, recording works as on stock until you turn GATETIME while hol
 | REC MOD-CV | the modulation | the gate time of each note the playhead passes |
 
 - **REC NOTE:** notes go where you play them. A hit on or near an old note (within half a step of the QUANTIZE / BEAT grid) keeps that note's velocity or gate time when that knob is off. New notes always take the knobs. A single note's gate is how long you hold the button. MIDI notes keep their own velocity, or the old note's with `uoF`.
-- **REC velocity and REC MOD-CV** change existing notes only. A gate time is written as a SHOTS hit writes it: GATETIME × the BEAT interval (the QUANTIZE interval, if the track has one). `tiE` ties the note (section 13). GATETIME on `OFF` removes the note, and so does VELOCITY at 0 in REC velocity. You hear each change at once. On a HOLD track you hear the velocity and nothing is written.
+- **REC velocity and REC MOD-CV** change existing notes only, and only on tracks you hold (stock REC velocity wrote the played velocity back into every track, baking VARIATION in). A gate time is written as a SHOTS hit writes it: GATETIME × the BEAT interval (the QUANTIZE interval, if the track has one). `tiE` ties the note (section 13). GATETIME on `OFF` removes the note, and so does VELOCITY at 0 in REC velocity. You hear each change at once. On a HOLD track you hear the velocity and nothing is written.
 - **With `Gon`,** gates are written from the moment you hold the track: set GATETIME first, then record.
 - The settings are saved with the scene. A track saved with the `uEL.` / `rEC.` dot of earlier versions opens as `uoF` / `GoF`.
 
 **REC gate:** in REC velocity, push DATA to switch to REC gate (the display shows `GAt`, and the NOTE and MOD-CV LEDs blink in turn); push again to go back (`uEL`). It works like REC velocity but writes only gate times: hold a track and each note the playhead passes gets the GATETIME position (`tiE` ties, `OFF` removes the note), whatever the track's record settings. Velocities and timing stay. Leaving REC velocity ends it.
 
+**Capture VARIATION:** with `con` on a track whose VARIATION is on (any state), holding the track writes what VARIATION plays into the steps the playhead passes. Hold only over the part you want; hold again later for another part.
+
+- **REC NOTE:** a snapshot. Holding the track records no new notes. Notes VARIATION dropped are removed, and the kept notes get velocities per `u`.
+- **REC velocity:** velocities only. Dropped notes stay as they are.
+
+| Velocity setting | Kept notes | Dropped notes (REC NOTE) |
+| --- | --- | --- |
+| `uon` | the velocity VARIATION played | removed |
+| `uoF` | keep their velocity (REC velocity: nothing captured) | removed |
+| `uAu` | the played velocity until you turn VELOCITY, then the knob | removed until you turn VELOCITY, then they come back with the knob velocity |
+
+- Gates follow `G` as in REC velocity: `GAu` writes only once you turn GATETIME, `Gon` from the moment you hold, `GoF` never. VARIATION doesn't change gates, so leave GATETIME alone to keep them. Turning it to `tiE` over some notes adds slides while capturing.
+- BEAT, SHOTS and the VELOCITY knob play no part (except `uAu` once turned).
+- While you hold, each step is captured once: when the loop comes round again it plays what was captured.
+- VARIATION would vary the captured velocities again, so to hear the snapshot set the pot to 0 (you can do it before letting go) or switch the track's VARIATION off.
+- With `coF`, or with VARIATION off, REC NOTE and REC velocity work as usual, so you can still record new notes or set velocities by hand on a varied track.
+
 **Examples:**
-- **Add ties to a finished line:** REC gate: hold the track and turn GATETIME to `tiE` over the notes that should slide, and away from it elsewhere. Or with record settings: `uoF` or `uAu`, gate on the default `GAu`. In REC velocity, hold the track and turn GATETIME to `tiE` over the notes that should slide, and away from it elsewhere. Timing and velocities stay.
+- **Keep a variation you like:** `con` and the defaults; in REC NOTE hold the track over the bars to keep, leaving GATETIME alone. Then set the VARIATION pot to 0.
+- **Only the gaps of a variation:** the same with `uoF`: your velocities stay.
+- **Add ties to a finished line:** in REC gate (or REC velocity with `uoF`), hold the track and turn GATETIME to `tiE` over the notes that should slide, and away from it elsewhere. Timing and velocities stay.
 - **Re-do the dynamics:** the defaults in REC velocity, leaving GATETIME alone.
 - **Re-record the groove:** `uoF` and `GoF` in REC NOTE. Notes move to where you play them and keep their velocity and gate time.
 - **Record modulation only:** the defaults in REC MOD-CV, leaving GATETIME alone (or `GoF`).
@@ -255,8 +277,9 @@ A track's CV output can play notes in a key (1 V/octave) instead of a smooth vol
 | Mode | the selected track | `FrE` / `5-H` | `FrE` follows the value all the time; `5-H` (sample & hold) takes the value when the track plays a note and keeps that note until its next one |
 | Velocity record | the selected track | `uon` / `uoF` / `uAu` | whether the VELOCITY knob records: on, off, auto (section 9) |
 | Gate record | the selected track | `Gon` / `GoF` / `GAu` | whether the GATETIME knob records: on, off, auto (section 9) |
+| Capture VARIATION | the selected track | `coF` / `con` | REC NOTE / REC velocity record what VARIATION plays (section 9) |
 
-- **A track:** press a track button. The display shows its Range, and a push steps through Range, Mode and the two record settings (section 9). Only that track's LED is lit, as on the VELO/MOD page (it's the same selected track). Tracks on `oFF` (the default) are not touched, so drum tracks keep their velocity CV.
+- **A track:** press a track button. The display shows its Range, and a push steps through Range, Mode and the three record settings (section 9). Only that track's LED is lit, as on the VELO/MOD page (it's the same selected track). Tracks on `oFF` (the default) are not touched, so drum tracks keep their velocity CV.
 - **A pattern:** press its pattern key. The display shows its Transpose, and pushes go on to its Scale, its Root and back. Its LED blinks fast and the track's LED stays lit. Nothing switches: the playing pattern goes on, so you can set B's key while A plays. Press the same pattern key again (and let go without turning DATA), or any track button, to go back to the track.
 - **Changes play at once, or on release:** after a tap on a pattern key, turning DATA changes that pattern's key right away. If you keep the pattern key held while you turn DATA (Transpose, Scale or Root), the display shows the new setting but the pattern keeps playing the old one until you let go. Use it to set up a key change or a transposition on the pattern that's playing and drop it in on a beat. Either way, a note that is already sounding is never retuned (see below).
 - **On this page the pattern keys don't switch patterns.** Leave the page (VELO/MOD again, or any menu) to switch. PLAY + pattern keys (chain entry) and CLEAR / COPY / SWAP work as usual.
@@ -292,7 +315,7 @@ GATETIME has a new position after 100%: `tiE`. A SHOTS hit recorded there ties i
 
 1. Back up your scenes first (SysEx dump).
 2. Power on holding MOD-CV + TRACK 8. The display shows `UPd`.
-3. Send [`FlameTaktV1_7_2_custom.syx`](FlameTaktV1_7_2_custom.syx) with a gap of 20 ms between messages. The file is 2,912 messages.
+3. Send [`FlameTaktV1_7_2_custom.syx`](FlameTaktV1_7_2_custom.syx) with a gap of 20 ms between messages. The file is 2,954 messages.
 
 ### Going back to stock
 
