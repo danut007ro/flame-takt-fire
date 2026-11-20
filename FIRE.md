@@ -419,7 +419,7 @@ A new algorithm after xDRUM: five-note chords for stabs, keys and pads, played f
 | Page | Parameters |
 | --- | --- |
 | Page 1 | level, tune, chord, invrt, wave, decay, reso, cutof |
-| Page 2 | type, envMd, detun, strum, notes, spred, scale, aDec |
+| Page 2 | type, envMd, detun, strum, slide, spred, scale, aDec |
 
 - `tune`: the chord's root. At 0.25 it is C3. A MIDI note sets the key: only its name counts (C, G, A …, in any octave), so `tune` keeps the octave. Without MIDI the key is C.
 - `chord`: the chord shape, shown on the display.
@@ -428,12 +428,12 @@ A new algorithm after xDRUM: five-note chords for stabs, keys and pads, played f
 - **Chords from the TAKT:** send one note on CHORD's MIDI channel (it sets the key), set a `scale`, and put a velocity amount on `tune`: each step's velocity picks the chord, always in key. A TAKT CV track into the CV jack with a CV amount on `tune` does the same.
 - `invrt`: the inversion. In the middle the chord plays as listed. Turning up moves the lowest notes up an octave one by one (higher, brighter), turning down moves the highest notes down. In between, a note plays at both octaves, so a CV on `invrt` sweeps smoothly.
 - `wave`: one shape that changes as you turn: square-like at 0 (hollow, reedy), triangle in the middle (soft), towards the end a brighter ramp, and a saw at full. It snaps to the pure shape near 0, the middle and the end. The level stays the same.
-- `notes`: how many notes play, shown on the display. `1 nt` the root, `2 nt` root and fifth, `3 nt` a triad, `4 nt` adds the seventh (or the top note), `5 nt` adds the bass an octave down. Notes come and go with a short fade, so it can be modulated. Fewer notes also use less CPU.
+- `slide`: when the chord changes (the `chord` knob, a new step of the scale, a MIDI note, a CV, the voicing), the notes glide to the new chord instead of jumping, each to the note in the same place (lowest to lowest, and so on up), like a pad changing chords. At 0 they jump; turning up makes the glide longer, up to about half a second. A new trigger doesn't stop a glide.
 - `spred`: the voicing, shown on the display: `close` (tight, a keyboard stab), `open`, `wide`, `wider`, `huge`. The bass stays in place and the upper notes move up by octaves, for open, orchestral chords.
 - `detun`: each inner note gets a detuned twin, from clean to a wide supersaw-like stab. The lowest and highest notes stay clean.
 - `strum`: the notes start one after another, from the lowest, up to 150 ms apart (a quick strum at small settings, an arpeggio at full). A short trigger still plays the whole roll, and each note plucks the filter.
 - `type`: the filter, as on ACID (`LP24`, `LP18`, `LP12`, `BP`, `HP`) plus `NOTCH`, a hollow phaser-like cut that moves with the cutoff. `cutof`, `reso`, `envMd` (how far the filter envelope opens) and `decay` (the filter envelope).
-- `aDec`: the fade after the gate. From a jack trigger CHORD plays a stab that fades with `aDec`; a held MIDI note holds the chord.
+- `aDec`: the fade after the gate. From a jack trigger CHORD plays a stab that fades with `aDec`; a held MIDI note holds the chord. The fade is exponential, from a click to a long tail. At the very top of the knob there is no fade: after one trigger the chord holds for ever (a drone); turn `aDec` down to let it fade.
 - Velocity makes the chord louder and brighter.
 - Everything except `type` can be modulated. Randomize leaves level, type and scale alone. Selecting it loads a minor-7th stab (C3, saw).
 
@@ -442,7 +442,7 @@ A new algorithm after xDRUM: five-note chords for stabs, keys and pads, played f
 1. Back up your kits (MIDI dump).
 2. Power on holding SETUP + MASTER (firmware update mode, as in the [official manual](https://www.flame-instruments.de/flame2/downloads.html#fire)).
 3. Send [`FlameFireV1_07_custom.syx`](FlameFireV1_07_custom.syx).
-   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 7,006 messages.
+   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 7,015 messages.
 4. Upload the four samples (below).
 
 ### Uploading the samples
@@ -472,7 +472,8 @@ Flash the original `FlameFireV1_07.syx` the same way. Stock ignores samples 5–
 - If you use CV on Level together with a negative velocity Level amount, soft hits play at the absolute value. Velocity-only Level behaves like stock.
 - BASSDRUM and T-BRIDGE, page 2 pot 3: amounts above about +0.5 respond a bit differently from stock.
 - Knob recording: saving a single instrument stores the step that is playing, not the knob value.
-- CPU: ACID, xDRUM and CHORD use no CPU while they are silent, so a kit has more room between their notes. A kit full of heavy instruments can still run out while everything plays at once: one CHORD channel costs about as much as xDRUM, and `detun` adds a little. If the sound starts to crackle, lower `detun` or `notes` on CHORD, or use a lighter instrument on another channel.
+- CHORD kits saved with the previous build had `notes` where `slide` is now: they load with that value as `slide` (`5 nt`, the usual setting, becomes a long glide). Turn `slide` down to 0 for the old sound.
+- CPU: ACID, xDRUM and CHORD use no CPU while they are silent, so a kit has more room between their notes. A kit full of heavy instruments can still run out while everything plays at once: one CHORD channel costs about as much as xDRUM, and `detun` adds a little. If the sound starts to crackle, lower `detun` on CHORD, or use a lighter instrument on another channel.
 
 ## Credits
 
