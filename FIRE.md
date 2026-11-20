@@ -412,12 +412,37 @@ On page A, hold B. After about a third of a second the display shows page B: its
   - Any other button first takes you back to page A, then does its usual job.
 - Holding B on page A never starts a knob recording (section 9). Lanes already recorded on A keep playing while you look at B.
 
+### 21. CHORD: chords and stabs
+
+A new algorithm after xDRUM: five-note chords for stabs, keys and pads, played from a jack trigger, MIDI or the TAKT.
+
+| Page | Parameters |
+| --- | --- |
+| Page 1 | level, tune, chord, invrt, wave, decay, reso, cutof |
+| Page 2 | type, envMd, detun, strum, notes, spred, scale, aDec |
+
+- `tune`: the chord's root. At 0.25 it is C3. A MIDI note sets the key: only its name counts (C, G, A …, in any octave), so `tune` keeps the octave. Without MIDI the key is C.
+- `chord`: the chord shape, shown on the display.
+  - With `scale` at `off` or `chrom`, 20 fixed shapes: `5`, `maj`, `min`, `sus2`, `sus4`, `aug`, `dim`, `m7b5`, `7`, `7sus4`, `9`, `maj7`, `maj9`, `m7`, `m9`, `m11`, `m6`, `6/9`, `add9`, `quart` (stacked fourths). `tune` moves the shape as it is.
+  - With any other scale, 11 shapes built from the scale: `triad`, `7th`, `9th`, `11th`, `add9`, `6th`, `6/9`, `sus2`, `sus4`, `5th`, `4ths`. `tune` picks the step of the scale, and the chord follows the key by itself: in C major the triads go C, Dm, Em, F, G, Am, Bdim. Any CV, velocity or random modulation on `tune` then plays chords that fit together.
+- **Chords from the TAKT:** send one note on CHORD's MIDI channel (it sets the key), set a `scale`, and put a velocity amount on `tune`: each step's velocity picks the chord, always in key. A TAKT CV track into the CV jack with a CV amount on `tune` does the same.
+- `invrt`: the inversion. In the middle the chord plays as listed. Turning up moves the lowest notes up an octave one by one (higher, brighter), turning down moves the highest notes down. In between, a note plays at both octaves, so a CV on `invrt` sweeps smoothly.
+- `wave`: one shape that changes as you turn: square-like at 0 (hollow, reedy), triangle in the middle (soft), towards the end a brighter ramp, and a saw at full. It snaps to the pure shape near 0, the middle and the end. The level stays the same.
+- `notes`: how many notes play, shown on the display. `1 nt` the root, `2 nt` root and fifth, `3 nt` a triad, `4 nt` adds the seventh (or the top note), `5 nt` adds the bass an octave down. Notes come and go with a short fade, so it can be modulated. Fewer notes also use less CPU.
+- `spred`: the voicing, shown on the display: `close` (tight, a keyboard stab), `open`, `wide`, `wider`, `huge`. The bass stays in place and the upper notes move up by octaves, for open, orchestral chords.
+- `detun`: each inner note gets a detuned twin, from clean to a wide supersaw-like stab. The lowest and highest notes stay clean.
+- `strum`: the notes start one after another, from the lowest, up to 150 ms apart (a quick strum at small settings, an arpeggio at full). A short trigger still plays the whole roll, and each note plucks the filter.
+- `type`: the filter, as on ACID (`LP24`, `LP18`, `LP12`, `BP`, `HP`) plus `NOTCH`, a hollow phaser-like cut that moves with the cutoff. `cutof`, `reso`, `envMd` (how far the filter envelope opens) and `decay` (the filter envelope).
+- `aDec`: the fade after the gate. From a jack trigger CHORD plays a stab that fades with `aDec`; a held MIDI note holds the chord.
+- Velocity makes the chord louder and brighter.
+- Everything except `type` can be modulated. Randomize leaves level, type and scale alone. Selecting it loads a minor-7th stab (C3, saw).
+
 ## Install
 
 1. Back up your kits (MIDI dump).
 2. Power on holding SETUP + MASTER (firmware update mode, as in the [official manual](https://www.flame-instruments.de/flame2/downloads.html#fire)).
 3. Send [`FlameFireV1_07_custom.syx`](FlameFireV1_07_custom.syx).
-   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 6,727 messages.
+   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 7,006 messages.
 4. Upload the four samples (below).
 
 ### Uploading the samples
@@ -441,13 +466,13 @@ Flash the original `FlameFireV1_07.syx` the same way. Stock ignores samples 5–
 - The `scale` list changed (the TAKT's scales, then `octv` and `5th` added): a kit saved on an earlier build with a `scale` set (ACID, MODAL, xDRUM) can come back on a neighbouring scale. Set it again.
 - MODAL no longer has `drive`; `bits` moved into its place. A kit saved with MODAL on an earlier build reads its old `drive` value as `bits` here: set `bits` again.
 - STRING was removed to make room. The algorithms after it moved down by one (SHAKERS, ACID, then CYMBAL last), so kits from earlier builds that use STRING, SHAKERS or ACID load with the wrong instrument there.
-- A kit that uses MODAL will not load correctly on stock or on the earlier builds. Ring and swing are ignored there. A kit that uses SHAKERS, ACID, CYMBAL or xDRUM also needs this build. Stock and older builds ignore the input assign (every instrument plays from both). Stock and older builds ignore dType and FM-DRUM's drive and play stock.
+- A kit that uses MODAL will not load correctly on stock or on the earlier builds. Ring and swing are ignored there. A kit that uses SHAKERS, ACID, CYMBAL, xDRUM or CHORD also needs this build. Stock and older builds ignore the input assign (every instrument plays from both). Stock and older builds ignore dType and FM-DRUM's drive and play stock.
 - On stock and older builds, an instrument set to M1–M6 plays on its direct out only, and a shared direct out plays only one of its instruments.
 - Older builds and stock ignore the CV matrix amounts. Saving a kit on an older build drops them.
 - If you use CV on Level together with a negative velocity Level amount, soft hits play at the absolute value. Velocity-only Level behaves like stock.
 - BASSDRUM and T-BRIDGE, page 2 pot 3: amounts above about +0.5 respond a bit differently from stock.
 - Knob recording: saving a single instrument stores the step that is playing, not the knob value.
-- CPU: with every matrix amount set, all CV inputs moving, and the heaviest stock algorithm on every channel, audio uses about half the CPU time (stock's heaviest kit is about 46%).
+- CPU: ACID, xDRUM and CHORD use no CPU while they are silent, so a kit has more room between their notes. A kit full of heavy instruments can still run out while everything plays at once: one CHORD channel costs about as much as xDRUM, and `detun` adds a little. If the sound starts to crackle, lower `detun` or `notes` on CHORD, or use a lighter instrument on another channel.
 
 ## Credits
 
