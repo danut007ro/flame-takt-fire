@@ -142,7 +142,7 @@ Like QUANTIZE: press SHUFFLE, pick a track with the track buttons, and set its s
 - `GLb` (default) follows the global shuffle. A number replaces it for that track, it is not added. With the global at 65, `000` turns shuffle off for a track.
 - Press SHUFFLE again for the global page, and a third time to go back.
 - It also applies to the notes you hear while recording with SHOTS, but not to the note you play in single-note recording.
-- Saved with the scene. Old scenes start on `GLb` and play as before.
+- Saved with the scene. Stock scenes start on `GLb` and play as on stock.
 - The global shuffle is now applied per note instead of delaying the whole tick, so the clock stays straight. Notes on ticks 7-11 get the full delay, where stock fades it out.
 
 ### 6. Record on a muted track
@@ -187,7 +187,7 @@ With the defaults, recording works as on stock until you turn GATETIME while hol
 - **REC NOTE:** notes go where you play them. A hit on or near an old note (within half a step of the QUANTIZE / BEAT grid) keeps that note's velocity or gate time when that knob is off. New notes always take the knobs. A single note's gate is how long you hold the button. MIDI notes keep their own velocity, or the old note's with `uoF`.
 - **REC velocity and REC MOD-CV** change existing notes only, and only on tracks you hold (stock REC velocity wrote the played velocity back into every track, baking VARIATION in). A gate time is written as a SHOTS hit writes it: GATETIME × the BEAT interval (the QUANTIZE interval, if the track has one). `tiE` ties the note (section 13). GATETIME on `OFF` removes the note, and so does VELOCITY at 0 in REC velocity. You hear each change at once. On a HOLD track you hear the velocity and nothing is written.
 - **With `Gon`,** gates are written from the moment you hold the track: set GATETIME first, then record.
-- The settings are saved with the scene. A track saved with the `uEL.` / `rEC.` dot of earlier versions opens as `uoF` / `GoF`.
+- The settings are saved with the scene.
 
 **REC gate:** in REC velocity, push DATA to switch to REC gate (the display shows `GAt`, and the NOTE and MOD-CV LEDs blink in turn); push again to go back (`uEL`). It works like REC velocity but writes only gate times: hold a track and each note the playhead passes gets the GATETIME position (`tiE` ties, `OFF` removes the note), whatever the track's record settings. Velocities and timing stay. Leaving REC velocity ends it.
 
@@ -260,7 +260,7 @@ Each scene has four fills instead of one.
 
 **In a chain:** while holding PLAY to make a chain, press FILL to add a FILL step. It uses the fill you chose last (turn DATA first, still holding PLAY, to pick another one), and the display counts it like a pattern step. In the chain, a FILL step plays its fill for one full pattern with the FILL LED lit, then the chain goes on. A staged change set to `Ptn.` lands on it, and a pattern key leaves the chain as usual.
 
-The chosen fill and all four fills are saved with the scene and sent in the SysEx dump. Scenes and dumps from before have fills 2–4 empty.
+The chosen fill and all four fills are saved with the scene and sent in the SysEx dump. Stock scenes and dumps have fills 2–4 empty.
 
 ### 12. Scales on the CV outputs
 
@@ -296,7 +296,7 @@ A track's CV output can play notes in a key (1 V/octave) instead of a smooth vol
 - The root picks the notes of the key and doesn't move the octaves: E major in `2-3` uses E F# G# A B C# D# between 1.1 V and 3.1 V, so its lowest note is the C# of octave 2. Tune each VCO so that 0.1 V is a C, and every pattern's root is right.
 - `5-H` makes moving modulation (recorded movement, LFO-like presets) step once per note. A track with no notes never changes its pitch in `5-H`, so leave pure modulation tracks on `FrE`.
 - MIDI isn't affected: tracks still send their own note number from the MIDI menu.
-- Keys and track settings are saved with the scene and in the SysEx dump. Old scenes start with every track on `oFF` and play as before (A is `CHr` root C, B–D `=A`).
+- Keys and track settings are saved with the scene and in the SysEx dump. Stock scenes start with every track on `oFF` and play as on stock (A is `CHr` root C, B–D `=A`).
 - Holding a function button on the scale page (performance mode) brings you back to the same page and setting.
 
 **Example:** open the scale page, press pattern A, push to Scale and set `AEo`, push, `r A` (A minor, for every pattern). Press the bass track and set `1-1`; press the lead and set `2-3`, push, `5-H`. Press pattern B and turn to `r d` (it's still on Root): B is D minor. Chain A A B A and the melody and bass move to D minor on every B. Or leave B on `=A`, push to Transpose and set `t 5`: B plays the same A-minor lines a fourth up.

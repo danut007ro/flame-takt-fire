@@ -24,7 +24,7 @@ Every parameter, and MORPH, has two amounts: one for velocity and one for CV. Bo
 
 - Velocity comes from MIDI, or from the CV jack sampled at the trigger.
 - The same jack also works continuously through the CV amounts. A voice can have velocity dynamics and an LFO or sequence on its jack.
-- Old kits load with their current amounts on the mode they were in, and the other set centred.
+- Stock kits load with their amounts on the mode they were in, and the other set centred.
 
 ### 2. Bits modulation
 
@@ -42,7 +42,7 @@ Hold A (or B) and press SETUP. Every parameter of that part of the selected chan
 
 `mtSel` goes metal, smp1–4 (factory, unchanged), then smp5 to smp8, each one 1/9 of the knob.
 
-- Kits saved before keep the sample they had. The even spacing starts the first time you turn `mtSel`.
+- Stock kits keep the sample they had. The even spacing starts the first time you turn `mtSel`.
 - Factory samples 1–4 cannot be overwritten.
 - An empty slot is silent.
 - Each slot is 24 KB of 8-bit audio (about 0.77 s at 32 kHz). Use `tune` to bring a sample back to its original pitch.
@@ -54,9 +54,9 @@ See [Uploading the samples](#uploading-the-samples).
 - **ring**: fades the metal into Plaits' ring-modulated square and saw metal. Works on the synth metal and on samples.
 - **swing**: fades the VCA into Plaits' swing VCA, softer and more saturated.
 
-At 0 the hihat is the stock sound. Old kits load with both at 0. Both follow velocity, CV, morph and randomize.
+At 0 the hihat is the stock sound. Stock kits load with both at 0. Both follow velocity, CV, morph and randomize.
 
-**Mute groups:** the HIHAT's mute knob (page 2, `mute`) is now a group: `noMtG` or `MtG1`–`MtG8`, shown on the display. A hit on any HIHAT or CYMBAL in a group cuts every other HIHAT and CYMBAL in that group (on stock it meant "muted by channel N": kits from before need it set again).
+**Mute groups:** the HIHAT's mute knob (page 2, `mute`) is a group: `noMtG` or `MtG1`–`MtG8`, shown on the display. A hit on any HIHAT or CYMBAL in a group cuts every other HIHAT and CYMBAL in that group (on stock it means "muted by channel N": stock kits need it set again).
 
 ### 6. Two new algorithms, after the last stock one
 
@@ -82,7 +82,7 @@ At 0 the hihat is the stock sound. Old kits load with both at 0. Both follow vel
 - `inst` picks the instrument and the display shows its name: maraca (`marac`), cabasa, sekere, tambourine, sleigh bells, bamboo chimes, angklung, coke can, sticks (`stix`), crunch, big rocks, little rocks, coins in a mug (`mug`), water drops, guiro and wrench.
 - A trigger is one shake. While the gate is held, `shake` keeps shaking: 0 gives single shakes only, higher keeps it rattling. On guiro and wrench it sets the speed of the scrape.
 - `objs`: how many beans, stones or coins. `decay`: how long a shake lasts. Both play the measured instrument in the middle.
-- `tune` transposes all the resonances: a pitch on the tuned ones (angklung is a real scale), a size on the others. Resonances fade out between 12 and 17 kHz, so the bright instruments get thinner and go quiet toward the top of the `tune` range (little rocks and sticks from about tune 0.5 to 0.6), and turning `tune` up with `vary` high no longer cuts the sound for a few seconds.
+- `tune` transposes all the resonances: a pitch on the tuned ones (angklung is a real scale), a size on the others. Below the default (0.375) it goes down by up to 3 octaves. Above it, each instrument goes up as far as it can still sound: the top of the knob puts its lowest resonance near 13 kHz (up to 5 octaves for the low ones like coke can, about half an octave for little rocks), so every instrument plays over the whole knob. The highest resonances fade out above 12 kHz, so the bright instruments get thinner toward the top.
 - `vary`: how much the resonances jump on each collision. In the middle each instrument is as measured, at 0 nothing jumps, above the middle they jump more, also on the instruments that don't jump by themselves.
 - Velocity sets how hard it is shaken.
 - Water drops only come at random while shaking, so a single short trigger is often silent. Hold the gate with some `shake`.
@@ -93,18 +93,18 @@ Instruments 1–4 can be modulated by CV1–CV4 at the same time, and instrument
 
 On the CV page, turn DATA. The header goes VELO, CV1, CV2, CV3, CV4 (CV5–CV8 on instruments 5–8). The pots edit the set shown in the header. All of the sets are applied together.
 
-- VELO and the instrument's own jack are the same two sets as before.
+- VELO and the instrument's own jack are the two sets of section 1.
 - The other three jacks are continuous CV only. Velocity still comes from the instrument's own jack at its own trigger, and a CV on another jack does not trigger.
 - Level works from any jack.
 - Morph still uses velocity and the own CV.
-- With the new amounts centred, it sounds as before.
+- With the matrix amounts centred, only the instrument's own jack and velocity modulate it.
 
 **Randomize on the CV page:** hold CV and press SETUP to nudge every amount of the input shown in the header by up to ±15%. The other inputs are left alone. Level, and the hihat's decay, hold and mute group, are skipped.
 
 **Storage:**
 
 - The extra amounts are saved with the kit and in the kit dump (the dump is 12 messages longer).
-- Kits from earlier builds load with them centred.
+- Stock kits load with them centred.
 - Single instruments do not store them, only kits do.
 - Changing the algorithm resets them like the other amounts.
 - A dump from this build still loads on stock. Stock ignores the extra messages.
@@ -135,6 +135,7 @@ Record knob movements as steps on the A and B pages of the selected instrument. 
 - Loops stay on the bar grid, so a half-bar and a 2-bar knob stay in line. Bars are counted as 4/4, whatever the TAKT pattern length.
 - Recording again overwrites a recorded knob where you turn it; its length stays.
 - Stop holds the values, and the next Start plays from bar 1. Recording while stopped makes nothing.
+- If a Start comes while you are recording (the TAKT restarted), the recording starts again from bar 1, as if you had pressed the button at the Start. Knobs that already had a loop keep what you recorded into them.
 - Triggers don't move the steps. Without clock for one second, the FIRE goes back to one step per trigger.
 
 **Recording on hits: `(rec lock)` and `(rec s&h)`.** While holding A (or B), push DATA to change how this recording works. Each push goes to the next mode, and the header shows which one. Each instrument remembers its last mode per part: the next time you hold A (or B) on it, the recording starts in that mode (forgotten when you load a kit or an instrument, change the algorithm or power off):
@@ -162,7 +163,10 @@ Record knob movements as steps on the A and B pages of the selected instrument. 
 - Letting go of A keeps you on the screen. A short tap of A without turning anything still goes to page A, and A + B (copy) or A + SETUP (randomize) still work as long as no knob was turned.
 - Ideas: morph `(rec lock)` for a different A↔B blend on chosen hits, pan `(rec s&h)` for hats that jump around the stereo field, volume `(rec)` for swells and fades.
 - A recorded knob's value bar and pickup are at its knob; its name fills with the position. Turning it later shifts the movement (`(rec)`: heard at once; `lock` / `s&h`: at the next hit).
-- **Clearing:** hold PAGE and turn a recorded knob (on PANNING an unrecorded knob still goes to the centre, section 19); PAGE + A clears every recording of that screen. On VOLUME, a PAGE tap now flips the page when you let go.
+- **Clearing** works as on the edit pages: hold PAGE for 400 ms (header `MORPH (clr)`, `PAN (clr)` or `VOLUME (clr)`; until then the knobs work as usual).
+  - Turn a recorded knob: its recording is cleared, back to its knob value (header `(clr 3)` for instrument 3).
+  - Press A or DATA: every recording of that screen (`(clr all)`).
+  - Let go of PAGE to close. On PANNING, an unrecorded knob turned while the menu is open goes to the centre (section 19). On VOLUME, a short PAGE tap still flips the page.
 - Volume and pan recordings move the main mix only (as the knobs do). The momentary edit doesn't include them. A kit save stores the knob values.
 
 **Without clock** (one step per trigger):
@@ -202,7 +206,7 @@ Every instrument with a `drive` knob gets a `dType` knob that picks how the driv
 
 The display shows the type:
 
-- `stock`: the original soft saturation. At this setting the instrument sounds exactly as before.
+- `stock`: the original soft saturation. At this setting the instrument sounds exactly as on stock.
 - `hard`: a hard clip. Push `drive` up and a kick turns into the square, buzzing gabber kick, tail included.
 - `fold`: the wave folds back on itself instead of flattening. Metallic, and the harmonics move as the sound decays.
 - `asym`: the negative half saturates at a quarter of the level. A buzzy, fat sound with strong even harmonics.
@@ -212,7 +216,7 @@ The display shows the type:
 
 - **dType blends.** The five types sit at the start, ¼, ½, ¾ and the end of the knob, and every position in between is a mix of the two neighbouring types. So as soon as you turn it away from `stock`, a little of `hard` comes in, and halfway between two types you hear half of each. The display shows the nearest type, so it can say `stock` while you already hear some `hard`. To hear one type alone, set the knob right on it.
 - dType can be modulated by velocity and CV like any other knob (and by the CV matrix). A CV sweeps smoothly from one type to the next.
-- Randomize moves it too. Old kits and instruments load on `stock`.
+- Randomize moves it too. Stock kits and instruments load on `stock`.
 - On xCLAP, `drive` (stock) only works through its velocity or CV amount, so dType needs that amount set to be heard.
 - The new types sound denser and louder than `stock` at the same `drive` (a hard-clipped kick at full drive is about 3 times the average level), but never go past full level. Turn the instrument's level down if it stands out too much.
 
@@ -242,19 +246,19 @@ On page A, page B or the CV menu, hold MORPH and turn knobs: the sound changes w
 - Volume, panning, the output and input settings are not part of it.
 - Saving a kit while latched saves the sound from before the edit (or from the last MORPH + VOLUME), amounts and matrix included.
 - An instrument whose algorithm you change during the edit is left as it is.
-- In SELECT mode and fire mode, MORPH works as before.
+- In SELECT mode and fire mode, MORPH works as on stock.
 
 ### 12. Drive on FM-DRUM
 
-FM-DRUM had no `drive`. It now has `drive` (page 2, pot 4) and `dType` (page 2, pot 5) inside its voice, like the other drums: the distortion follows its envelope and velocity (softer hits distort less), and the level comes after it.
+Stock FM-DRUM has no `drive`. Here it has `drive` (page 2, pot 4) and `dType` (page 2, pot 5) inside its voice, like the other drums: the distortion follows its envelope and velocity (softer hits distort less), and the level comes after it.
 
-- At `drive` 0 FM-DRUM sounds exactly as before. Old kits load like that.
+- At `drive` 0 FM-DRUM sounds exactly as on stock. Stock kits load like that.
 - The distortion comes in gradually over the first few percent of `drive`.
 - Both can be modulated by velocity and CV; randomize moves them too.
 
 ### 13. Offset knob mode
 
-A third knob mode next to `pick` and `jump`: on the SETUP screen (page 1, pot 5) the knob mode now goes `pick`, `jump`, `offs`.
+A third knob mode next to `pick` and `jump`: on the SETUP screen (page 1, pot 5) the knob mode goes `pick`, `jump`, `offs`.
 
 With `offs`, a knob never has to find its value. Whenever a page opens (A, B, CV, MORPH, VOLUME, PANNING, MASTER), you pick another instrument, load a kit, or the momentary edit, randomize or a knob recording take ends, every knob starts from where it is and works relative to the value:
 
@@ -272,9 +276,9 @@ While PANNING is held you can also line knobs up with their values:
 - Let go of PANNING: a knob that is lined up takes exactly its position as the value. From then on it works like a normal knob, and its ends reach 0 and the maximum. The value moves by the small difference (at most about 1.5%) at that moment. Knobs that aren't lined up keep working relative to their value.
 
 - A short tap of PANNING, without turning a knob, still opens the PANNING screen (when you let go).
-- In `pick` and `jump` mode, PANNING works as before.
+- In `pick` and `jump` mode, PANNING works as on stock.
 - Knob recording records the values that come out; knob moves while PANNING is held aren't recorded.
-- The SETUP screen itself uses its knobs as before.
+- The SETUP screen itself uses its knobs as on stock.
 
 ### 14. Pick marker
 
@@ -351,7 +355,7 @@ A new algorithm after ACID, for the long, shimmering cymbals the hihat doesn't d
 
 ### 17. xDRUM: an additive drum
 
-The last algorithm: a tuned drum built from six sine partials. One voice goes from a deep kick through toms, congas and wood blocks to marimba, bells, gongs and noisy hits, and every step in between can be modulated.
+A new algorithm after CYMBAL: a tuned drum built from six sine partials. One voice goes from a deep kick through toms, congas and wood blocks to marimba, bells, gongs and noisy hits, and every step in between can be modulated.
 
 | Page | Parameters |
 | --- | --- |
@@ -372,11 +376,11 @@ The last algorithm: a tuned drum built from six sine partials. One voice goes fr
 
 ### 18. Input assign: MIDI, CV, both or none (VOLUME page 3)
 
-PAGE on the VOLUME menu now goes through three pages: the levels, the outputs (section 8), and `INP ASSIGN`. On page 3 each knob sets what its instrument listens to. The cell shows the instrument and a letter:
+PAGE on the VOLUME menu goes through three pages: the levels, the outputs (section 8), and `INP ASSIGN`. On page 3 each knob sets what its instrument listens to. The cell shows the instrument and a letter:
 
 | Cell | Setting | The instrument plays from |
 | --- | --- | --- |
-| `TOM:B` | both (the default) | MIDI and its jacks, as before |
+| `TOM:B` | both (the default) | MIDI and its jacks, as on stock |
 | `TOM:M` | MIDI | MIDI notes only |
 | `TOM:C` | CV | its gate and CV jacks only |
 | `TOM:-` | none | neither: only the FIRE button plays it |
@@ -386,24 +390,24 @@ PAGE on the VOLUME menu now goes through three pages: the levels, the outputs (s
 - **The jack stays useful:** with `M`, the instrument ignores its jacks, but its CV jack still modulates the other instruments of its group through the CV matrix (section 7). So you can play an instrument from the TAKT over MIDI and use its CV jack as a free modulation source. It also stops double hits when a sequencer sends both MIDI and gates.
 - Changing the setting ends a note the instrument is holding.
 - Knob recording (section 9) only counts the triggers the instrument takes.
-- Saved with the kit and in the kit dump (one message longer). Kits and dumps from before load with every instrument on `B`.
+- Saved with the kit and in the kit dump (one message longer). Stock kits and dumps load with every instrument on `B`.
 
 ### 19. PAGE + knob: back to the centre
 
-On the CV menu (all its pages: the velocity and CV amounts, the matrix views and the morph amounts) and on PANNING, hold PAGE and turn a knob: its value jumps to the centre, which means no modulation (or the pan centre).
+On the CV menu (all its pages: the velocity and CV amounts, the matrix views and the morph amounts) and on PANNING, hold PAGE and turn a knob: its value jumps to the centre, which means no modulation (or the pan centre). On the CV menu this works at once; on PANNING after PAGE has been held 400 ms (the recording clear opens with it, section 9).
 
-- Each knob resets once per hold. While PAGE is held, the knobs do nothing else, so you can reset several in a row without changing anything by accident.
+- Each knob resets once per hold. While it is active, the knobs do nothing else, so you can reset several in a row without changing anything by accident.
 - When you let go of PAGE, the knobs are picked up again as after a page change: in `pick` mode a reset knob takes over when it passes the centre, in `jump` mode it jumps when you move it, in `offs` mode it goes on from the centre.
-- A short tap of PAGE on the CV menu still flips the page, now when you let go.
-- On the edit pages A and B, holding PAGE still opens the knob-recording clear (section 9). On VOLUME and MORPH, PAGE held + turning a recorded knob clears its recording (section 9), and on VOLUME a PAGE tap flips the page when you let go. MASTER is unchanged.
+- A short tap of PAGE on the CV menu flips the page when you let go.
+- On the edit pages A and B and on PANNING, VOLUME and MORPH, holding PAGE 400 ms opens the knob-recording clear (section 9). MASTER is unchanged.
 
 ### 20. Edit the other part silently (hold B on page A)
 
 On page A, hold B. After about a third of a second the display shows page B: its values, both of its pages and its value bars, with `(B)` at the end of the header. The knobs now edit B, but you keep hearing A, so nothing changes in the sound while you set B up. Let go of B and you are back on page A. You stay on A even if you turned nothing.
 
 - It works both ways: on page B, hold A to edit A while you hear B (the header shows `(A)`).
-- A short tap of B still switches to page B, as before.
-- Turning a knob before page B shows still edits A, as before. Wait for the B page.
+- A short tap of B switches to page B, as on stock.
+- Turning a knob before page B shows still edits A. Wait for the B page.
 - While B is shown:
   - PAGE flips between B's two pages.
   - SETUP randomizes B (section 3), silently. Pressing SETUP before page B shows randomizes B too, then page B shows.
@@ -442,7 +446,7 @@ A new algorithm after xDRUM: five-note chords for stabs, keys and pads, played f
 1. Back up your kits (MIDI dump).
 2. Power on holding SETUP + MASTER (firmware update mode, as in the [official manual](https://www.flame-instruments.de/flame2/downloads.html#fire)).
 3. Send [`FlameFireV1_07_custom.syx`](FlameFireV1_07_custom.syx).
-   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 7,015 messages.
+   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 7,060 messages.
 4. Upload the four samples (below).
 
 ### Uploading the samples
@@ -462,17 +466,13 @@ Flash the original `FlameFireV1_07.syx` the same way. Stock ignores samples 5–
 ## Caveats
 
 - Kits saved with this firmware will not load correctly on stock.
-- On stock or older builds, the knob mode `offs` loads as `pick`.
-- The `scale` list changed (the TAKT's scales, then `octv` and `5th` added): a kit saved on an earlier build with a `scale` set (ACID, MODAL, xDRUM) can come back on a neighbouring scale. Set it again.
-- MODAL no longer has `drive`; `bits` moved into its place. A kit saved with MODAL on an earlier build reads its old `drive` value as `bits` here: set `bits` again.
-- STRING was removed to make room. The algorithms after it moved down by one (SHAKERS, ACID, then CYMBAL last), so kits from earlier builds that use STRING, SHAKERS or ACID load with the wrong instrument there.
-- A kit that uses MODAL will not load correctly on stock or on the earlier builds. Ring and swing are ignored there. A kit that uses SHAKERS, ACID, CYMBAL, xDRUM or CHORD also needs this build. Stock and older builds ignore the input assign (every instrument plays from both). Stock and older builds ignore dType and FM-DRUM's drive and play stock.
-- On stock and older builds, an instrument set to M1–M6 plays on its direct out only, and a shared direct out plays only one of its instruments.
-- Older builds and stock ignore the CV matrix amounts. Saving a kit on an older build drops them.
+- On stock, the knob mode `offs` loads as `pick`.
+- A kit that uses MODAL, SHAKERS, ACID, CYMBAL, xDRUM or CHORD needs this firmware; it will not load correctly on stock. Stock ignores ring and swing, the input assign (every instrument plays from both), dType and FM-DRUM's drive, and plays stock.
+- On stock, an instrument set to M1–M6 plays on its direct out only, and a shared direct out plays only one of its instruments.
+- Stock ignores the CV matrix amounts. Saving a kit on stock drops them.
 - If you use CV on Level together with a negative velocity Level amount, soft hits play at the absolute value. Velocity-only Level behaves like stock.
 - BASSDRUM and T-BRIDGE, page 2 pot 3: amounts above about +0.5 respond a bit differently from stock.
 - Knob recording: saving a single instrument stores the step that is playing, not the knob value.
-- CHORD kits saved with the previous build had `notes` where `slide` is now: they load with that value as `slide` (`5 nt`, the usual setting, becomes a long glide). Turn `slide` down to 0 for the old sound.
 - CPU: ACID, xDRUM and CHORD use no CPU while they are silent, so a kit has more room between their notes. A kit full of heavy instruments can still run out while everything plays at once: one CHORD channel costs about as much as xDRUM, and `detun` adds a little. If the sound starts to crackle, lower `detun` on CHORD, or use a lighter instrument on another channel.
 
 ## Credits
