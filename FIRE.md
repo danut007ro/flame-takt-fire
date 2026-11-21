@@ -431,7 +431,7 @@ A new algorithm after xDRUM: five-note chords for stabs, keys and pads, played f
   - With any other scale, 11 shapes built from the scale: `triad`, `7th`, `9th`, `11th`, `add9`, `6th`, `6/9`, `sus2`, `sus4`, `5th`, `4ths`. `tune` picks the step of the scale, and the chord follows the key by itself: in C major the triads go C, Dm, Em, F, G, Am, Bdim. Any CV, velocity or random modulation on `tune` then plays chords that fit together.
 - **Chords from the TAKT:** send one note on CHORD's MIDI channel (it sets the key), set a `scale`, and put a velocity amount on `tune`: each step's velocity picks the chord, always in key. A TAKT CV track into the CV jack with a CV amount on `tune` does the same.
 - `invrt`: the inversion. In the middle the chord plays as listed. Turning up moves the lowest notes up an octave one by one (higher, brighter), turning down moves the highest notes down. In between, a note plays at both octaves, so a CV on `invrt` sweeps smoothly.
-- `wave`: one shape that changes as you turn: square-like at 0 (hollow, reedy), triangle in the middle (soft), towards the end a brighter ramp, and a saw at full. It snaps to the pure shape near 0, the middle and the end. The level stays the same.
+- `wave`: one shape that changes as you turn: square-like at 0 (hollow, reedy), nearly a sine in the middle (soft), towards the end a brighter ramp, and a saw at full. It snaps to the pure shape near 0, the middle and the end. The level stays the same. The corners are rounded, so high chords stay clean instead of turning harsh.
 - `slide`: when the chord changes (the `chord` knob, a new step of the scale, a MIDI note, a CV, the voicing), the notes glide to the new chord instead of jumping, each to the note in the same place (lowest to lowest, and so on up), like a pad changing chords. At 0 they jump; turning up makes the glide longer, up to about half a second. A new trigger doesn't stop a glide.
 - `spred`: the voicing, shown on the display: `close` (tight, a keyboard stab), `open`, `wide`, `wider`, `huge`. The bass stays in place and the upper notes move up by octaves, for open, orchestral chords.
 - `detun`: each inner note gets a detuned twin, from clean to a wide supersaw-like stab. The lowest and highest notes stay clean.
@@ -441,12 +441,16 @@ A new algorithm after xDRUM: five-note chords for stabs, keys and pads, played f
 - Velocity makes the chord louder and brighter.
 - Everything except `type` can be modulated. Randomize leaves level, type and scale alone. Selecting it loads a minor-7th stab (C3, saw).
 
+### 22. CPU warning dot
+
+When the FIRE runs out of CPU (the audio misses its deadline, which you hear as a crackle), a tiny 2 × 2 dot lights in the top-right corner of the screen for one second. If it keeps happening, the dot stays on. Use it to find the moment a kit gets too heavy, then lighten it (see CPU under Caveats).
+
 ## Install
 
 1. Back up your kits (MIDI dump).
 2. Power on holding SETUP + MASTER (firmware update mode, as in the [official manual](https://www.flame-instruments.de/flame2/downloads.html#fire)).
 3. Send [`FlameFireV1_07_custom.syx`](FlameFireV1_07_custom.syx).
-   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 7,060 messages.
+   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 7,138 messages.
 4. Upload the four samples (below).
 
 ### Uploading the samples
@@ -473,7 +477,7 @@ Flash the original `FlameFireV1_07.syx` the same way. Stock ignores samples 5–
 - If you use CV on Level together with a negative velocity Level amount, soft hits play at the absolute value. Velocity-only Level behaves like stock.
 - BASSDRUM and T-BRIDGE, page 2 pot 3: amounts above about +0.5 respond a bit differently from stock.
 - Knob recording: saving a single instrument stores the step that is playing, not the knob value.
-- CPU: ACID, xDRUM and CHORD use no CPU while they are silent, so a kit has more room between their notes. A kit full of heavy instruments can still run out while everything plays at once: one CHORD channel costs about as much as xDRUM, and `detun` adds a little. If the sound starts to crackle, lower `detun` on CHORD, or use a lighter instrument on another channel.
+- CPU: every instrument stops using CPU a moment after it goes silent (its gate low and its sound faded out) and wakes on the next trigger, a knob change or a CV change, so a kit has much more room while only a few instruments play. FM-DRUM, COWBELL and CYMBAL then start their oscillators at another point in the cycle, like a free-running analog oscillator; the hit sounds the same. An instrument whose level is turned all the way down keeps running. A kit full of heavy instruments can still run out while everything plays at once: one CHORD channel costs about as much as xDRUM, and `detun` adds a little. If the sound crackles (the dot in the corner lights), lower `detun` on CHORD, or use a lighter instrument on another channel.
 
 ## Credits
 
