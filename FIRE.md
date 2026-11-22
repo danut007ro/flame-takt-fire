@@ -89,21 +89,27 @@ At 0 the hihat is the stock sound. Stock kits load with both at 0. Both follow v
 
 ### 7. CV matrix
 
-Instruments 1–4 can be modulated by CV1–CV4 at the same time, and instruments 5–8 by CV5–CV8. One CV can drive several instruments, and one instrument can take four CVs plus velocity.
+Every instrument can be modulated by all eight CV jacks (CV1–CV8) at the same time. One CV can drive several instruments, and one instrument can take all eight CVs plus velocity and the eight macros (section 23).
 
-On the CV page, turn DATA. The header goes VELO, CV1, CV2, CV3, CV4 (CV5–CV8 on instruments 5–8). The pots edit the set shown in the header. All of the sets are applied together.
+On the CV page, turn DATA. The header goes VELO, CV1–CV8, then M1–M8 (the macros). The pots edit the set shown in the header. All of the sets are applied together.
 
 - VELO and the instrument's own jack are the two sets of section 1.
-- The other three jacks are continuous CV only. Velocity still comes from the instrument's own jack at its own trigger, and a CV on another jack does not trigger.
+- The other seven jacks are continuous CV only. Velocity still comes from the instrument's own jack at its own trigger, and a CV on another jack does not trigger.
 - Level works from any jack.
 - Morph still uses velocity and the own CV.
 - With the matrix amounts centred, only the instrument's own jack and velocity modulate it.
 
-**Randomize on the CV page:** hold CV and press SETUP to nudge every amount of the input shown in the header by up to ±15%. The other inputs are left alone. Level, and the hihat's decay, hold and mute group, are skipped.
+**Route pool:** each amount set away from the centre on another instrument's jack or on a macro is a route. All instruments share 128 routes.
+
+- When all 128 are in use, turning a new amount does nothing and the header shows `(full)` for a second. Amounts already set keep working and can still be changed.
+- An amount left near the centre, where it has no audible effect, for a second gives its route back. PAGE + knob (section 19) gives it back at once.
+- The MACROS screen (section 23) lists the routes of each jack and macro.
+
+**Randomize on the CV page:** hold CV and press SETUP to nudge every amount of the input shown in the header by up to ±15%. The other inputs are left alone. On another instrument's jack or a macro, only the amounts already set are nudged. Level, and the hihat's decay, hold and mute group, are skipped.
 
 **Storage:**
 
-- The extra amounts are saved with the kit and in the kit dump (the dump is 12 messages longer).
+- The matrix and macro amounts and the macro values are saved with the kit and in the kit dump (the dump is 12 messages longer).
 - Stock kits load with them centred.
 - Single instruments do not store them, only kits do.
 - Changing the algorithm resets them like the other amounts.
@@ -123,7 +129,7 @@ Record knob movements as steps on the A and B pages of the selected instrument. 
 
 **Recording:** on page A hold A (on page B hold B); the header shows `(rec)`. Every knob you turn while holding is recorded, and keeps writing until you let go. You hear it live. Only knobs moved more than about 6% after pressing count, so pot noise is ignored.
 
-**Ending with FIRE:** while still holding A (or B), tap FIRE to end the recording right there. FIRE makes no sound while you hold the button, and knobs you turn after the tap aren't recorded. With clock this gives a loop of any length (see below).
+**Ending with FIRE:** while still holding A (or B), press FIRE to end the recording right there. FIRE makes no sound while you hold the button, and knobs you turn after pressing it aren't recorded. With clock, a tap ends the loop on the nearest beat and a hold gives any length in 16ths (see below).
 
 **With MIDI clock** (Clock, Start and Stop on the FIRE's MIDI input):
 
@@ -131,7 +137,10 @@ Record knob movements as steps on the A and B pages of the selected instrument. 
 - Record while the sequencer runs. Pressing A (or B) marks the start of the recording. A knob writes the 16th that is playing as soon as you turn it, and every 16th after that until you let go.
 - So you can press A at the start of a bar, wait, turn a knob near the end of the bar and let go at the bar line: the knob's loop is a whole bar that plays its old value until the point where you turned it, then the new value, and every bar after that sounds the same.
 - A new recorded knob's loop is as long as the time from your A (or B) press to the end of the recording, rounded up to a quarter bar, half a bar, or 1, 2, 3 or 4 bars. Up to an eighth over still rounds down (a bar recorded slightly long stays one bar); the extra steps wrap onto the start. Steps before your first turn, and any you didn't record, keep the knob's previous value.
-- Ended with a FIRE tap, the loop is exactly the 16ths from your A (or B) press to the tap (up to 64), not rounded. A 3- or 5-step loop against the 16-step bar gives a polyrhythm.
+- Ended with FIRE, the loop length is counted from your A (or B) press to the moment you press FIRE:
+  - **Tap FIRE:** whole beats, rounded to the nearest beat. You only have to tap close to the beat: a tap between 2½ and just under 3½ beats after the press gives 3 beats (12 steps). At least 1 beat, at most 16.
+  - **Hold FIRE about ⅓ second:** exactly the 16ths up to the press (up to 64), not rounded. The recording ends when the ⅓ second is up, without waiting for you to let go. A 3-, 5- or 7-step loop against the 16-step bar gives a polyrhythm.
+  - Clock steps and knob turns while FIRE is down change nothing.
 - Loops stay on the bar grid, so a half-bar and a 2-bar knob stay in line. Bars are counted as 4/4, whatever the TAKT pattern length.
 - Recording again overwrites a recorded knob where you turn it; its length stays.
 - Stop holds the values, and the next Start plays from bar 1. Recording while stopped makes nothing.
@@ -148,7 +157,7 @@ Record knob movements as steps on the A and B pages of the selected instrument. 
 
 - Hits are the instrument's gate jack or its MIDI note (as INP allows, section 18). FIRE hits don't count.
 - Turning a knob only arms it. Each hit while you hold A writes the armed knob's value at that hit's 16th; 16ths without a hit stay empty. Only hits while A is held are recorded.
-- The loop length is counted the same way: with clock, from your A press to the last hit, rounded; ended with FIRE, exactly to the tap. Without clock, steps are hits, and the hits before you turned the knob are empty.
+- The loop length is counted the same way: with clock, from your A press to the last hit, rounded; ended with FIRE, to the 16th playing when you press it (a tap: the nearest beat; a hold: exactly). Without clock, steps are hits, and the hits before you turned the knob are empty.
 - **Playback:** the knob changes only at the instrument's hits, just before the hit plays, never in the middle of one. A recorded step plays its value. An empty step plays the knob in `lock` mode (only the recorded hits differ, like parameter locks) or keeps the last recorded value in `s&h` mode (the value steps on and holds until the next recorded hit).
 - **Example:** clock running, hold A, push DATA (`(rec lock)`), turn decay up, let the next hit play, let go. Only that hit has the long decay, every loop.
 - Turning a `lock` / `s&h` knob later moves its value bar but not the sound: the next hit plays with everything shifted by your turn (its recorded values and, in `lock`, the knob value on empty steps). Nothing changes between hits. While you hold A to record, you hear the knob as you turn it.
@@ -159,7 +168,7 @@ Record knob movements as steps on the A and B pages of the selected instrument. 
 
 **Recording MORPH, PAN and VOLUME.** On the MORPH, PANNING and VOLUME (page 1) screens, hold A and turn knobs: each knob is one instrument, so you record the morph (the A↔B mix of the whole sound), the pan or the volume of any of the 8 instruments at once. The header shows `MORPH (rec)` and so on.
 
-- Everything above works the same: DATA cycles `(rec)`, `(rec lock)` and `(rec s&h)` (each screen remembers its last mode), with clock the 16ths, without clock the hits; each knob steps with its own instrument's hits. FIRE ends a loop.
+- Everything above works the same: DATA cycles `(rec)`, `(rec lock)` and `(rec s&h)` (each screen remembers its last mode), with clock the 16ths, without clock the hits; each knob steps with its own instrument's hits. FIRE ends a loop (tap: on the beat, hold: exact 16ths).
 - Letting go of A keeps you on the screen. A short tap of A without turning anything still goes to page A, and A + B (copy) or A + SETUP (randomize) still work as long as no knob was turned.
 - Ideas: morph `(rec lock)` for a different A↔B blend on chosen hits, pan `(rec s&h)` for hats that jump around the stereo field, volume `(rec)` for swells and fades.
 - A recorded knob's value bar and pickup are at its knob; its name fills with the position. Turning it later shifts the movement (`(rec)`: heard at once; `lock` / `s&h`: at the next hit).
@@ -168,6 +177,7 @@ Record knob movements as steps on the A and B pages of the selected instrument. 
   - Press A or DATA: every recording of that screen (`(clr all)`).
   - Let go of PAGE to close. On PANNING, an unrecorded knob turned while the menu is open goes to the centre (section 19). On VOLUME, a short PAGE tap still flips the page.
 - Volume and pan recordings move the main mix only (as the knobs do). The momentary edit doesn't include them. A kit save stores the knob values.
+- The macros record the same way on the MACROS screen (section 23).
 
 **Without clock** (one step per trigger):
 
@@ -184,11 +194,21 @@ Record knob movements as steps on the A and B pages of the selected instrument. 
 - Press A or B: all recordings of that part. Press DATA: all recordings of both parts.
 - Let go of PAGE to close. A short tap of PAGE still flips the page, on release.
 
+**Muting:** hold PAGE and tap FIRE. The header shows `(mute)` at once, without the 400 ms wait. This works on pages A and B, MORPH, PANNING, VOLUME and the MACROS screen.
+
+- Turn a recorded knob about 6% either way: a playing knob mutes, a muted one unmutes. Turning further the same way does nothing; turning back the other way toggles it again, as often as you like while PAGE is held.
+- The header shows the last change: `(mute tuneM)` or `(unmute tuneM)` on the edit pages, `(mute 3)` or `(unmute 3)` for instrument 3 on the other screens.
+- The turns don't change the sound. Knobs without a recording, A, B and DATA do nothing here. Tap FIRE again to go back to clearing (`(clr)`). Let go of PAGE to close.
+- A muted knob's loop keeps running in the background but is not applied: the parameter sits at the knob value, and turning the knob is heard at once. Velocity, CV and the macros still modulate it. Unmuted, the loop comes back at the step it has reached, so it stays on the bar.
+- A muted knob's name fills only in its bottom half.
+- Recording on a muted knob (hold A) writes the loop without being heard; only the value bar follows your hand. The knob stays muted, so unmute it to hear the take.
+- Clearing a knob also unmutes it. A+B copy copies the mutes. Mutes are not saved; loading a kit or changing the algorithm drops them.
+
 **Other:**
 
 - Recorded knobs show their name inverted. The inverted part grows with the loop position.
 - A and B have their own recordings, and A+B copy copies them.
-- MORPH, velocity, CV, the matrix and randomize all work on top of a recording.
+- MORPH, velocity, CV, the matrix, the macros and randomize all work on top of a recording.
 - Only the knobs of parameters the instrument has can be recorded; the others are ignored.
 - Recordings are not saved. Loading a kit, powering off, loading an instrument or changing the algorithm clears them (the last two for that instrument only). Saving a kit stores each recorded knob at its knob value.
 
@@ -242,7 +262,7 @@ On page A, page B or the CV menu, hold MORPH and turn knobs: the sound changes w
 - While holding MORPH you can tap A or B to switch pages and tweak both parts; letting go of MORPH brings back both. Just tap them: holding A (or B) on its own page while turning a knob is the knob recording gesture, and it records here too (the recording stays after the edit).
 - Randomize (hold A or B, press SETUP) works inside the edit, while holding MORPH or latched, and is brought back with the rest.
 - Recorded knobs follow the tweak like a turned knob (the whole movement shifts) and come back to their knob value.
-- The whole kit is restored: all 8 instruments, parts A and B, and everything the CV menu sets: the velocity and CV amounts, the matrix amounts (CV1–CV8) and the morph amounts. One edit covers all of it, wherever you start: hold MORPH on page A, turn knobs, press CV, turn amounts, let go, and both come back. The latch (MORPH + MASTER) and keep (VOLUME) work the same on the CV menu.
+- The whole kit is restored: all 8 instruments, parts A and B, and everything the CV menu sets: the velocity and CV amounts, the matrix and macro amounts (CV1–CV8, M1–M8) and the morph amounts. One edit covers all of it, wherever you start: hold MORPH on page A, turn knobs, press CV, turn amounts, let go, and both come back. The latch (MORPH + MASTER) and keep (VOLUME) work the same on the CV menu.
 - Volume, panning, the output and input settings are not part of it.
 - Saving a kit while latched saves the sound from before the edit (or from the last MORPH + VOLUME), amounts and matrix included.
 - An instrument whose algorithm you change during the edit is left as it is.
@@ -291,14 +311,21 @@ In `pick` mode each value bar also shows where the knob physically is, as a 2-pi
 
 ### 15. ACID: a 303-style bass
 
-A new algorithm after SHAKERS for basslines from the TAKT (or any MIDI sequencer): a saw / square oscillator with a sub, a resonant 4-pole filter with an envelope, accent and slide.
+A new algorithm after SHAKERS for basslines from the TAKT (or any MIDI sequencer): an oscillator from sine through wavefold, saw and square to a thin pulse, with a sub, a resonant 4-pole filter with an envelope, accent and slide.
 
 | Page | Parameters |
 | --- | --- |
 | Page 1 | level, tune, wave, envMd, accnt, decay, reso, cutof |
 | Page 2 | type, slide, aDec, sub, track, drive, dType, scale |
 
-- `wave`: saw at 0, square at 1, blended in between. `sub`: a square an octave down.
+- `wave`: one sweep through the oscillator's shapes, with no jumps:
+  - at 0 a **sine**, for deep sub and 808-style basses;
+  - then a **wavefold** that grows (growly, vocal) and eases back while the wave leans into a ramp;
+  - the ramp brightens into the **saw** (a wide flat spot just before the middle): the classic 303 saw, where a new ACID starts;
+  - the saw blends into the **square** (a flat spot at about three quarters), staying at an even level through the blend;
+  - past the square the **pulse narrows** to a thin, buzzy 1/8 pulse at full (SH-101 style), getting quieter as it thins.
+
+  The sine, saw, square and thinnest pulse have flat spots around them, so they're easy to hit. `sub`: a square an octave down.
 - `cutof`, `reso` (up to self-oscillation), `envMd` (how far the filter envelope opens the filter), `decay` (filter envelope decay), `track` (how much the cutoff follows the note).
 - `type`: the filter's response, shown on the display: `LP24` (round), `LP18` (closest to a 303, the default), `LP12` (brighter), `BP` (thin, nasal), `HP` (only the fizz and the resonance). The types are level-matched, so switching doesn't jump in volume.
 - `accnt`: how strong the accent is. Velocity decides which notes are accented: below 64 none, from 64 up more and more, full at 127. An accented note is louder and brighter and has a shorter filter decay; accents in a row build up, like the 303. At 0 velocity does nothing.
@@ -333,7 +360,7 @@ A new algorithm after SHAKERS for basslines from the TAKT (or any MIDI sequencer
 
   The TAKT's Root is the MIDI note here: send the root note from the TAKT track that plays the FIRE channel.
 - MIDI notes play as sent with `tune` at 0 (the default); `tune` transposes. A trigger on the gate jack plays the `tune` pitch (C1 at 0) and holds the note only as long as the gate.
-- Everything except `type` can be modulated, `scale` too. Randomize leaves level, type and scale alone. Selecting it loads a default acid sound (scale off).
+- Everything except `type` can be modulated, `scale` too. Randomize leaves level, type and scale alone. Selecting it loads a default acid sound (saw, scale off).
 
 ### 16. CYMBAL: ride, crash and 808 cymbal
 
@@ -387,19 +414,20 @@ PAGE on the VOLUME menu goes through three pages: the levels, the outputs (secti
 
 - **MIDI** means the notes on the instrument's MIDI channel, or its note on channel 10: the trigger, the velocity and the note (the pitch of MODAL, ACID, xDRUM and the other tuned instruments). MIDI CCs for volume, pan and morph keep working whatever the setting.
 - **CV** means the instrument's gate jack (trigger and velocity) and the modulation from its own CV jack (its CV amounts and the morph CV).
-- **The jack stays useful:** with `M`, the instrument ignores its jacks, but its CV jack still modulates the other instruments of its group through the CV matrix (section 7). So you can play an instrument from the TAKT over MIDI and use its CV jack as a free modulation source. It also stops double hits when a sequencer sends both MIDI and gates.
+- **The jack stays useful:** with `M`, the instrument ignores its jacks, but its CV jack still modulates the other instruments through the CV matrix (section 7). So you can play an instrument from the TAKT over MIDI and use its CV jack as a free modulation source. It also stops double hits when a sequencer sends both MIDI and gates.
 - Changing the setting ends a note the instrument is holding.
 - Knob recording (section 9) only counts the triggers the instrument takes.
 - Saved with the kit and in the kit dump (one message longer). Stock kits and dumps load with every instrument on `B`.
 
 ### 19. PAGE + knob: back to the centre
 
-On the CV menu (all its pages: the velocity and CV amounts, the matrix views and the morph amounts) and on PANNING, hold PAGE and turn a knob: its value jumps to the centre, which means no modulation (or the pan centre). On the CV menu this works at once; on PANNING after PAGE has been held 400 ms (the recording clear opens with it, section 9).
+On the CV menu (all its pages: the velocity, CV, matrix and macro amounts and the morph amounts) and on PANNING, hold PAGE and turn a knob: its value jumps to the centre, which means no modulation (or the pan centre). On the CV menu this works at once; on PANNING after PAGE has been held 400 ms (the recording clear opens with it, section 9).
 
 - Each knob resets once per hold. While it is active, the knobs do nothing else, so you can reset several in a row without changing anything by accident.
 - When you let go of PAGE, the knobs are picked up again as after a page change: in `pick` mode a reset knob takes over when it passes the centre, in `jump` mode it jumps when you move it, in `offs` mode it goes on from the centre.
 - A short tap of PAGE on the CV menu flips the page when you let go.
-- On the edit pages A and B and on PANNING, VOLUME and MORPH, holding PAGE 400 ms opens the knob-recording clear (section 9). MASTER is unchanged.
+- A matrix or macro amount reset to the centre gives its route back at once (section 7).
+- On the edit pages A and B, on PANNING, VOLUME and MORPH and on the MACROS screen's ALL view, holding PAGE 400 ms opens the knob-recording clear, and PAGE + FIRE the mute menu (section 9). On the MACROS screen's route views, PAGE + knob removes a route (section 23).
 
 ### 20. Edit the other part silently (hold B on page A)
 
@@ -430,10 +458,17 @@ A new algorithm after xDRUM: five-note chords for stabs, keys and pads, played f
   - With `scale` at `off` or `chrom`, 20 fixed shapes: `5`, `maj`, `min`, `sus2`, `sus4`, `aug`, `dim`, `m7b5`, `7`, `7sus4`, `9`, `maj7`, `maj9`, `m7`, `m9`, `m11`, `m6`, `6/9`, `add9`, `quart` (stacked fourths). `tune` moves the shape as it is.
   - With any other scale, 11 shapes built from the scale: `triad`, `7th`, `9th`, `11th`, `add9`, `6th`, `6/9`, `sus2`, `sus4`, `5th`, `4ths`. `tune` picks the step of the scale, and the chord follows the key by itself: in C major the triads go C, Dm, Em, F, G, Am, Bdim. Any CV, velocity or random modulation on `tune` then plays chords that fit together.
 - **Chords from the TAKT:** send one note on CHORD's MIDI channel (it sets the key), set a `scale`, and put a velocity amount on `tune`: each step's velocity picks the chord, always in key. A TAKT CV track into the CV jack with a CV amount on `tune` does the same.
-- `invrt`: the inversion. In the middle the chord plays as listed. Turning up moves the lowest notes up an octave one by one (higher, brighter), turning down moves the highest notes down. In between, a note plays at both octaves, so a CV on `invrt` sweeps smoothly.
-- `wave`: one shape that changes as you turn: square-like at 0 (hollow, reedy), nearly a sine in the middle (soft), towards the end a brighter ramp, and a saw at full. It snaps to the pure shape near 0, the middle and the end. The level stays the same. The corners are rounded, so high chords stay clean instead of turning harsh.
-- `slide`: when the chord changes (the `chord` knob, a new step of the scale, a MIDI note, a CV, the voicing), the notes glide to the new chord instead of jumping, each to the note in the same place (lowest to lowest, and so on up), like a pad changing chords. At 0 they jump; turning up makes the glide longer, up to about half a second. A new trigger doesn't stop a glide.
-- `spred`: the voicing, shown on the display: `close` (tight, a keyboard stab), `open`, `wide`, `wider`, `huge`. The bass stays in place and the upper notes move up by octaves, for open, orchestral chords.
+- `invrt`: the inversion. In the middle the chord plays as listed. Turning up moves the lowest notes up an octave one by one (higher, brighter), turning down moves the highest notes down. The display shows the inversion you hear: `root`, `1st`, `2nd`, `3rd` or `4th`. Most shapes keep a low root an octave under the chord, like a left-hand bass; the name is then the inversion of the notes above it (the right hand), the chord tone at their bottom. Shapes without that low root (9, maj9, m9, m11, 6/9; 9th, 11th, 6/9 and 4ths with a scale) are named by their lowest note.
+  - With `slide` at 0, a note between two octaves plays at both, so a CV on `invrt` sweeps smoothly. With `slide` up, each note glides to its new octave at the slide's speed.
+- `wave`: one sweep through the oscillator's shapes, with no jumps:
+  - at 0 a thin, buzzy **pulse** that widens into a **square** (a flat spot at about a fifth of the knob);
+  - the square softens into a **sine** (a flat spot at about two fifths);
+  - then a **wavefold** grows, glassy, vocal, then metallic, and eases back while the wave leans into a ramp;
+  - the ramp brightens into a **saw** at full.
+
+  The level stays even, and the corners are rounded, so high chords stay clean instead of turning harsh.
+- `slide`: when the chord changes (the `chord` knob, `tune`, a new step of the scale, a MIDI note, a CV, `invrt`, the voicing), the notes glide to the new chord instead of jumping, each to the note in the same place (lowest to lowest, and so on up), like a pad changing chords. At 0 they jump; turning up makes the glide longer, up to about half a second. A new trigger doesn't stop a glide.
+- `spred`: the voicing, shown on the display: `close` (tight, a keyboard stab), `open`, `wide`, `wider`, `huge`. It opens up the chord as `invrt` has inverted it: the bass stays in place and the upper notes move up by octaves, for open, orchestral chords, and every voicing has all the inversions.
 - `detun`: each inner note gets a detuned twin, from clean to a wide supersaw-like stab. The lowest and highest notes stay clean.
 - `strum`: the notes start one after another, from the lowest, up to 150 ms apart (a quick strum at small settings, an arpeggio at full). A short trigger still plays the whole roll, and each note plucks the filter.
 - `type`: the filter, as on ACID (`LP24`, `LP18`, `LP12`, `BP`, `HP`) plus `NOTCH`, a hollow phaser-like cut that moves with the cutoff. `cutof`, `reso`, `envMd` (how far the filter envelope opens) and `decay` (the filter envelope).
@@ -445,12 +480,31 @@ A new algorithm after xDRUM: five-note chords for stabs, keys and pads, played f
 
 When the FIRE runs out of CPU (the audio misses its deadline, which you hear as a crackle), a tiny 2 × 2 dot lights in the top-right corner of the screen for one second. If it keeps happening, the dot stays on. Use it to find the moment a kit gets too heavy, then lighten it (see CPU under Caveats).
 
+### 23. Macros
+
+Eight macros, M1–M8. Each one moves any number of parameters, on any instruments, each by its own amount, so one knob can open a filter on the bass while it shortens the hats and adds drive to the snare.
+
+**Assigning:** on an instrument's CV page, turn DATA to M1–M8 (after the CV jacks). Each pot sets how far that macro moves its parameter: the centre is not at all, either side moves it up or down. Set them on as many instruments as you like. Each amount set is a route from the shared pool (section 7).
+
+**The MACROS screen:** hold MASTER for half a second (a short press opens MASTER as usual). Turn DATA to step through the views:
+
+- **MACROS (all):** the 8 pots are M1–M8. Each cell shows the macro and how many routes it has (`M1  3`). At 0 a macro changes nothing; turned up, every parameter it reaches moves by up to its full amount.
+- **M1–M8:** the routes of one macro, sorted by instrument. Each cell is the instrument number and the parameter (`2deca`: instrument 2's decay), its bar is the amount, and the pots edit the amounts. The header shows the number of routes (`M3 5 routes`). With more than 8, tap PAGE for the next 8 (the header shows `1-8`, `9-16` …).
+- **CV1–CV8:** the same for a jack: every instrument and parameter it drives, and how much.
+- In the M and CV views, hold PAGE and turn a knob to remove that route.
+- A short MASTER press goes back to the MASTER screen. Any other button leaves the screen and does its usual job.
+
+**Recording macros:** in the MACROS view, hold A and turn macros. They record like MORPH, PAN and VOLUME (section 9): the 16ths with clock or the hits without, `(rec lock)` and `(rec s&h)` with DATA, FIRE to end a loop, clearing with PAGE held (`MACROS (clr)`) and muting with PAGE + FIRE.
+
+- The macro values and amounts are saved with the kit. A recorded macro saves its knob value.
+- Macros cost no CPU until you move one (by hand or from a recording). Each CV route costs about 0.1 % of the CPU, so a pool filled with CV routes takes about a tenth.
+
 ## Install
 
 1. Back up your kits (MIDI dump).
 2. Power on holding SETUP + MASTER (firmware update mode, as in the [official manual](https://www.flame-instruments.de/flame2/downloads.html#fire)).
 3. Send [`FlameFireV1_07_custom.syx`](FlameFireV1_07_custom.syx).
-   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 7,138 messages.
+   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 7,449 messages.
 4. Upload the four samples (below).
 
 ### Uploading the samples
@@ -473,7 +527,7 @@ Flash the original `FlameFireV1_07.syx` the same way. Stock ignores samples 5–
 - On stock, the knob mode `offs` loads as `pick`.
 - A kit that uses MODAL, SHAKERS, ACID, CYMBAL, xDRUM or CHORD needs this firmware; it will not load correctly on stock. Stock ignores ring and swing, the input assign (every instrument plays from both), dType and FM-DRUM's drive, and plays stock.
 - On stock, an instrument set to M1–M6 plays on its direct out only, and a shared direct out plays only one of its instruments.
-- Stock ignores the CV matrix amounts. Saving a kit on stock drops them.
+- Stock ignores the CV matrix amounts and the macros. Saving a kit on stock drops them.
 - If you use CV on Level together with a negative velocity Level amount, soft hits play at the absolute value. Velocity-only Level behaves like stock.
 - BASSDRUM and T-BRIDGE, page 2 pot 3: amounts above about +0.5 respond a bit differently from stock.
 - Knob recording: saving a single instrument stores the step that is playing, not the knob value.
