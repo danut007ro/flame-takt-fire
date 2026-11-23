@@ -450,8 +450,11 @@ A new algorithm after xDRUM: five-note chords for stabs, keys and pads, played f
 
 | Page | Parameters |
 | --- | --- |
-| Page 1 | level, tune, chord, invrt, wave, decay, reso, cutof |
-| Page 2 | type, envMd, detun, strum, slide, spred, scale, aDec |
+| Page 1 | level, tune, chord, invrt, wave, cutof, reso, spred |
+| Page 2 | attck, aDec, sustn, slide, fAtk, fDec, envMd, strum |
+| Page 3 | detun, sub, drive, dType, lfoRt, lfoAm, type, scale |
+
+CHORD has three pages: PAGE goes 1 → 2 → 3 → 1. Page 1 is the chord and its tone, page 2 the envelopes (the sound on the top row, the filter on the bottom row, attack and decay in the same columns), page 3 colour and setup. On the CV menu PAGE goes through the amounts of pages 1, 2 and 3, then the morph page; the amounts sit where their knobs are.
 
 - `tune`: the chord's root. At 0.25 it is C3. A MIDI note sets the key: only its name counts (C, G, A …, in any octave), so `tune` keeps the octave. Without MIDI the key is C.
 - `chord`: the chord shape, shown on the display.
@@ -471,8 +474,13 @@ A new algorithm after xDRUM: five-note chords for stabs, keys and pads, played f
 - `spred`: the voicing, shown on the display: `close` (tight, a keyboard stab), `open`, `wide`, `wider`, `huge`. It opens up the chord as `invrt` has inverted it: the bass stays in place and the upper notes move up by octaves, for open, orchestral chords, and every voicing has all the inversions.
 - `detun`: each inner note gets a detuned twin, from clean to a wide supersaw-like stab. The lowest and highest notes stay clean.
 - `strum`: the notes start one after another, from the lowest, up to 150 ms apart (a quick strum at small settings, an arpeggio at full). A short trigger still plays the whole roll, and each note plucks the filter.
-- `type`: the filter, as on ACID (`LP24`, `LP18`, `LP12`, `BP`, `HP`) plus `NOTCH`, a hollow phaser-like cut that moves with the cutoff. `cutof`, `reso`, `envMd` (how far the filter envelope opens) and `decay` (the filter envelope).
+- `type`: the filter, as on ACID (`LP24`, `LP18`, `LP12`, `BP`, `HP`) plus `NOTCH`, a hollow phaser-like cut that moves with the cutoff. `cutof`, `reso`, `envMd` (how far the filter envelope opens), `fAtk` (how long the filter takes to open, from at once to about 2 s) and `fDec` (how fast it closes again).
+- `attck`: how long the sound takes to come in, from a click (2 ms) to a slow 2 s swell. A short trigger still swells all the way in before it fades.
+- `sustn`: the level a held chord (a held MIDI note or gate) settles to after the attack, at the `aDec` speed. At full it stays at the peak.
 - `aDec`: the fade after the gate. From a jack trigger CHORD plays a stab that fades with `aDec`; a held MIDI note holds the chord. The fade is exponential, from a click to a long tail. At the very top of the knob there is no fade: after one trigger the chord holds for ever (a drone); turn `aDec` down to let it fade.
+- `sub`: a sine an octave below the lowest note you hear (after the inversion and the voicing), through the filter with the chord.
+- `drive` and `dType`: ACID's drive and its five curves, on the whole chord. At 0 it is off.
+- `lfoRt`, `lfoAm`: a slow-to-fast LFO (0.05 to 20 Hz). In the middle `lfoAm` is off; turning it left adds vibrato (up to a semitone), turning it right moves the filter (up to 3 octaves each way), more the further you turn.
 - Velocity makes the chord louder and brighter.
 - Everything except `type` can be modulated. Randomize leaves level, type and scale alone. Selecting it loads a minor-7th stab (C3, saw).
 
@@ -504,7 +512,7 @@ Eight macros, M1–M8. Each one moves any number of parameters, on any instrumen
 1. Back up your kits (MIDI dump).
 2. Power on holding SETUP + MASTER (firmware update mode, as in the [official manual](https://www.flame-instruments.de/flame2/downloads.html#fire)).
 3. Send [`FlameFireV1_07_custom.syx`](FlameFireV1_07_custom.syx).
-   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 7,449 messages.
+   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 7,673 messages.
 4. Upload the four samples (below).
 
 ### Uploading the samples
@@ -531,7 +539,7 @@ Flash the original `FlameFireV1_07.syx` the same way. Stock ignores samples 5–
 - If you use CV on Level together with a negative velocity Level amount, soft hits play at the absolute value. Velocity-only Level behaves like stock.
 - BASSDRUM and T-BRIDGE, page 2 pot 3: amounts above about +0.5 respond a bit differently from stock.
 - Knob recording: saving a single instrument stores the step that is playing, not the knob value.
-- CPU: every instrument stops using CPU a moment after it goes silent (its gate low and its sound faded out) and wakes on the next trigger, a knob change or a CV change, so a kit has much more room while only a few instruments play. FM-DRUM, COWBELL and CYMBAL then start their oscillators at another point in the cycle, like a free-running analog oscillator; the hit sounds the same. An instrument whose level is turned all the way down keeps running. A kit full of heavy instruments can still run out while everything plays at once: one CHORD channel costs about as much as xDRUM, and `detun` adds a little. If the sound crackles (the dot in the corner lights), lower `detun` on CHORD, or use a lighter instrument on another channel.
+- CPU: every instrument stops using CPU a moment after it goes silent (its gate low and its sound faded out) and wakes on the next trigger, a knob change or a CV change, so a kit has much more room while only a few instruments play. FM-DRUM, COWBELL and CYMBAL then start their oscillators at another point in the cycle, like a free-running analog oscillator; the hit sounds the same. An instrument whose level is turned all the way down keeps running. A kit full of heavy instruments can still run out while everything plays at once: one CHORD channel costs about as much as xDRUM; `detun` adds a little, and so do `drive` (about as much as ACID's drive) and `sub`, while they are up. If the sound crackles (the dot in the corner lights), lower `detun` or `drive` on CHORD, or use a lighter instrument on another channel.
 
 ## Credits
 
