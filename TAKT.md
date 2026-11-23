@@ -153,14 +153,15 @@ A muted track can now be recorded, with SHOTS or single notes. Its pattern stays
 
 This is a stock bug. With `bCo` on, extending the pattern with BAR copied the notes, velocities and gate times but not the MOD-CV values. They are copied now. Which bars are copied and when is unchanged, and tracks on HOLD are still skipped.
 
-### 8. HOLD lets you hear velocity and MOD-CV recording
+### 8. HOLD lets you hear velocity, gate and MOD-CV recording
 
 On stock, a track on HOLD can't be recorded but you can still play over it live. That worked in REC NOTE but not in the other two recording modes. Now it works in all three:
 
 - **REC velocity** (NOTE + MOD-CV): hold a HOLD track and its notes play at the VELOCITY setting, so you can try a new dynamic before you take HOLD off. Its recorded velocities stay.
+- **REC gate** (REC velocity + DATA push), and GATETIME in REC velocity / REC MOD-CV when the track's gate setting records (section 9): hold a HOLD track and its notes play with the GATETIME position (`tiE` ties, `OFF` silences them). Its recorded gate times stay.
 - **REC MOD-CV**: hold a HOLD track (VELO/MOD set to REC) and its CV output follows the VELOCITY control the same way it would while recording. Nothing is recorded, and the recorded modulation plays again when you let go.
 
-SHOTS hits on a HOLD track already let you hear GATETIME. In REC velocity and REC MOD-CV a HOLD track's gate times stay as they are (section 9).
+SHOTS hits on a HOLD track already let you hear VELOCITY and GATETIME in REC NOTE.
 
 ### 9. Record settings
 
@@ -185,7 +186,7 @@ With the defaults, recording works as on stock until you turn GATETIME while hol
 | REC MOD-CV | the modulation | the gate time of each note the playhead passes |
 
 - **REC NOTE:** notes go where you play them. A hit on or near an old note (within half a step of the QUANTIZE / BEAT grid) keeps that note's velocity or gate time when that knob is off. New notes always take the knobs. A single note's gate is how long you hold the button. MIDI notes keep their own velocity, or the old note's with `uoF`.
-- **REC velocity and REC MOD-CV** change existing notes only, and only on tracks you hold (stock REC velocity wrote the played velocity back into every track, baking VARIATION in). A gate time is written as a SHOTS hit writes it: GATETIME × the BEAT interval (the QUANTIZE interval, if the track has one). `tiE` ties the note (section 13). GATETIME on `OFF` removes the note, and so does VELOCITY at 0 in REC velocity. You hear each change at once. On a HOLD track you hear the velocity and nothing is written.
+- **REC velocity and REC MOD-CV** change existing notes only, and only on tracks you hold (stock REC velocity wrote the played velocity back into every track, baking VARIATION in). A gate time is written as a SHOTS hit writes it: GATETIME × the BEAT interval (the QUANTIZE interval, if the track has one). `tiE` ties the note (section 13). GATETIME on `OFF` removes the note, and so does VELOCITY at 0 in REC velocity. You hear each change at once. On a HOLD track you hear the velocity and gate and nothing is written.
 - **With `Gon`,** gates are written from the moment you hold the track: set GATETIME first, then record.
 - The settings are saved with the scene.
 
