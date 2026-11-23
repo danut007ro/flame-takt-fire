@@ -512,7 +512,7 @@ Eight macros, M1–M8. Each one moves any number of parameters, on any instrumen
 1. Back up your kits (MIDI dump).
 2. Power on holding SETUP + MASTER (firmware update mode, as in the [official manual](https://www.flame-instruments.de/flame2/downloads.html#fire)).
 3. Send [`FlameFireV1_07_custom.syx`](FlameFireV1_07_custom.syx).
-   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 7,685 messages.
+   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 5,779 messages.
 4. Upload the four samples (below).
 
 ### Uploading the samples
