@@ -127,7 +127,7 @@ On VOLUME page 2 the pot goes 1–6, M, M1–M6.
 
 Record knob movements as steps on the A and B pages of the selected instrument. With MIDI clock (for example from the TAKT) the steps are 16th notes locked to the bars, like recording knobs on the TAKT. Without clock, each trigger is one step.
 
-**Recording:** on page A hold A (on page B hold B); the header shows `(rec)`. Every knob you turn while holding is recorded, and keeps writing until you let go. You hear it live. Only knobs moved more than about 6% after pressing count, so pot noise is ignored.
+**Recording:** on page A hold A (on page B hold B); the header shows `(rec)`. Every knob you turn while holding is recorded, and keeps writing until you let go. You hear it live. Only knobs moved more than about 6% after pressing count, so pot noise is ignored. The small jitter of a resting knob is also kept out of recordings and out of recorded knobs: a knob held still records one steady value, and turning a recorded knob later shifts its loop without the jitter (a slow turn follows a few steps behind; a fast one and the ends of the knob are exact).
 
 **Ending with FIRE:** while still holding A (or B), press FIRE to end the recording right there. FIRE makes no sound while you hold the button, and knobs you turn after pressing it aren't recorded. With clock, a tap ends the loop on the nearest beat and a hold gives any length in 16ths (see below).
 
@@ -135,8 +135,9 @@ Record knob movements as steps on the A and B pages of the selected instrument. 
 
 - TAKT setup: connect its MIDI OUT to the FIRE's MIDI IN. Press MIDI until `SCL` (send clock) shows and set it to `On` with DATA.
 - Record while the sequencer runs. Pressing A (or B) marks the start of the recording. A knob writes the 16th that is playing as soon as you turn it, and every 16th after that until you let go.
-- So you can press A at the start of a bar, wait, turn a knob near the end of the bar and let go at the bar line: the knob's loop is a whole bar that plays its old value until the point where you turned it, then the new value, and every bar after that sounds the same.
-- A new recorded knob's loop is as long as the time from your A (or B) press to the end of the recording, rounded up to a quarter bar, half a bar, or 1, 2, 3 or 4 bars. Up to an eighth over still rounds down (a bar recorded slightly long stays one bar); the extra steps wrap onto the start. Steps before your first turn, and any you didn't record, keep the knob's previous value.
+- So you can press A at the start of a bar, wait, turn a knob near the end of the bar and let go at the bar line: the knob's loop is a whole bar that plays its old value until the point where you turned it, then the new value, and every bar after that sounds the same (gliding into the new value over that 16th, and back to the old one over the first 16th of the next bar; see playback below).
+- A new recorded knob's loop is as long as the time from your A (or B) press to the end of the recording, rounded up to whole beats under a bar (1, 2 or 3 beats) or to 1, 2, 3 or 4 bars. A 16th over still rounds down under a bar, and up to an eighth over above it (a bar recorded slightly long stays one bar); the extra steps wrap onto the start. Steps before your first turn, and any you didn't record, keep the knob's previous value.
+- **Playback glides:** a `(rec)` knob moves smoothly through each 16th, from where the knob was when the 16th started to where you left it when it ended, so a recorded sweep plays back as a sweep instead of in 16th steps, and a jump you recorded becomes a quick slide over one 16th. The glide follows the tempo. A trigger in the last third of a 16th gets the value at its end. `(rec lock)` and `(rec s&h)` still change only at hits, a muted knob plays its knob value, and without clock each trigger plays its step as before.
 - Ended with FIRE, the loop length is counted from your A (or B) press to the moment you press FIRE:
   - **Tap FIRE:** whole beats, rounded to the nearest beat. You only have to tap close to the beat: a tap between 2½ and just under 3½ beats after the press gives 3 beats (12 steps). At least 1 beat, at most 16.
   - **Hold FIRE about ⅓ second:** exactly the 16ths up to the press (up to 64), not rounded. The recording ends when the ⅓ second is up, without waiting for you to let go. A 3-, 5- or 7-step loop against the 16-step bar gives a polyrhythm.
@@ -543,7 +544,7 @@ A held parameter changes only on its instrument's hits: whatever moves it in bet
 1. Back up your kits (MIDI dump).
 2. Power on holding SETUP + MASTER (firmware update mode, as in the [official manual](https://www.flame-instruments.de/flame2/downloads.html#fire)).
 3. Send [`FlameFireV1_07_custom.syx`](FlameFireV1_07_custom.syx).
-   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 6,140 messages.
+   - In your SysEx tool, set a **gap of 20 ms between messages**, as the official manual says. The file is 6,206 messages.
 4. Upload the four samples (below).
 
 ### Uploading the samples
